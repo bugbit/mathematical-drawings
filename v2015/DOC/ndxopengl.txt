@@ -1,0 +1,419 @@
+http://www.brucesutherland.co.uk/android-ndk/opengl-es-2-0-android-ndk-game-programming/
+
+To be able to render anything to the screen with the Android NDK we are required to use the OpenGL ES API. I have decided to limit the phones I will support to those which support OpenGL ES 2.0 as anything older will be hardware which isn’t necessarily up to the task.
+If you haven’t already done so, you should read the previous two posts in this series, I’ll be building on the framework already started in those:
+Projects, Makefiles and Native App Glue
+The Runtime Loop
+Now that you’ve had a refresher on those it will come as no surprise that we’ll be creating another Task for our renderer.
+class Renderer
+    : public Task
+{
+protected:
+    bool m_bInitialized;
+ 
+    virtual void RenderFrame();
+    virtual void BeginFrame() = 0;
+    virtual void EndFrame() = 0;
+ 
+public:
+    Renderer(unsigned int priority);
+    virtual ~Renderer();
+ 
+    virtual void Init() = 0;
+    virtual void Destroy() = 0;
+ 
+    virtual bool     Start();
+    virtual void OnSuspend() {}
+    virtual void Update();
+    virtual void OnResume() {}
+    virtual void Stop() {}
+};
+That’s our class definition, nothing too complicated. You can see we inherit from Task which will allow us to add the renderer to the kernel and that we have overridden the methods from Task.
+You can also see that we have a protected method for RenderFrame and pure virtual methods for BeginFrame and EndFrame. These last two methods are pure virtual as we will be inheriting another class from this interface for Renderer. This will allow us to support OpenGL and DirectX renderers in the future and therefore have the ability to write games for Android and Windows Phone 8 from the same code base.
+Because Renderer doesn’t do much work, it’s methods are straight forward:
+Renderer::Renderer(unsigned int priority)
+    :    m_bInitialized(false)
+    ,    Task(priority)
+{
+}
+ 
+Renderer::~Renderer()
+{
+}
+ 
+bool Renderer::Start()
+{
+    return true;
+}
+ 
+void Renderer::Update()
+{
+    if (m_bInitialized)
+    {
+        RenderFrame();
+    }
+}
+ 
+void Renderer::RenderFrame()
+{
+    BeginFrame();
+    EndFrame();
+}
+That’s all there is to it for now.
+The next step is to inherit Renderer into an implementation of GLRenderer.
+class GLRenderer
+    : public Renderer
+{
+protected:
+    virtual void BeginFrame();
+    virtual void EndFrame();
+ 
+public:
+    explicit GLRenderer(int priority);
+    virtual ~GLRenderer();
+};
+Again, not much going on here.
+GLRenderer::GLRenderer(int priority)
+    : Renderer(priority)
+{
+}
+ 
+GLRenderer::~GLRenderer()
+{
+}
+ 
+void GLRenderer::BeginFrame()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CW);
+    glCullFace(GL_BACK);
+}
+ 
+void GLRenderer::EndFrame()
+{
+}
+Here we can see that BeginFrame has some GL calls to set up some OpenGL states. By the end of this tutorial, all we will have is some code which clears the screen. It might not sound exciting but it’s an important first step and there’s still a lot of code to come to get us there.
+At this point we need to inherit GLRenderer into another class. I’m not usually one for endless hierarchies but in this case it makes sense. Our GLRenderer class is going to contain cross platform OpenGL code which can be used on any platofrm i.e. Android, Win32 and iOS. However the way you initialise OpenGL on each of these platforms is very different. Android supports an API by Khronos known as EGL. For iOS Apple has written their own interface known as EAGL. For my Win32 builds I’m currently using a wrapper library called GLFW which does all the hard work for us.
+Now, on to the EGLRenderer class.
+class EGLRenderer
+    : public GLRenderer
+{
+private:
+    EGLDisplay  m_display;
+    EGLSurface  m_renderSurface;
+    EGLContext m_context;
+ 
+    virtual void EndFrame();
+ 
+public:
+    explicit EGLRenderer(unsigned int priority);
+    virtual ~EGLRenderer();
+ 
+    virtual void Init();
+    virtual void Destroy();
+};
+ 
+Still almost innocuous looking.  The methods get interesting however.
+ 
+ 
+EGLRenderer::EGLRenderer(unsigned int priority)
+    : GLRenderer(priority)
+    , m_display(EGL_NO_DISPLAY)
+    , m_renderSurface(EGL_NO_SURFACE)
+    , m_context(EGL_NO_CONTEXT)
+{
+}
+ 
+EGLRenderer::~EGLRenderer()
+{
+}
+There we have another two simple looking methods, now we’ll take a look at Init by breaking it down into chunks.
+void EGLRenderer::Init()
+{
+    if (m_display == EGL_NO_DISPLAY)
+    {
+        m_display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+        assert(m_display);
+At the beginning of the method we ensure that we only try to initialize OpenGL once. We get the default display id from EGL and assert that we retrieved it successfully.
+EGLBoolean res = eglInitialize(m_display, NULL, NULL);
+assert(res);
+Next we initialize EGL using the display we just retrieved. The two NULL parameters take pointers to return the major and minor versions of EGL being used, we currently don’t need these.
+const EGLint RGBX_8888_ATTRIBS[] =
+{
+    EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT, EGL_SURFACE_TYPE,
+    EGL_WINDOW_BIT, EGL_BLUE_SIZE, 8, EGL_GREEN_SIZE, 8,
+    EGL_RED_SIZE, 8, EGL_DEPTH_SIZE, 8, EGL_NONE
+};
+ 
+const EGLint RGB_565_ATTRIBS[] =
+{
+    EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT, EGL_SURFACE_TYPE,
+    EGL_WINDOW_BIT, EGL_BLUE_SIZE, 5, EGL_GREEN_SIZE, 6,
+    EGL_RED_SIZE, 5, EGL_DEPTH_SIZE, 8, EGL_NONE
+};
+ 
+const EGLint* attribList;
+ 
+Android& android = Android::GetSingleton();
+int windowFormat = ANativeWindow_getFormat(android.GetAppState()->window);
+if ((windowFormat == WINDOW_FORMAT_RGBA_8888) || (windowFormat == WINDOW_FORMAT_RGBX_8888))
+{
+    attribList = RGBX_8888_ATTRIBS;
+}
+else
+{
+    attribList = RGB_565_ATTRIBS;
+}
+In the Android NDK file native_window.h the first enum defines 3 window formats which are supported by different phones. Some support RGBA/RGBX which have 8 bits per colour pixel and an extra 8 bits. The other support 5 blue, 6 green and 5 red bits. We need to detect which version our current device is using here. You can see that we return an internal pointer to the Android android_app structure I declared in an earlier article.
+You can see in the structures above that at this point we also specify that we wish to use OpenGL ES 2.0 by setting EGL_OPENGL_ES2_BIT. For now we’re also declaring that we would like an 8 bit depth buffer. The EGL_NONE at the end tells EGL that we have finished declaring the attributes we would like and anything not specified is set to their default values.
+EGLConfig config;
+EGLint numConfigs;
+res = eglChooseConfig(m_display, attribList, &config, 1, &numConfigs);
+assert(res);
+ 
+EGLint format;
+res = eglGetConfigAttrib(m_display, config, EGL_NATIVE_VISUAL_ID, &format);
+assert(res);
+We then pass our info to eglChooseConfig and then pass the returned config to eglGetConfigAttrib.
+int32_t setBufRes = ANativeWindow_setBuffersGeometry(android.GetAppState()->window, 0, 0, format);
+assert(setBufRes == 0);
+ 
+EGLNativeWindowType windowType;
+m_renderSurface = eglCreateWindowSurface(m_display, config, android.GetAppState()->window, NULL);
+assert(m_renderSurface != EGL_NO_SURFACE);
+Here we use the config and format as they were set by EGL to tell Android to set up the screen geometry and to tell EGL to create a screen rendering surface for us to draw into.
+EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
+m_context = eglCreateContext(m_display, config, EGL_NO_CONTEXT, contextAttribs);
+assert(m_context != EGL_NO_CONTEXT);
+Now we set up the rendering context (replace any mention of Windows in that article with Android and you’ll get the idea).
+        res = eglMakeCurrent(m_display, m_renderSurface, m_renderSurface, m_context);
+        assert(res);
+ 
+        res = eglQuerySurface(m_display, m_renderSurface, EGL_WIDTH, &m_width);
+        assert(res);
+        res = eglQuerySurface(m_display, m_renderSurface, EGL_HEIGHT, &m_height);
+        assert(res);
+ 
+        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+ 
+        m_bInitialized = true;
+    }
+}
+And the last part. We make the rendering surface and context current, get the dimensions of the screen (the m_width and m_height were added to the base Renderer class as we’re likely to need these in any version of the renderer which we write in the future) and set the clear colour to grey. You can choose any clear colour which makes it obvious that the device is being cleared, a garish blue or red would be a good confirmation that what you are seeing is actually your own code making the changes.
+And that’s Init. There’s lots of scary stuff in there but you don’t really need to worry about it once you’ve written it. The best reference for each of the methods used is the OpenGL ES 2.0 Programming Guide.
+void EGLRenderer::Destroy()
+{
+    if (m_display != EGL_NO_DISPLAY)
+    {
+        eglMakeCurrent(m_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+        if (m_context != EGL_NO_CONTEXT)
+        {
+            eglDestroyContext(m_display, m_context);
+        }
+        if (m_renderSurface != EGL_NO_SURFACE)
+        {
+            eglDestroySurface(m_display, m_renderSurface);
+        }
+        eglTerminate(m_display);
+    }
+    m_display = EGL_NO_DISPLAY;
+    m_context = EGL_NO_CONTEXT;
+    m_renderSurface = EGL_NO_SURFACE;
+    m_bInitialized = false;
+}
+Destroy looks so simple in comparison. We make sure our rendering surface and context aren’t current, destroy them then terminate EGL and invalidate all of our internal members.
+void EGLRenderer::EndFrame()
+{
+    eglSwapBuffers(m_display, m_renderSurface);
+}
+EndFrame tells EGL to switch the front and back buffer and not much else for now.
+Now that we have that, I’m going to tell you of the virtues of having a Win32 build running alongside the Android build:
+It forces cross platform code design. You can’t write any code which will only work on Android and therefore porting to other platforms down the track or adding a new OpenGL ES 3.0 renderer won’t be as tough as it could be.
+Visual Studio (even Express) is in my view the nicest IDE available on any platform.
+Developing game logic code which is platform independent is easier and faster on Win32 when you don’t have to worry about deploying the code to a device or running on an emulator.
+Those are my reasons for adding Win32 support immediately.
+And this is what the GLFWRenderer looks like.
+class GLFWRenderer
+    : public GLRenderer
+{
+private:
+    virtual void EndFrame();
+ 
+public:
+    explicit GLFWRenderer(unsigned int priority);
+    virtual ~GLFWRenderer();
+ 
+    virtual void Init();
+    virtual void Destroy();
+};
+It is much the same as EGLRenderer in the header.
+GLFWRenderer::GLFWRenderer(uint32_t priority)
+    : GLRenderer(priority)
+{
+}
+ 
+GLFWRenderer::~GLFWRenderer()
+{
+}
+ 
+void GLFWRenderer::Init()
+{
+    glfwInit();
+    glfwOpenWindow(1280, 720, 5, 6, 7, 0, 8, 0, GLFW_WINDOW);
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    m_bInitialized = true;
+}
+ 
+void GLFWRenderer::Destroy()
+{
+    glfwTerminate();
+}
+ 
+void GLFWRenderer::EndFrame()
+{
+    glfwSwapBuffers();
+}
+Would you look at that. Two lines of code sets up OpenGL for Windows, wow. Now setting up a project is a little more complicated and a good exercise. You can set it up in many ways. I created a Visual Studio solution and added my game and GLFW as projects. The game is the default project and GLFW is set up to build as a static library which is linked into the game project. If you decide to try this and have trouble leave a comment or look me up on Google+. Oh, the default resolution above was hard coded to match the screen of my Galaxy Nexus. Better resolution support is a job for another day.
+The last step is adding the Renderer to the kernel. For the task of creating the Renderer, I’m using a factory method.
+Renderer* CreateRenderer(RendererType type, unsigned int priority)
+{
+    Renderer* pRenderer = NULL;
+ 
+    switch (type)
+    {
+#if SUPPORTS_EGL
+    case EGL_RENDERER:
+        {
+            pRenderer = new EGLRenderer(priority);
+        }
+        break;
+#endif
+ 
+#if SUPPORTS_GLFW
+    case GLFW_RENDERER:
+        {
+             pRenderer = new GLFWRenderer(priority);
+        }
+        break;
+#endif
+ 
+    default:
+        {
+            assert(false);
+        }
+        break;
+    }
+ 
+   return pRenderer;
+}
+I decided to use the preprocessor to exclude non-supported renderers from each build to make handling compiler errors easier. I defined an enum RendererType which has definitions for each of the renderers and I create a new Renderer based on the type passed in. The priority as usual is the order in which the task is added to the Renderer.
+#if PLATFORM_ANDROID
+        RendererType type = EGL_RENDERER;
+#elif PLATFORM_WINDOWS
+        RendererType type = GLFW_RENDERER;
+#endif
+m_pRenderer = CreateRenderer(type, Task::RENDER_PRIORITY);
+m_kernel.AddTask(m_pRenderer);
+The above code shows another method for blocking renderers and code based on the platform being compiled by using preprocessor definitions. Another change here is the static unsigned int defined in the Task class. I have defined a few of these and placed them 1000 apart so I can add more tasks in between if need be. I currently have priorities defined for the Timer task, Platform task, File tasks, Input tasks, Game tasks, Audio tasks and Renderer tasks. We’ll cover all of those tasks in future articles so stay tuned!
+The last thing to do is initialize the renderer at the appropriate time.
+On Android this happens in our android_handle_cmd method.
+case APP_CMD_INIT_WINDOW:
+    {
+        Renderer* pRenderer = (Renderer*)app->userData;
+        pRenderer->Init();
+    }
+    break;
+ 
+case APP_CMD_DESTROY:
+    {
+        Renderer* pRenderer = (Renderer*)app->userData;
+        pRenderer->Destroy();
+    }
+    break;
+ 
+case APP_CMD_TERM_WINDOW:
+    {
+        Renderer* pRenderer = (Renderer*)app->userData;
+        pRenderer->Destroy();
+    }
+    break;
+Those are the lines we need to add to that method.
+To get the renderer into the userData pointer the Android constructor was changed to:
+Android::Android(android_app* pState, Renderer* pRenderer, unsigned int priority)
+    : Platform(priority)
+{
+    m_pState = pState;
+    m_pState->onAppCmd = android_handle_cmd;
+    m_pState->userData = (void*)pRenderer;
+}
+This lets us initialize the renderer when Android gives us the signal that the window has been initialized and is ready to use. We also Destroy the renderer when the app is being destroyed or when the window has been terminated. And now a platform task for Windows.
+class Windows
+    : public Platform
+{
+private:
+    Renderer*  m_pRenderer;
+ 
+    void RegisterClass();
+ 
+public:
+    Windows(Renderer* pRenderer, unsigned int priority);
+    virtual ~Windows();
+ 
+    virtual bool       Start();
+    virtual void OnSuspend();
+    virtual void Update();
+    virtual void OnResume();
+    virtual void Stop();
+};
+And the methods:
+namespace
+{
+    bool g_closing = false;
+ 
+    int GLFWCALL windowCloseListener()
+    {
+        g_closing = true;
+        return 0;
+    }
+}
+ 
+Windows::Windows(Renderer* pRenderer, unsigned int priority)
+    : m_pRenderer(pRenderer)
+    , Platform(priority)
+{
+}
+ 
+Windows::~Windows()
+{
+}
+ 
+bool Windows::Start()
+{
+    m_pRenderer->Init();
+    glfwSetWindowCloseCallback(windowCloseListener);
+    m_bPaused = false;
+    return true;
+}
+ 
+void Windows::OnSuspend()
+{
+ 
+}
+ 
+void Windows::Update()
+{
+    m_bClosing = g_closing;
+}
+ 
+void Windows::OnResume()
+{
+}
+ 
+void Windows::Stop()
+{
+    m_pRenderer->Destroy();
+}
+And there we have it. The main thing to note here is the callback we receive from GLFW when the Window has been closed and how we feed that data into the kernel to shut down the tasks.
+So, there you have it. Enough code to initialize OpenGL in the Android NDK and Win32 environments simultaneously. There’s a lot there but I’m sure some people will find it a useful learning experience.

@@ -1,0 +1,25 @@
+
+#include "dibuixos.h"
+
+int dw_errorcode=DWE_NOERRORS;
+
+static char *dwe_errors[]=
+{
+	"A 386 or higher processor required.",
+	"A 387 coprocesador required.",
+	"program interrumpt"
+};
+
+char *dwe_geterrorstr()
+{
+	if (dw_errorcode==DWE_NOERRORS || dw_errorcode<0 || dw_errorcode>sizeof(dwe_errors)/sizeof(*dwe_errors))
+		return "";
+
+	return dwe_errors[dw_errorcode];
+}
+
+
+void dwe_showError()
+{
+	showError(dwe_geterrorstr());
+}

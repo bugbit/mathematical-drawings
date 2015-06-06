@@ -1,0 +1,9 @@
+!define BLANK ""
+D:\oscar\dibuixos\v2015\SRC\dibuixos.exe : .AUTODEPEND
+ @D:
+ cd D:\oscar\dibuixos\v2015\SRC
+ @%write dibuixos.lk1 
+ @%append dibuixos.lk1 
+ *wlink name dibuixos d all sys dos32x op m op maxe=25 op q op symf @dibuixo&
+s.lk1
+

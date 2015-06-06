@@ -1,0 +1,164 @@
+#include "dibuixos.h"
+
+
+void waitb()
+{
+	asm {
+		mov	dx,3dah
+	}
+l1:
+	asm {
+		in	al,dx
+		test	al,8
+		jnz	l1
+	}
+l2:
+	asm {
+		in	al,dx
+		test	al,8
+		jz	l2
+	}
+}
+
+void initvideo()
+{
+	asm {
+		mov	ax,13h
+		int	10h
+	}
+	waitb();
+	asm {
+		//clear palette
+		mov	dx,3c8h
+		xor	al,al
+		out	dx,al
+		inc	dx
+		mov	cx,768
+	}
+ll1:
+	asm {
+		out	dx,al
+		loop	ll1
+		//400 rows
+		mov	dx,3d4h
+		mov	ax,00009h
+		out	dx,ax
+		//tweak
+		mov	ax,00014h
+		out	dx,ax
+		mov	ax,0e317h
+		out	dx,ax
+		mov	dx,3c4h
+		mov	ax,0604h
+		out	dx,ax
+		;
+		mov	dx,3c4h
+		mov	ax,0f02h
+		out	dx,ax
+		mov	ax,0a000h
+		mov	es,ax
+		xor	di,di
+		mov	cx,32768
+		xor	ax,ax
+		rep	stosw
+		;
+		//640 wide
+		mov	dx,3d4h
+		mov	ax,05013h
+		out	dx,ax
+	}
+}
+
+void closevideo()
+{
+	asm {
+		mov	ax,3h
+		int	10h
+	}
+}
+
+void gprintlinexy(int x,int y,int color,char *str)
+{
+	asm {
+		push	ds
+		mov	ax,0a000h
+		mov	es,ax
+		mov	bx,y
+		mov	ax,160
+		mul	bx
+		mov	di,ax
+		mov	dx,x
+		mov	cx,dx
+		mov	ax,cx
+		shr	ax,2
+		add	di,ax
+		mov	ax,0102h
+		and	cl,3
+		shl	ah,cl
+		mov	bx,0x0801
+		}
+	bupage:
+	asm {
+		mov	dx,3c4h
+		out	dx,ax
+		mov	dx,color
+		push	ax
+		lds	si,str
+		cld
+	}
+	buletra:
+	asm {
+		lodsb
+		and	al,al
+		jz		fin
+		push	si
+		mov	si,0xfa6e
+		cbw
+		sal	ax,3
+		add	si,ax
+		mov	cx,8
+	}
+	car1:
+	asm {
+		push	es
+		mov	ax,0xf000
+		mov	es,ax
+		mov	al,es:[si]
+		pop	es
+		mov	dh,dl
+		test	al,bl
+		jnz	l1
+		xor	dh,dh
+	}
+	l1:
+	asm {
+		mov	es:[di],dh
+		mov	dh,dl
+		test	al,bh
+		jnz	l2
+		xor	dh,dh
+	}
+	l2:
+	asm {
+		inc	di
+		mov	es:[di],dh
+		add	di,160-1
+		inc	si
+		loop	car1
+		pop	si
+		sub	di,8*160
+		jmp	buletra
+	}
+	fin:
+	asm {
+		pop	ax
+		rol	ah,1
+		sal	bx,1
+		and	bh,bh
+		jnz	bupage
+	}
+	fin:
+	asm {
+		pop	ds
+	}
+}

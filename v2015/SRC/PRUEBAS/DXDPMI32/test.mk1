@@ -1,0 +1,32 @@
+!define BLANK ""
+D:\oscar\dibuixos\v2015\SRC\dpmi32.obj : D:\oscar\dibuixos\v2015\SRC\dpmi32.&
+c .AUTODEPEND
+ @D:
+ cd D:\oscar\dibuixos\v2015\SRC
+ *wcc386 dpmi32.c -i="p:\WATCOM/h" -w4 -e25 -zq -otexan -d2 -6r -bt=dos -fo=&
+.obj -mf
+
+D:\oscar\dibuixos\v2015\SRC\test1.obj : D:\oscar\dibuixos\v2015\SRC\test1.c &
+.AUTODEPEND
+ @D:
+ cd D:\oscar\dibuixos\v2015\SRC
+ *wcc386 test1.c -i="p:\WATCOM/h" -w4 -e25 -zq -otexan -d2 -6r -bt=dos -fo=.&
+obj -mf
+
+D:\oscar\dibuixos\v2015\SRC\vesa.obj : D:\oscar\dibuixos\v2015\SRC\vesa.c .A&
+UTODEPEND
+ @D:
+ cd D:\oscar\dibuixos\v2015\SRC
+ *wcc386 vesa.c -i="p:\WATCOM/h" -w4 -e25 -zq -otexan -d2 -6r -bt=dos -fo=.o&
+bj -mf
+
+D:\oscar\dibuixos\v2015\SRC\test.exe : D:\oscar\dibuixos\v2015\SRC\dpmi32.ob&
+j D:\oscar\dibuixos\v2015\SRC\test1.obj D:\oscar\dibuixos\v2015\SRC\vesa.obj&
+ D:\oscar\dibuixos\v2015\SRC\dpmi32.h D:\oscar\dibuixos\v2015\SRC\vesa.h .AU&
+TODEPEND
+ @D:
+ cd D:\oscar\dibuixos\v2015\SRC
+ @%write test.lk1 FIL dpmi32.obj,test1.obj,vesa.obj
+ @%append test.lk1 
+ *wlink name test d all sys dos32x op m op maxe=25 op q op symf @test.lk1
+

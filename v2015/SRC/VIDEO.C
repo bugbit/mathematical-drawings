@@ -1,0 +1,36 @@
+#include <memory.h>
+#ifdef __VI_GRAPHICS__
+#include <graphics.h>
+#endif
+
+#include "dibuixos.h"
+
+
+VIDEO vi_videos[]=
+{
+#ifdef __VI_GRAPHICS__
+	{ "bgi hercules", gr_herc_getgrmodes,NULL,NULL,NULL,HERCMONO },
+	{ "bgi VGA", gr_vga_getgrmodes,NULL,NULL,NULL,VGA },
+	{ "bgi SVGA 256", gr_vga_getgrmodes,NULL,NULL,"SVGA256",DETECT }
+#endif
+},
+*vi_video;
+
+GRMODE *vi_grmode;
+
+int vi_num=sizeof(vi_videos)/sizeof(*vi_videos);
+
+void vi_setvideo(VIDEO *v)
+{
+	vi_video=v;
+}
+
+void vi_setgrmode(GRMODE *g)
+{
+	vi_grmode=g;
+}
+
+int vi_getgrmodes(GRMODE **gr,int *num,int *alloc)
+{
+	return vi_video->getgrmodes(gr,num,alloc);
+}

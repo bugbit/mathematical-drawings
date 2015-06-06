@@ -1,0 +1,9 @@
+#include <alloc.h>
+
+#include "memory.h"
+
+void getmemfree(MEMFREE *mf)
+{
+	mf->calc=1;
+	mf->dosmemfree=coreleft();
+}

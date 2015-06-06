@@ -1,0 +1,165 @@
+Module: D:\oscar\dibuixos\v2015\SRC\dpmi32.c
+GROUP: 'DGROUP' CONST,CONST2,_DATA
+
+Segment: _TEXT PARA USE32 00000041 bytes
+
+#include "dpmi32.h"
+
+int dpmiAllocateDOSMemory ( unsigned long SizeInBytes, DPMI_DosPtr *dp)
+0000                          dpmiAllocateDOSMemory_:
+0000    53                        push        ebx 
+0001    51                        push        ecx 
+0002    56                        push        esi 
+0003    57                        push        edi 
+0004    55                        push        ebp 
+0005    89 E5                     mov         ebp,esp 
+0007    81 EC 0C 00 00 00         sub         esp,0x0000000c 
+000D                          L$1:
+000D    89 45 F4                  mov         dword ptr -0xc[ebp],eax 
+0010    89 55 F8                  mov         dword ptr -0x8[ebp],edx 
+
+{
+    /*
+        si da error devuelve en ax el codigo de error,si no devuelve 0:
+        07h (7)   memory control block destroyed
+        08h (8)   insufficient memory
+        si no devuelve 0 en ax
+        si no error =>
+            eax => Segment
+            edx => Selector
+    */
+    __asm
+0013    8B 9D F4 FF FF FF         mov         ebx,dword ptr -0xc[ebp] 
+0019    83 C3 0F                  add         ebx,0x0000000f 
+001C    C1 EB 04                  shr         ebx,0x04 
+001F    B8 00 01 00 00            mov         eax,0x00000100 
+0024    CD 31                     int         0x31 
+0026    0F 82 0D 00 00 00         jb          L$2 
+002C    8B 8D F8 FF FF FF         mov         ecx,dword ptr -0x8[ebp] 
+0032    89 01                     mov         dword ptr [ecx],eax 
+0034    89 51 04                  mov         dword ptr 0x4[ecx],edx 
+0037    33 C0                     xor         eax,eax 
+
+    {
+        mov     ebx,SizeInBytes
+        add     ebx,15
+        shr     ebx,4
+        mov     eax,100h
+        int     31h
+        jc      @@error
+        mov     ecx,dp
+        mov     [ecx],eax
+        mov     [ecx+4],edx
+        xor     eax,eax
+     @@error:
+    }
+    //ptr->segment=1;
+    //ptr->selector=2;
+}                                   
+0039                          L$2:
+0039    89 EC                     mov         esp,ebp 
+003B    5D                        pop         ebp 
+003C    5F                        pop         edi 
+003D    5E                        pop         esi 
+003E    59                        pop         ecx 
+003F    5B                        pop         ebx 
+0040    C3                        ret         
+0041                          L$3:
+
+Routine Size: 65 bytes,    Routine Base: _TEXT + 0000
+
+No disassembly errors
+
+Segment: CONST DWORD USE32 00000000 bytes
+
+Segment: CONST2 DWORD USE32 00000000 bytes
+
+Segment: _DATA DWORD USE32 00000000 bytes
+
+Segment: .debug_info BYTE USE32 0000019E bytes
+0000                          L$4:
+0000    9A 01 00 00 02 00                               ......
+0006    00 00 00 00                                     DD	offset L$6
+000A    04 06 9D 01 00 00 44 3A 5C 6F 73 63 61 72 5C 64 ......D:\oscar\d
+001A    69 62 75 69 78 6F 73 5C 76 32 30 31 35 5C 53 52 ibuixos\v2015\SR
+002A    43 5C 64 70 6D 69 33 32 2E 63 00                C\dpmi32.c.
+0035    00 00 00 00                                     DD	offset L$5
+0039    01 00 56 31 2E 30 20 57 41 54 43 4F 4D 00 00    ..V1.0 WATCOM..
+0048    00 00 00 00                                     DD	offset L$7
+004C    00 00 00 00 01                                  .....
+0051    04 00 00 00                                     DD	offset L$8
+0055    09 63 68 61 72 00 08 01 09 73 69 67 6E 65 64 20 .char....signed 
+0065    63 68 61 72 00 06 01 09 75 6E 73 69 67 6E 65 64 char....unsigned
+0075    20 63 68 61 72 00 08 01 09 73 68 6F 72 74 00 05  char....short..
+0085    02 09 75 6E 73 69 67 6E 65 64 20 73 68 6F 72 74 ..unsigned short
+0095    00 07 02 09 69 6E 74 00 05 04 09 75 6E 73 69 67 ....int....unsig
+00A5    6E 65 64 20 69 6E 74 00 07 04 09 6C 6F 6E 67 00 ned int....long.
+00B5    05 04 09 75 6E 73 69 67 6E 65 64 20 6C 6F 6E 67 ...unsigned long
+00C5    00 07 04 09 5F 5F 69 6E 74 36 34 00 05 08 09 75 ....__int64....u
+00D5    6E 73 69 67 6E 65 64 20 5F 5F 69 6E 74 36 34 00 nsigned __int64.
+00E5    07 08 09 5F 42 6F 6F 6C 00 07 01 86 01 9C 01 00 ..._Bool........
+00F5    00 01 98 00 00 00 0D 64 70 6D 69 41 6C 6C 6F 63 .......dpmiAlloc
+0105    61 74 65 44 4F 53 4D 65 6D 6F 72 79 00 01 00 01 ateDOSMemory....
+0115    01 00 00 02 91 14                               ......
+011B    00 00 00 00                                     DD	offset dpmiAllocateDOSMemory_
+011F    41 00 00 00                                     DD	offset L$3
+0123    00 01 55 C8 01 53 69 7A 65 49 6E 42 79 74 65 73 ..U..SizeInBytes
+0133    00 02 91 74 01 50 B7 00 00 00 2A 68 01 00 00 01 ...t.P....*h....
+0143    08 36 01 73 65 67 6D 65 6E 74 00 02 30 22 9F 00 .6.segment..0"..
+0153    00 00 36 01 73 65 6C 65 63 74 6F 72 00 02 34 22 ..6.selector..4"
+0163    9F 00 00 00 00 0B 01 44 50 4D 49 5F 44 6F 73 50 .......DPMI_DosP
+0173    74 72 00 3D 01 00 00 0F 68 01 00 00 C8 01 64 70 tr.=....h.....dp
+0183    00 02 91 78 01 52 7A 01 00 00 66 9B 01 00 00    ...x.Rz...f....
+0192    0D 00 00 00                                     DD	offset L$1
+0196    39 00 00 00                                     DD	offset L$2
+019A    00 00 00 00                                     ....
+
+Segment: .debug_pubnames BYTE USE32 0000002C bytes
+0000    28 00 00 00 02 00                               (.....
+0006    00 00 00 00                                     DD	offset L$4
+000A    41 00 00 00 F0 00 00 00 64 70 6D 69 41 6C 6C 6F A.......dpmiAllo
+001A    63 61 74 65 44 4F 53 4D 65 6D 6F 72 79 00 00 00 cateDOSMemory...
+002A    00 00                                           ..
+
+Segment: .debug_aranges BYTE USE32 0000001C bytes
+0000    18 00 00 00 02 00                               ......
+0006    00 00 00 00                                     DD	offset L$4
+000A    04 00                                           ..
+000C    00 00 00 00                                     DD	offset dpmiAllocateDOSMemory_
+0010    41 00 00 00 00 00 00 00 00 00 00 00             A...........
+
+Segment: .debug_line BYTE USE32 00000059 bytes
+0000                          L$5:
+0000    55 00 00 00 02 00 10 00 00 00 01 00 FF 04 0A 00 U...............
+0010    01 01 01 01 00 00 00 00 00 00 00 29 03 44 3A 5C ...........).D:\
+0020    6F 73 63 61 72 5C 64 69 62 75 69 78 6F 73 5C 76 oscar\dibuixos\v
+0030    32 30 31 35 5C 53 52 43 5C 64 70 6D 69 33 32 2E 2015\SRC\dpmi32.
+0040    63 00 00 00 00 00 05 02                         c.......
+0048    00 00 00 00                                     DD	offset dpmiAllocateDOSMemory_
+004C    06 05 01 0D 03 0B 57 03 10 A3 00 01 01          ......W......
+
+Segment: .debug_loc BYTE USE32 00000000 bytes
+
+Segment: .debug_abbrev BYTE USE32 00000093 bytes
+0000                          L$6:
+0000    06 11 01 01 13 03 08 10 06 13 0F 1B 08 25 08 42 .............%.B
+0010    0F 43 06 35 10 82 41 0B 83 41 06 00 00 09 24 00 .C.5..A..A....$.
+0020    03 08 3E 0B 0B 0B 00 00 86 01 2E 01 01 13 32 0B ..>...........2.
+0030    49 13 2C 0F 03 08 3F 0C 20 0B 36 0B 27 0C 4C 0B I.,...?. .6.'.L.
+0040    34 0C 2A 0A 11 01 12 01 33 0B 40 0A 00 00 C8 01 4.*.....3.@.....
+0050    05 00 03 08 02 0A 84 41 0A 49 13 00 00 2A 13 01 .......A.I...*..
+0060    01 13 32 0B 0B 0F 00 00 36 0D 00 32 0B 03 08 38 ..2.....6..2...8
+0070    0A 49 13 00 00 0B 16 00 32 0B 03 08 49 13 00 00 .I......2...I...
+0080    0F 0F 00 49 13 00 00 66 0B 01 01 13 11 01 12 01 ...I...f........
+0090    00 00 00                                        ...
+
+Segment: .debug_macinfo BYTE USE32 00000001 bytes
+0000                          L$7:
+0000    00                                              .
+
+Segment: .debug_str BYTE USE32 00000000 bytes
+
+Segment: .WATCOM_references BYTE USE32 00000004 bytes
+0000    00 00 00 00                                     ....
+0004                          L$8:
+

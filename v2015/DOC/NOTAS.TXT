@@ -1,0 +1,11 @@
+en modo protegido movsd solo se puede usar con selectores
+de 32 bits, no se puede usar para copiar de selectores de 16 bits
+a 32 bits
+mirar de no tocar el ES y si se toca guardar antes su contenido y despues
+restaurarlo
+!!!no tocar el FS ya que es utilizado por el DPMI para las tareas!!!
+mirar que al salir siempre restaure los segmentos antes,poner el segmento al
+final del USES
+continuar adaptando las rutinas al modo protegido
+!!!si se hace un rep movsw o un rep movsd este no decrementa cx en 1 o 2,
+se ha de dividir cx entre 2 si es un rep movsw o entre 4 si es rep movsd!!!
