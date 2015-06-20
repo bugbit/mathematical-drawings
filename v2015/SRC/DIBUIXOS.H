@@ -6,10 +6,10 @@
 #define	SRESY				400
 
 
-#define	DWE_NOERRORS	-1
-#define	DWE_NO386		0
-#define	DWE_NO387   	1
-#define	DWE_EXIT			2
+#define	DWE_NOERRORS		-10000
+#define	DWE_NO386			0
+#define	DWE_NO387   		1
+#define	DWE_EXIT				2
 
 // memoria
 
@@ -26,9 +26,6 @@ typedef struct
 	int w;
 	int h;
 	int maxcol;
-#ifdef __VI_GRAPHICS__
-	int bgi_grmode;
-#endif
 } GRMODE;
 
 
@@ -38,18 +35,17 @@ typedef struct
 	int (*getgrmodes)(GRMODE **gr,int *num,int *alloc);
 	int (*init)();
 	int (*close)();
-#ifdef __VI_GRAPHICS__
-	char *bgi_driver;
-	int bgi_grdriver;
-#endif
 } VIDEO;
 
 extern VIDEO vi_videos[];
+
+extern VIDEO *vi_video;
 
 extern int vi_num;
 
 extern GRMODE *vi_grmode;
 
+extern int vi_binit;
 
 // main
 
@@ -86,13 +82,7 @@ void getmemfree(MEMFREE *mf);
 void vi_setvideo(VIDEO *v);
 void vi_setgrmode(GRMODE *g);
 int vi_getgrmodes(GRMODE **gr,int *num,int *alloc);
-
-#ifdef __VI_GRAPHICS__
-
-int gr_herc_getgrmodes(GRMODE **gr,int *num,int *alloc);
-int gr_vga_getgrmodes(GRMODE **gr,int *num,int *alloc);
-int gr_svga256_getgrmodes(GRMODE **gr,int *num,int *alloc);
-
-#endif
+int vi_init();
+int vi_close();
 
 #endif

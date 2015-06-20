@@ -1,3 +1,6 @@
+#ifdef __VI_GRAPHICS__
+#include <graphics.h>
+#endif
 
 #include "dibuixos.h"
 
@@ -12,8 +15,16 @@ static char *dwe_errors[]=
 
 char *dwe_geterrorstr()
 {
-	if (dw_errorcode==DWE_NOERRORS || dw_errorcode<0 || dw_errorcode>sizeof(dwe_errors)/sizeof(*dwe_errors))
+	if (dw_errorcode==DWE_NOERRORS)
 		return "";
+	if (dw_errorcode<0 || dw_errorcode>sizeof(dwe_errors)/sizeof(*dwe_errors))
+	{
+		#ifdef __VI_GRAPHICS__
+			return grapherrormsg(dw_errorcode);
+		#endif
+
+		return "";
+	}
 
 	return dwe_errors[dw_errorcode];
 }

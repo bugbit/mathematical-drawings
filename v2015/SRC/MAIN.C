@@ -4,10 +4,17 @@
 #include "dibuixos.h"
 
 static int init();
+static int done();
 
 int dw_main()
 {
-	if (init())
+	int ret=init();
+
+	if (!ret)
+	{
+		ret=done();
+	}
+	if (ret)
 	{
 		dwe_showError();
 	}
@@ -17,30 +24,42 @@ int dw_main()
 
 static int init()
 {
-	int pRet=checkSystem();
+	int ret=checkSystem();
 	VIDEO *v;
 	GRMODE *gp;
 	int num,k,alloc;
 	GRMODE *g;
 
 
-	if (!pRet)
-		if (!(pRet=choosevideo(vi_videos,vi_num,&v)))
+	if (!ret)
+		if (!(ret=choosevideo(vi_videos,vi_num,&v)))
 		{
 			vi_setvideo(v);
 			vi_getgrmodes(&g,&num,&alloc);
-			if (!(pRet=choosegrmode(g,num,&gp)))
+			if (!(ret=choosegrmode(g,num,&gp)))
 			{
 				vi_setgrmode(gp);
+				if (!(ret=vi_init()))
+				{
+				}
 			}
 			if (alloc)
 				free(g);
 		}
 
 
-	return pRet;
+	return ret;
 }
 
+static int done()
+{
+	int ret=0;
+
+	if (vi_binit)
+		ret=vi_close();
+
+	return ret;
+}
 
 /*
 static MEMFREE mf_inicio;

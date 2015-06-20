@@ -8,15 +8,13 @@
 
 VIDEO vi_videos[]=
 {
-#ifdef __VI_GRAPHICS__
-	{ "bgi hercules", gr_herc_getgrmodes,NULL,NULL,NULL,HERCMONO },
-	{ "bgi VGA", gr_vga_getgrmodes,NULL,NULL,NULL,VGA },
-	{ "bgi SVGA 256", gr_vga_getgrmodes,NULL,NULL,"SVGA256",DETECT }
-#endif
+	{ "null" }
 },
 *vi_video;
 
 GRMODE *vi_grmode;
+
+int vi_binit=0;
 
 int vi_num=sizeof(vi_videos)/sizeof(*vi_videos);
 
@@ -33,4 +31,26 @@ void vi_setgrmode(GRMODE *g)
 int vi_getgrmodes(GRMODE **gr,int *num,int *alloc)
 {
 	return vi_video->getgrmodes(gr,num,alloc);
+}
+
+int vi_init()
+{
+	int ret=vi_video->init();
+
+	vi_binit=ret;
+
+	return ret;
+}
+
+int vi_close()
+{
+	int ret=0;
+
+	if (vi_binit)
+	{
+		ret=vi_video->close();
+		vi_binit=0;
+	}
+
+   return ret;
 }
