@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <conio.h>
-#include <alloc.h>
+#include <stdlib.h>
 #include "dibuixos.h"
 
 static int init();
@@ -24,13 +24,13 @@ int dw_main()
 
 static int init()
 {
-	int ret=checkSystem();
+	int ret=allegro_init();
 	VIDEO *v;
 	GRMODE *gp;
 	int num,k,alloc;
 	GRMODE *g;
 
-
+   return 0;
 	if (!ret)
 		if (!(ret=choosevideo(vi_videos,vi_num,&v)))
 		{

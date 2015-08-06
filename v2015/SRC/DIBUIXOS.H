@@ -11,6 +11,12 @@
 #define	DWE_NO387   		1
 #define	DWE_EXIT				2
 
+#ifdef __A4__
+     #include <allegro.h>
+#else
+     #include "a4_aux.h"
+#endif
+
 // memoria
 
 typedef struct

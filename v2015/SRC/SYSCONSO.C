@@ -4,11 +4,12 @@
 
 #include "dibuixos.h"
 
-int _cdecl main(int argc,char *argv[])
+int main(int argc,char *argv[])
 {
 	return dw_main();
 }
 
+/*
 int choosevideo(VIDEO *videos,int num,VIDEO **vp)
 {
 	int i=1,k;
@@ -51,6 +52,7 @@ int choosegrmode(GRMODE *g,int num,GRMODE **gp)
 
 	return 0;
 }
+*/
 
 void showError(char *msg)
 {
