@@ -1,0 +1,12 @@
+C:\proyectos\oscar\dibuixos\v2015\SRC\vs\ARM\Release\Dibuixos.apk.recipe
+C:\proyectos\oscar\dibuixos\v2015\SRC\vs\ARM\Release\Dibuixos.apk.recipe.merged
+C:\proyectos\oscar\dibuixos\v2015\SRC\vs\ARM\Release\Package\libs\armeabi-v7a\libDibuixos.so
+C:\proyectos\oscar\dibuixos\v2015\SRC\vs\ARM\Release\Package\libs\armeabi-v7a\gdbserver
+C:\proyectos\oscar\dibuixos\v2015\SRC\vs\ARM\Release\Package\libs\armeabi-v7a\libgnustl_static.a
+C:\proyectos\oscar\dibuixos\v2015\SRC\vs\ARM\Release\Package\res\values\strings.xml
+C:\proyectos\oscar\dibuixos\v2015\SRC\vs\ARM\Release\Package\AndroidManifest.xml
+C:\proyectos\oscar\dibuixos\v2015\SRC\vs\ARM\Release\Package\project.properties
+C:\proyectos\oscar\dibuixos\v2015\SRC\vs\ARM\Release\Package\build.xml
+C:\proyectos\oscar\dibuixos\v2015\SRC\vs\ARM\Release\Dibuixos.apk
+C:\proyectos\oscar\dibuixos\v2015\SRC\vs\ARM\Release\Dibuixos.lastsuccessfuldeploy
+C:\proyectos\oscar\dibuixos\v2015\SRC\platform\Android\Dibuixos\Dibuixos.Packaging\ARM\Release\FileStringReplace.incremental
