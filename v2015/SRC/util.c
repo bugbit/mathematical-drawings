@@ -1,8 +1,4 @@
-//#include "StdAfx.h"
-#include <string.h>
-#include <errno.h>
-#include <stdio.h>
-#include <stdarg.h>
+#include "pch.h"
 
 #include "DIBUIXOS.H"
 
@@ -26,7 +22,6 @@ int dwe_seterror(const char *msg,...)
     return -1;
 }
 
-/*
 int dwe_seterrno()
 {
     if (errno!=0)
@@ -50,4 +45,3 @@ int dwe_msgerrf(int _errno,const char *msg,...)
     
     return -1;
 }
-*/

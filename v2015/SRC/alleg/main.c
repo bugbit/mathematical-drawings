@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "DIBUIXOS.H"
+
 /*
 int dwe_allegroerr(int _errno)
 {
@@ -68,22 +70,81 @@ static int init(DIBUIXOS **dib)
     return 0;
 }
 */
-    
-int main(int argc, char **argv)
+
+static dwe_type dwa_initsystem(DIBUIXOS *dib)
 {
-  /*
-    DIBUIXOS *dib=NULL;
-    int ret=0;
+    /* set up the keyboard handler */
     
-    if (!(ret=init(&dib)))
+    install_keyboard(); 
+    if (!dib->grmodeauto)
     {
-        
+        if (set_gfx_mode(GFX_AUTODETECT, dib->width_m, dib->height_m, 0, 0) != 0) 
+        {
+            if (set_gfx_mode(GFX_SAFE, dib->width_m, dib->height_m, 0, 0) != 0) 
+            {
+                return dwe_seterror("Unable to graphic mode %dx%d\n%s\n",dib->width_m,dib->height_m,allegro_error);
+            }
+        }
+        else
+        {
+            if (set_gfx_mode(GFX_AUTODETECT, 800, 600, 0, 0) != 0) 
+            {
+                if (set_gfx_mode(GFX_AUTODETECT, 640, 500, 0, 0) != 0) 
+                {
+                    if (set_gfx_mode(GFX_AUTODETECT, 320, 200, 0, 0) != 0) 
+                    {
+                        if (set_gfx_mode(GFX_SAFE, 800, 600, 0, 0) != 0) 
+                        {
+                            if (set_gfx_mode(GFX_SAFE, 640, 500, 0, 0) != 0) 
+                            {
+                                if (set_gfx_mode(GFX_SAFE, 320, 200, 0, 0) != 0) 
+                                {
+                                    return dwe_seterror("Unable to set any graphic mode\n%s\n");
+                                }
+                            }
+                        }                        
+                    }
+                }
+            }
+        }
+    }
+}
+
+static DIBUIXOS * init()
+{
+    DIBUIXOS *dib=dib_alloc();
+    
+    if (dib!=NULL)
+    {
+        dib->initsystem=dwa_initsystem;        
     }
     
-    dib_free(dib);
-   
+    return dib;
+}
+    
+int main(int argc, char **argv)
+{  
+    DIBUIXOS *dib;
+    int ret=EXIT_FAILURE;
+    
+    if (allegro_init() != 0)
+    {
+        printf("Not init library allegro: %s",strerror(errno));
+      
+        return ret;
+    }
+    if ((dib=init())!=NULL)
+    {
+        if (dwe_isOk(dib_main(dib)))
+            ret=EXIT_SUCCESS;
+        dib_free(dib);
+    }
+    
+    if (ret!=EXIT_SUCCESS)
+    {
+        set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+        allegro_message(dwe_msgerror);
+    }
 
-    return (!ret) ? EXIT_SUCCESS : EXIT_FAILURE;
-    */
-  return EXIT_SUCCESS;
+    return ret;
 }

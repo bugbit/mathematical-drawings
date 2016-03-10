@@ -2,15 +2,20 @@
 
 #define 	__DIBUIXOS_H__
 
-#define	DWE_NOERRORS		-10000
-#define	DWE_ERRSDL			-20000
-#define	DWE_NOOPENGL		0
+#define     DWE_NOERRORS    0
+#define     DWE_ERRORS      -1
 
-typedef struct
+#define	dwe_isOk(r) r==DWE_NOERRORS
+#define	dwe_isNoOk(r) r!=DWE_NOERRORS
+
+typedef int dwe_type;
+
+typedef struct _DIBUIXOS
 {
 	void *app;
-
-} APP;
+    int width_m,height_m,grmodeauto;
+    dwe_type (*initsystem)(struct _DIBUIXOS *dib);
+} DIBUIXOS;
 
 typedef struct
 {
@@ -36,20 +41,20 @@ extern int vi_fullscreen;
 //extern SDL_Renderer *vi_displayRenderer;
 extern void (*vi_render)();
 
+dwe_type dwe_seterror(const char *fmt,...);
+DIBUIXOS * dib_alloc();
+void dib_free(DIBUIXOS *dib);
+dwe_type dib_main(DIBUIXOS *dib);
+
 int dw_main();
 
 void showError(char *msg);
 
-extern int dw_errorcode;
+extern char dwe_msgerror[255];
 
 #define 	dwe_cleanerrors() dw_errorcode=DWE_NOERRORS
-#define	dwe_isOk() dw_errorcode==DWE_NOERRORS
+//#define	dwe_isOk() dw_errorcode==DWE_NOERRORS
 
-void dwe_showError();
-
-int dwe_seterror(int error);
-int dwe_setsdlerror();
-char *dwe_geterrorstr();
 void getmemfree(MEMFREE *mf);
 
 void vi_rendernull();

@@ -2,17 +2,25 @@
 
 #include "DIBUIXOS.H"
 
-int dib_alloc(DIBUIXOS **dib)
+static dwe_type no_initsystem(DIBUIXOS *dib)
+{
+    return dwe_seterror("DIBUIXOS::init_gr not implement");
+}
+
+DIBUIXOS * dib_alloc()
 {
     DIBUIXOS *dibp;
 
-    if ((dibp=*dib=malloc(sizeof(DIBUIXOS)))==NULL)
-        return dwe_seterror(strerror(errno));
+    if ((dibp=malloc(sizeof(DIBUIXOS)))==NULL)
+        dwe_seterror(strerror(errno));
+    else
+    {
+        memset(dibp,0,sizeof(DIBUIXOS));
+        dibp->grmodeauto=1;    
+        dibp->initsystem=no_initsystem;
+    }
     
-    memset(dibp,0,sizeof(DIBUIXOS));
-    dibp->grmodeauto=1;
-    
-    return 0;
+    return dibp;
 }
 
 void dib_free(DIBUIXOS *dib)
@@ -21,4 +29,12 @@ void dib_free(DIBUIXOS *dib)
     {
         free(dib);
     }
+}
+
+dwe_type dib_main(DIBUIXOS *dib)
+{
+    if (dwe_isNoOk(dib->initsystem(dib)))
+        return DWE_ERRORS;
+        
+    return DWE_NOERRORS;
 }
