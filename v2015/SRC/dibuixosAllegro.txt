@@ -1,0 +1,1 @@
+./Debug/alleg_main.c.o ./Debug/dibuixos.c.o ./Debug/util.c.o
