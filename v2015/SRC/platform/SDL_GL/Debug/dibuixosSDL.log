@@ -1,4 +1,0 @@
-﻿  main.c
-c:\proyectos\oscar\dibuixos\v2015\src\platform\sdl\main.c(2): warning C4627: '#include <dibuixos.h>': se omite al buscar el uso del encabezado precompilado
-          Agregar directiva a 'StdAfx.h' o volver a generar el encabezado precompilado
-c:\proyectos\oscar\dibuixos\v2015\src\platform\sdl\main.c(8): fatal error C1010: final de archivo inesperado al buscar la directiva de encabezado precompilado. Compruebe si olvidó agregar '#include "StdAfx.h"' al código fuente?
