@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=oscar
-Date                   :=01/08/16
+Date                   :=02/08/16
 CodeLitePath           :="/home/oscar/.codelite"
 LinkerName             :=gcc
 SharedObjectLinkerName :=gcc -shared -fPIC
@@ -60,7 +60,7 @@ AS       := as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/src_Presentacion.c$(ObjectSuffix) 
 
 
 
@@ -77,6 +77,11 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 	@echo "" > $(IntermediateDirectory)/.d
 	@echo $(Objects0)  > $(ObjectsFileList)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
+
+PostBuild:
+	@echo Executing Post Build commands ...
+	cp -R ./data ./Debug/data
+	@echo Done
 
 MakeIntermediateDirs:
 	@test -d ./Debug || $(MakeDirCommand) ./Debug
@@ -103,6 +108,22 @@ $(IntermediateDirectory)/main.c$(DependSuffix): main.c
 
 $(IntermediateDirectory)/main.c$(PreprocessSuffix): main.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.c$(PreprocessSuffix) "main.c"
+
+$(IntermediateDirectory)/dibuixos.c$(ObjectSuffix): dibuixos.c $(IntermediateDirectory)/dibuixos.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/home/oscar/Proyectos/oscar/dibuixos/v2015/SRC/dibuixos.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/dibuixos.c$(DependSuffix): dibuixos.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) -MF$(IntermediateDirectory)/dibuixos.c$(DependSuffix) -MM "dibuixos.c"
+
+$(IntermediateDirectory)/dibuixos.c$(PreprocessSuffix): dibuixos.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/dibuixos.c$(PreprocessSuffix) "dibuixos.c"
+
+$(IntermediateDirectory)/src_Presentacion.c$(ObjectSuffix): src/Presentacion.c $(IntermediateDirectory)/src_Presentacion.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/home/oscar/Proyectos/oscar/dibuixos/v2015/SRC/src/Presentacion.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Presentacion.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_Presentacion.c$(DependSuffix): src/Presentacion.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_Presentacion.c$(ObjectSuffix) -MF$(IntermediateDirectory)/src_Presentacion.c$(DependSuffix) -MM "src/Presentacion.c"
+
+$(IntermediateDirectory)/src_Presentacion.c$(PreprocessSuffix): src/Presentacion.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_Presentacion.c$(PreprocessSuffix) "src/Presentacion.c"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

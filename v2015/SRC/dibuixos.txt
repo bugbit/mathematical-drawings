@@ -1,1 +1,1 @@
-./Debug/main.c.o
+./Debug/main.c.o ./Debug/dibuixos.c.o ./Debug/src_Presentacion.c.o
