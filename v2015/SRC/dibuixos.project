@@ -33,7 +33,7 @@
     <File Name="pch.h"/>
     <File Name="dibuixos.h"/>
     <File Name="dibuixos.c"/>
-    <File Name="src/Presentacion.c"/>
+    <File Name="presentacio.c"/>
   </VirtualDirectory>
   <VirtualDirectory Name="data">
     <File Name="data/prueba.txt"/>

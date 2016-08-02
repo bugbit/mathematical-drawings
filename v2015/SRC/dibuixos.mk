@@ -60,7 +60,7 @@ AS       := as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/src_Presentacion.c$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/presentacio.c$(ObjectSuffix) 
 
 
 
@@ -117,13 +117,13 @@ $(IntermediateDirectory)/dibuixos.c$(DependSuffix): dibuixos.c
 $(IntermediateDirectory)/dibuixos.c$(PreprocessSuffix): dibuixos.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/dibuixos.c$(PreprocessSuffix) "dibuixos.c"
 
-$(IntermediateDirectory)/src_Presentacion.c$(ObjectSuffix): src/Presentacion.c $(IntermediateDirectory)/src_Presentacion.c$(DependSuffix)
-	$(CC) $(SourceSwitch) "/home/oscar/Proyectos/oscar/dibuixos/v2015/SRC/src/Presentacion.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Presentacion.c$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/src_Presentacion.c$(DependSuffix): src/Presentacion.c
-	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_Presentacion.c$(ObjectSuffix) -MF$(IntermediateDirectory)/src_Presentacion.c$(DependSuffix) -MM "src/Presentacion.c"
+$(IntermediateDirectory)/presentacio.c$(ObjectSuffix): presentacio.c $(IntermediateDirectory)/presentacio.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/home/oscar/Proyectos/oscar/dibuixos/v2015/SRC/presentacio.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/presentacio.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/presentacio.c$(DependSuffix): presentacio.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/presentacio.c$(ObjectSuffix) -MF$(IntermediateDirectory)/presentacio.c$(DependSuffix) -MM "presentacio.c"
 
-$(IntermediateDirectory)/src_Presentacion.c$(PreprocessSuffix): src/Presentacion.c
-	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_Presentacion.c$(PreprocessSuffix) "src/Presentacion.c"
+$(IntermediateDirectory)/presentacio.c$(PreprocessSuffix): presentacio.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/presentacio.c$(PreprocessSuffix) "presentacio.c"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

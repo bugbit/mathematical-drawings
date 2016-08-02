@@ -6,10 +6,6 @@
 
 typedef struct
 {
-    struct
-    {
-        unsigned UseKeyEsc:1;
-    } flags;
     const char *name;
     const char *menustr;
     int (*init)();
