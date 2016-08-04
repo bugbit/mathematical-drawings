@@ -1,9 +1,12 @@
 #include "pch.h"
 
-#include <SDL.h>
+#include <stdio.h>
+#include <error.h>
+#include <GL/glut.h>
 
 #include "dibuixos.h"
 
+char dib_error[128];
 int width=800,height=600,bpp=-1,fullscreen=0,loop=0,demo=0;
 
 const DIBUIXO *dibuixos[]=
@@ -14,11 +17,6 @@ const DIBUIXO *dibuixos[]=
 DIBUIXO *dibuixo_arg,*dibuixo_act;
 
 size_t dibuixos_count=sizeof(dibuixos)/sizeof(*dibuixos);
-
-SDL_Window *window;
-SDL_GLContext *glcontext;
-void (*update)(SDL_Event *e);
-void (*render)();
 
 void showusage(const char *msgerror)
 {
@@ -42,7 +40,10 @@ void showusage(const char *msgerror)
             "   <dibuixo> : one of dibuixo (see README for more help)"
         );
     
-    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,"dibuixos",msg,NULL);
+    if (msgerror==NULL)
+        printf("%s", msg);
+    else
+        perror(msg);
 }
 
 static int dibuixo_cmp(const void *arg,const void *dib)
@@ -68,21 +69,32 @@ int readargs(int argc, char **argv,int *exit)
         if (!strncmp(arg,"-r",2))
         {
             if (sscanf(arg,"%dx%dx%d",&width,&height,&bpp)<2)
-                return SDL_SetError("%s option error",arg);
+            {
+                sprintf(dib_error,"%s option error",arg);
+                
+                return -1;
+            }
         }
         else if (!strcmp(arg,"-r"))
             fullscreen=1;
         else if (!strcmp(arg,"-l"))
             loop=1;
         else if (!strncmp(arg,"-",1))
-            return SDL_SetError("%s option error",arg);
+        {
+            sprintf(dib_error,"%s option error",arg);
+            
+            return -1;
+        }
         else if (!strcmp(arg,"demo"))
             demo=1;
         else
         {
             if (!(dib=lfind(arg,dibuixos,&dibuixos_count,sizeof(DIBUIXO),dibuixo_cmp)))
-                return SDL_SetError("%s dibuixo not found",arg);
+            {
+                sprintf(dib_error,"%s dibuixo not found",arg);
                 
+                return -1;
+            }
             dibuixo_arg=*dib;
         }
     }
@@ -99,11 +111,11 @@ int setdibuixo(DIBUIXO *dib)
     
     dibuixo_act=dib;
     if ((ret=dib->init()) || (ret=dib->initgl()))
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"dibuixos",SDL_GetError(),window);
+        perror(dib_error);
     else if (dib)
     {
-        update=dib->update;
-        render=dib->render;
+        glutDisplayFunc(dib->render);
+        glutIdleFunc(dib->render);
     }
     
     return ret;

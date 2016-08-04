@@ -34,6 +34,8 @@
     <File Name="dibuixos.h"/>
     <File Name="dibuixos.c"/>
     <File Name="presentacio.c"/>
+    <File Name="timer.c"/>
+    <File Name="glutil.c"/>
   </VirtualDirectory>
   <VirtualDirectory Name="data">
     <File Name="data/prueba.txt"/>
@@ -49,16 +51,16 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="gnu gcc" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O0;-Wall;$(shell sdl2-config --cflags)" Assembler="" Required="yes" PreCompiledHeader="/home/oscar/Proyectos/oscar/dibuixos/v2015/SRC/pch.h" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O0;-Wall" Assembler="" Required="yes" PreCompiledHeader="/home/oscar/Proyectos/oscar/dibuixos/v2015/SRC/pch.h" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
       </Compiler>
-      <Linker Options="$(shell sdl2-config --libs)" Required="yes">
+      <Linker Options="" Required="yes">
         <Library Value="GL"/>
         <Library Value="GLU"/>
         <Library Value="glut"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="presentacio" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="demo" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>

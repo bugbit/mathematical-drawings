@@ -2,7 +2,7 @@
 
 #define  __DIBUIXOS_H__
 
-#include <SDL.h>
+#include <GL/gl.h>
 
 typedef struct
 {
@@ -10,23 +10,24 @@ typedef struct
     const char *menustr;
     int (*init)();
     int (*initgl)();
-    void (*update)(SDL_Event *e);
     void (*render)();
     void (*finalize)();
 } DIBUIXO;
 
+extern char dib_error[128];
 extern int width,height,bpp,fullscreen,loop,demo;
-
-extern SDL_Window *window;
-extern SDL_GLContext *glcontext;
-extern void (*update)(SDL_Event *e);
-extern void (*render)();
+extern GLdouble aspectratio;
 
 extern DIBUIXO *dibuixo_arg,*dibuixo_act;
 extern const DIBUIXO dib_presentacio;
 
 int readargs(int argc, char **argv,int *exit);
 void showusage(const char *msgerror);
+void KeyboardFuncEscape(unsigned char key,int x, int y);
 int setdibuixo(DIBUIXO *dib);
+
+GLdouble glScalefact();
+void glOrthoWindow();
+GLdouble glStrokeHeight(void *font);
 
 #endif
