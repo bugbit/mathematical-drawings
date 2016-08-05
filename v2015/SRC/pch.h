@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <search.h>
-#include <error.h>
+#include <errno.h>
 #include <math.h>
+#include <stdarg.h>
 
 #include <GL/glu.h>
 #include <GL/glut.h>

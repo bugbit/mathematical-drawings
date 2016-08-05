@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #if defined(__unix__) || defined(unix)
 #include <time.h>
 #include <sys/time.h>
@@ -5,6 +7,7 @@
 #include <windows.h>
 #endif	/* __unix__ */
 
+#include "dibuixos.h"
 
 unsigned long get_msec(void) {
 #if defined(__unix__) || defined(unix)
@@ -20,4 +23,22 @@ unsigned long get_msec(void) {
 #else
 	return GetTickCount();
 #endif	/* __unix__ */
+}
+
+void init_timers(TIMER *timer)
+{
+	timer->ticksf=timer->ticks=get_msec();
+	timer->elapsetime=0;
+}
+
+unsigned int elapse_timers(TIMER *timer,int reset)
+{
+	unsigned int ticks=get_msec();
+	
+	timer->elapsetime=ticks-timer->ticksf;
+	timer->ticks=ticks;
+	if (reset)
+		timer->ticksf=ticks;
+	
+	return timer->elapsetime;
 }

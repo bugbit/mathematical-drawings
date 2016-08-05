@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <error.h>
+#include <stdarg.h>
+
 #include <GL/glut.h>
 
 #include "dibuixos.h"
@@ -13,6 +15,8 @@ const DIBUIXO *dibuixos[]=
 {
     &dib_presentacio
 };
+
+TIMER timer_dib;
 
 DIBUIXO *dibuixo_arg,*dibuixo_act;
 
@@ -51,6 +55,17 @@ static int dibuixo_cmp(const void *arg,const void *dib)
     return strcmp((const char *) arg,((*(DIBUIXO **)dib))->name);
 }
 
+int seterror(char *fmt,...)
+{
+	va_list args;
+	va_start (args, fmt);
+  
+	vsprintf (dib_error,fmt, args);
+	va_end (args);
+	
+	return -1;
+}
+
 int readargs(int argc, char **argv,int *exit)
 {
     char *arg;
@@ -70,9 +85,7 @@ int readargs(int argc, char **argv,int *exit)
         {
             if (sscanf(arg,"%dx%dx%d",&width,&height,&bpp)<2)
             {
-                sprintf(dib_error,"%s option error",arg);
-                
-                return -1;
+                return seterror("%s option error",arg);
             }
         }
         else if (!strcmp(arg,"-r"))
@@ -81,9 +94,7 @@ int readargs(int argc, char **argv,int *exit)
             loop=1;
         else if (!strncmp(arg,"-",1))
         {
-            sprintf(dib_error,"%s option error",arg);
-            
-            return -1;
+            return seterror("%s option error",arg);
         }
         else if (!strcmp(arg,"demo"))
             demo=1;
@@ -91,9 +102,7 @@ int readargs(int argc, char **argv,int *exit)
         {
             if (!(dib=lfind(arg,dibuixos,&dibuixos_count,sizeof(DIBUIXO),dibuixo_cmp)))
             {
-                sprintf(dib_error,"%s dibuixo not found",arg);
-                
-                return -1;
+                return seterror("%s dibuixo not found",arg);
             }
             dibuixo_arg=*dib;
         }
@@ -114,6 +123,7 @@ int setdibuixo(DIBUIXO *dib)
         perror(dib_error);
     else if (dib)
     {
+		init_timers(&timer_dib);
         glutDisplayFunc(dib->render);
         glutIdleFunc(dib->render);
     }
