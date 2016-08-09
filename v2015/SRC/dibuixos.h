@@ -28,6 +28,7 @@ typedef struct
 } TIMER;
 
 extern char dib_error[128];
+extern const char autor[],texto_salir[];
 extern int width,height,bpp,fullscreen,loop,demo;
 extern GLdouble aspectratio;
 
