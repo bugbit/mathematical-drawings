@@ -19,14 +19,15 @@ enum ESTATES { MOVE_CARS,ESPERE,FIN };
 typedef struct CARACTER  {
   GLdouble rad0,rad,arad,x,y,div,scale,anc,anc0,aanc;
   GLdouble ang0,ang,aang;
-  int car,modo;
-  int counter;
-  TIMER counter_titulo;
+  int car,steps,modo;
   } CAR;
 
 static CAR *cars;
 static GLdouble cx,cy;
 static enum ESTATES state=MOVE_CARS;
+static int bcounter_titulo=0;
+static TIMER counter_titulo;
+static CAR *car_titulo=NULL;
 
 static int presentacio_init();
 static int presentacio_initgl();
@@ -35,7 +36,8 @@ static void presentacio_finalize();
 
 const DIBUIXO dib_presentacio=
 {
-    "presentacio",NULL,
+    "presentacio",
+	"presentacio",
     presentacio_init,
     presentacio_initgl,
     presentacio_render,
@@ -45,7 +47,7 @@ const DIBUIXO dib_presentacio=
 //const static Uint32 presentacio_timer=3*1000;
 
 const static char *Titulo[]={
-  "DIBUIXOS",
+  "DIBUIXOS", 
   "MATEMATICS",
   NULL
   };
@@ -80,6 +82,7 @@ static int titulo_initgl(CAR *cars)
 	char **str=(char **)Titulo;
 	char *str2;
 	
+	car_titulo=cars;
 	rad=min(width,height)/2.0d;
 	cx=width/2.0d;
 	cy=height/2.0d;
@@ -88,7 +91,7 @@ static int titulo_initgl(CAR *cars)
 	anc=120.0d*rad/348.0d;
 	for (;(str2=*str);str++,rad -= arad,anc /= 2.0d)
 	{
-		ncars=strlen(*str);
+		ncars=strlen(str2);
 		divx=glexStrokeMinWidth(GLUT_STROKE_MONO_ROMAN,str2);
 		divy=glexStrokeMinHeight(GLUT_STROKE_MONO_ROMAN,str2);
 		div=min(divx,divy);
@@ -105,21 +108,22 @@ static int titulo_initgl(CAR *cars)
 		{
 			cars->car=*str2;
 			cars->div=div;
-			cars->rad0=rad;
-			cars->rad=0;
-			cars->arad=rad/40.0d;
 			cars->ang0=beta;
 			cars->ang=M_PI*2.0d;
-			cars->modo=O_OCULTO;
 			cars->aang=alfa;
+			cars->steps=(cars->ang-cars->ang0)/cars->aang;
+			cars->rad0=rad;
+			cars->rad=0;	
+			cars->arad=rad/(GLdouble)cars->steps;
+			cars->modo=O_OCULTO;
 			cars->anc0=anc;
 			cars->anc=1;
-			cars->aanc=anc/40.0d;
+			cars->aanc=anc/((GLdouble)cars->steps+1.0d);
 			calc_car_xy(cars);
-			cars->counter=0;
 		}
 	}
 	cars->modo=O_FIN;
+	bcounter_titulo=0;
 	
 	return 0;
 }
@@ -134,61 +138,75 @@ static int presentacio_initgl()
     return ret;
 }
 
-static void titulo_render(CAR *cars,unsigned int elapse)
+static void titulo_update(CAR *carsptr)
 {
-	int move_cars=state==MOVE_CARS;
-	int done=1;
-	GLdouble resul;
+	CAR *cars=car_titulo;
+	int modo;
 	
+	if (cars->modo==O_FIN)
+	{
+		for (cars=carsptr;(modo=cars->modo)==O_NOMOV;cars++)
+			if (modo==O_FIN)
+			{
+				state=ESPERE;
+				
+				return;
+			}
+		car_titulo=cars;
+	}
+	if (!bcounter_titulo || count_timers(&counter_titulo,3))
+	{
+		if (cars->modo==O_MOV)
+		{
+			cars->rad=min(cars->rad+cars->arad,cars->rad0);
+			cars->ang -= cars->aang;
+			while (cars->ang<0) cars->ang += 2*M_PI;
+			if (cars->steps--<=0)
+			{
+				cars->rad=cars->rad0;
+				cars->anc=cars->anc0;
+				cars->ang=cars->ang0;
+				cars->modo=O_NOMOV;
+			}			
+			car_titulo++;
+		}
+		else
+		{
+			cars->modo=O_MOV;
+			car_titulo=carsptr;
+		}
+		cars->anc=min(cars->anc+cars->aanc,cars->anc0);
+		calc_car_xy(cars);
+		bcounter_titulo=1;
+		init_timers(&counter_titulo);
+	}
+}
+
+static void titulo_render(CAR *cars)
+{
 	for (;cars->modo!=O_FIN;cars++)
 	{
-		done &= cars->modo==O_NOMOV;
-		if (move_cars && cars->modo!=O_NOMOV)
+		if (cars->modo!=O_OCULTO)
 		{
-			if (!cars->counter || count_timers(&cars->counter_titulo,170))
-			{				
-				if (cars->modo==O_MOV)
-				{
-					cars->rad=min(cars->rad+cars->arad,cars->rad0);
-					cars->ang -= cars->aang;
-					while (cars->ang<0) cars->ang += 2*M_PI;
-					if (cars->rad==cars->rad0 && ((resul=fabs(cars->ang-cars->ang0))==0
-			  || resul<=cars->aang))
-					{
-						cars->anc=cars->anc0;
-						cars->ang=cars->ang0;
-						cars->modo=O_NOMOV;
-					}
-				}
-				else
-				{
-					cars->modo=O_MOV;
-					move_cars=0;
-				}
-				cars->anc=min(cars->anc+cars->aanc,cars->anc0);
-				calc_car_xy(cars);
-				cars->counter=1;
-				init_timers(&cars->counter_titulo);
-			}	
+			glPushMatrix();
+			glTranslated(cars->x,cars->y,0);
+			glScaled(cars->scale,cars->scale,0);
+			glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, cars->car);
+			glPopMatrix();			
 		}
-		glPushMatrix();
-		glTranslated(cars->x,cars->y,0);
-		glScaled(cars->scale,cars->scale,0);
-		glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, cars->car);
-		glPopMatrix();
 	}
-	if (state==MOVE_CARS && done)
-		state=ESPERE;
 }
 
 static void presentacio_render()
 {
-	unsigned int elapse=elapse_timers(&timer_dib,1);
+	//unsigned int elapse=elapse_timers(&timer_dib,1);
 	
+	if (state==MOVE_CARS)
+		titulo_update(cars);
 	glClearColor( 0.f, 0.f, 0.f, 1.f );
     glClear( GL_COLOR_BUFFER_BIT );	
     glColor3d( 1, 1, 1 );
-	titulo_render(cars,elapse);
+	titulo_render(cars);
 	glutSwapBuffers();
 	/*GLdouble w=glutStrokeWidth(GLUT_STROKE_MONO_ROMAN, 'H');
 	GLdouble h=glexStrokeHeight(GLUT_STROKE_MONO_ROMAN);
