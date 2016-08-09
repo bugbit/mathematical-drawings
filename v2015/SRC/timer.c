@@ -42,3 +42,18 @@ unsigned int elapse_timers(TIMER *timer,int reset)
 	
 	return timer->elapsetime;
 }
+
+int count_timers(TIMER *timer,unsigned int counter) 
+{
+	unsigned int elapse=elapse_timers(timer,0);
+	unsigned int rest;
+	
+	if (elapse<counter)
+		return 0;
+		
+	rest=elapse % counter;
+	timer->elapsetime=rest;
+	timer->ticksf=timer->ticks-rest;
+		
+	return 1;
+}

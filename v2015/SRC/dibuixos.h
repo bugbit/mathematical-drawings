@@ -4,6 +4,7 @@
 
 #include <GL/gl.h>
 
+#define FREE(p) if (p) {free(p); p=NULL; }
 #define min(a,b)((a<b) ? a : b)
 
 #define glexStrokeStrHeight(f,str) glexStrokeHeight(f)
@@ -37,6 +38,7 @@ extern const DIBUIXO dib_presentacio;
 unsigned long get_msec(void);
 void init_timers(TIMER *timer);
 unsigned int elapse_timers(TIMER *timer,int reset);
+int count_timers(TIMER *timer,unsigned int counter);
 
 int seterror(char *fmt,...);
 int readargs(int argc, char **argv,int *exit);

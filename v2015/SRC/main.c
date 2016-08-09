@@ -31,6 +31,11 @@ static void changeSize(GLsizei w,GLsizei h)
 	aspectratio=(GLfloat)w/(GLfloat)h;
 }
 
+static void finish()
+{
+	setdibuixo(NULL);
+}
+
 void KeyboardFuncEscape(unsigned char key,int x, int y)
 {
 	if (key==27)
@@ -61,10 +66,10 @@ int main(int argc, char **argv)
     
     if (!setdibuixo((dibuixo_arg!=NULL) ? dibuixo_arg : (DIBUIXO *) &dib_presentacio ))
     {
-		if (demo)
+		atexit(finish);
+		if (demo || dibuixo_arg!=NULL)
 			glutKeyboardFunc(KeyboardFuncEscape);
         glutMainLoop();
-        setdibuixo(NULL);
     }
     
 	return EXIT_SUCCESS;

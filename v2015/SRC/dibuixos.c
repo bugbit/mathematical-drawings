@@ -119,14 +119,17 @@ int setdibuixo(DIBUIXO *dib)
         dibuixo_act->finalize();
     
     dibuixo_act=dib;
-    if ((ret=dib->init()) || (ret=dib->initgl()))
-        perror(dib_error);
-    else if (dib)
-    {
-		init_timers(&timer_dib);
-        glutDisplayFunc(dib->render);
-        glutIdleFunc(dib->render);
-    }
+	if (dib)
+	{
+		if ((ret=dib->init()) || (ret=dib->initgl()))
+			perror(dib_error);
+		else
+		{
+			init_timers(&timer_dib);
+			glutDisplayFunc(dib->render);
+			glutIdleFunc(dib->render);
+		}		
+	}
     
     return ret;
 }
