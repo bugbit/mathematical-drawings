@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <error.h>
 #include <stdarg.h>
+#include <stdlib.h>
 
 #include <GL/glut.h>
 
@@ -10,7 +11,7 @@
 
 const char 
 	autor[]="Programa realitzat per Oscar Hernandez Baño en gcc",
-	texto_salir[]="Prem una tecla per sortir";
+	texto_anykey_salir[]="Prem una tecla per sortir";
 
 char dib_error[128];
 int width=800,height=600,bpp=-1,fullscreen=0,loop=0,demo=0;
@@ -136,4 +137,14 @@ int setdibuixo(DIBUIXO *dib)
 	}
     
     return ret;
+}
+
+void quit()
+{
+	exit(EXIT_SUCCESS);
+}
+
+void KeyboardFuncAnyKeyExit(unsigned char key,int x, int y)
+{
+	quit();
 }

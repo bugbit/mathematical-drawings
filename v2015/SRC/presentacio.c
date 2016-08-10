@@ -72,7 +72,7 @@ static int presentacio_init()
 	esp_texto=
 		(demo) 
 			? (char *) autor 
-			: (dibuixo_arg!=NULL) ? (char *) texto_salir : (char *) esperestr;
+			: (dibuixo_arg!=NULL) ? (char *) texto_anykey_salir : (char *) esperestr;
 	esp_ndx=0;
 	esp_len=strlen(esp_texto);
 	if (!(esp_textorender=calloc(esp_len+1,sizeof(char))))
@@ -144,9 +144,9 @@ static int titulo_initgl(CAR *cars)
 
 static int espere_initgl()
 {
-	int divx=glexStrokeStrWidth(GLUT_STROKE_MONO_ROMAN,esp_texto);
+	int divx=glexStrokeStrWidth(GLUT_STROKE_ROMAN,esp_texto);
 	
-	esp_scale=(divx<width) ? (GLdouble) width/(GLdouble) divx : 1.0d;
+	esp_scale=(divx>width) ? (GLdouble) width/(GLdouble) divx : 1.0d;
 	
 	return 0;
 }
@@ -169,14 +169,14 @@ static void titulo_update(CAR *carsptr)
 	
 	if (cars->modo==O_FIN)
 	{
-		for (cars=carsptr;(modo=cars->modo)==O_NOMOV;cars++)
-			if (modo==O_FIN)
-			{
-				state=ESPERE;
-				init_timers(&esp_titulo);
-				
-				return;
-			}
+		for (cars=carsptr;(modo=cars->modo)==O_NOMOV;cars++);
+		if (modo==O_FIN)
+		{
+			state=ESPERE;
+			init_timers(&esp_titulo);
+			
+			return;
+		}
 		car_titulo=cars;
 	}
 	if (!bcounter_titulo || count_timers(&counter_titulo,3))
@@ -207,11 +207,28 @@ static void titulo_update(CAR *carsptr)
 	}
 }
 
+static void presentacio_fin()
+{
+	state=FIN;
+	if (dibuixo_arg!=NULL)
+		glutKeyboardFunc(KeyboardFuncAnyKeyExit);
+}
+
 static void espere_update()
 {
+	int by;
+	
 	if (count_timers(&esp_titulo,7))
 	{
-		
+		esp_ndx++;
+		if (esp_ndx>esp_len)
+		{
+			presentacio_fin();
+			
+			return;
+		}
+		strncpy(esp_textorender,esp_texto,(by=(esp_ndx >> 1)+(esp_ndx & 1)));
+		strcpy(esp_textorender+by,esp_texto+esp_len-(esp_ndx >> 1));
 	}
 }
 
@@ -228,6 +245,18 @@ static void titulo_render(CAR *cars)
 			glPopMatrix();			
 		}
 	}
+}
+
+static void espere_render()
+{
+	GLdouble w=(GLdouble) glexStrokeStrWidth(GLUT_STROKE_ROMAN,esp_textorender)*esp_scale;
+	GLdouble h=(GLdouble) glexStrokeStrHeight(GLUT_STROKE_ROMAN,esp_textorender)*esp_scale;
+	
+	glPushMatrix();
+	glTranslated(((GLdouble) width-w)/2.0d,h,0);
+	glScaled(esp_scale,esp_scale,0);
+	glutStrokeStr(GLUT_STROKE_ROMAN, esp_textorender);
+	glPopMatrix();	
 }
 
 static void presentacio_render()
@@ -247,6 +276,8 @@ static void presentacio_render()
     glClear( GL_COLOR_BUFFER_BIT );	
     glColor3d( 1, 1, 1 );
 	titulo_render(cars);
+	if (state>=ESPERE)
+		espere_render();
 	glutSwapBuffers();
 }
 

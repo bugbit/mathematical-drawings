@@ -53,3 +53,9 @@ int glexStrokeMinWidth(void *font,char *str)
 		
 	return w;
 }
+
+void glutStrokeStr(void *font,char *str)
+{
+	while(*str)
+		glutStrokeCharacter(font,*str++);
+}

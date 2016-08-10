@@ -39,7 +39,7 @@ static void finish()
 void KeyboardFuncEscape(unsigned char key,int x, int y)
 {
 	if (key==27)
-		exit(EXIT_SUCCESS);
+		quit();
 }
 
 int main(int argc, char **argv)

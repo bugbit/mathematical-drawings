@@ -28,7 +28,7 @@ typedef struct
 } TIMER;
 
 extern char dib_error[128];
-extern const char autor[],texto_salir[];
+extern const char autor[],texto_anykey_salir[];
 extern int width,height,bpp,fullscreen,loop,demo;
 extern GLdouble aspectratio;
 
@@ -46,11 +46,14 @@ int readargs(int argc, char **argv,int *exit);
 void showusage(const char *msgerror);
 void KeyboardFuncEscape(unsigned char key,int x, int y);
 int setdibuixo(DIBUIXO *dib);
+void quit();
+void KeyboardFuncAnyKeyExit(unsigned char key,int x, int y);
 
 GLdouble glexScalefact();
 void glexOrthoWindow();
 GLdouble glexStrokeHeight(void *font);
 int glexStrokeStrWidth(void *font,char *str);
 int glexStrokeMinWidth(void *font,char *str);
+void glutStrokeStr(void *font,char *str);
 
 #endif
