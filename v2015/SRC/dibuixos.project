@@ -36,9 +36,12 @@
     <File Name="presentacio.c"/>
     <File Name="timer.c"/>
     <File Name="glutil.c"/>
+    <File Name="ifs.c"/>
+    <File Name="menu.c"/>
+    <File Name="sierpinski.c"/>
   </VirtualDirectory>
   <VirtualDirectory Name="data">
-    <File Name="data/prueba.txt"/>
+    <File Name="data/prueba.txt" ExcludeProjConfig="Debug"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -60,7 +63,7 @@
         <Library Value="glut"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="presentacio" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="sierpinski" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>

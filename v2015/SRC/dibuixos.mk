@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=oscar
-Date                   :=10/08/16
+Date                   :=11/08/16
 CodeLitePath           :="/home/oscar/.codelite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/presentacio.c$(ObjectSuffix) $(IntermediateDirectory)/timer.c$(ObjectSuffix) $(IntermediateDirectory)/glutil.c$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/presentacio.c$(ObjectSuffix) $(IntermediateDirectory)/timer.c$(ObjectSuffix) $(IntermediateDirectory)/glutil.c$(ObjectSuffix) $(IntermediateDirectory)/ifs.c$(ObjectSuffix) $(IntermediateDirectory)/menu.c$(ObjectSuffix) $(IntermediateDirectory)/sierpinski.c$(ObjectSuffix) 
 
 
 
@@ -140,6 +140,30 @@ $(IntermediateDirectory)/glutil.c$(DependSuffix): glutil.c
 
 $(IntermediateDirectory)/glutil.c$(PreprocessSuffix): glutil.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/glutil.c$(PreprocessSuffix) "glutil.c"
+
+$(IntermediateDirectory)/ifs.c$(ObjectSuffix): ifs.c $(IntermediateDirectory)/ifs.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/home/oscar/Proyectos/oscar/dibuixos/v2015/SRC/ifs.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/ifs.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/ifs.c$(DependSuffix): ifs.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/ifs.c$(ObjectSuffix) -MF$(IntermediateDirectory)/ifs.c$(DependSuffix) -MM "ifs.c"
+
+$(IntermediateDirectory)/ifs.c$(PreprocessSuffix): ifs.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/ifs.c$(PreprocessSuffix) "ifs.c"
+
+$(IntermediateDirectory)/menu.c$(ObjectSuffix): menu.c $(IntermediateDirectory)/menu.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/home/oscar/Proyectos/oscar/dibuixos/v2015/SRC/menu.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/menu.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/menu.c$(DependSuffix): menu.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/menu.c$(ObjectSuffix) -MF$(IntermediateDirectory)/menu.c$(DependSuffix) -MM "menu.c"
+
+$(IntermediateDirectory)/menu.c$(PreprocessSuffix): menu.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/menu.c$(PreprocessSuffix) "menu.c"
+
+$(IntermediateDirectory)/sierpinski.c$(ObjectSuffix): sierpinski.c $(IntermediateDirectory)/sierpinski.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/home/oscar/Proyectos/oscar/dibuixos/v2015/SRC/sierpinski.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/sierpinski.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/sierpinski.c$(DependSuffix): sierpinski.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/sierpinski.c$(ObjectSuffix) -MF$(IntermediateDirectory)/sierpinski.c$(DependSuffix) -MM "sierpinski.c"
+
+$(IntermediateDirectory)/sierpinski.c$(PreprocessSuffix): sierpinski.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/sierpinski.c$(PreprocessSuffix) "sierpinski.c"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

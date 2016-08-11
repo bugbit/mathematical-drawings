@@ -1,1 +1,1 @@
-./Debug/main.c.o ./Debug/dibuixos.c.o ./Debug/presentacio.c.o ./Debug/timer.c.o ./Debug/glutil.c.o
+./Debug/main.c.o ./Debug/dibuixos.c.o ./Debug/presentacio.c.o ./Debug/timer.c.o ./Debug/glutil.c.o ./Debug/ifs.c.o ./Debug/menu.c.o ./Debug/sierpinski.c.o

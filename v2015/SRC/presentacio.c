@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <string.h>
 
+#include <GL/gl.h>
 #include <GL/glut.h>
 
 #include <dibuixos.h>
@@ -36,8 +37,8 @@ static int esp_ndx,esp_len;
 static GLdouble esp_scale;
 static TIMER esp_titulo;
 
-static int presentacio_init();
-static int presentacio_initgl();
+static int presentacio_init(void *init_params);
+static int presentacio_initgl(void *init_params);
 static void presentacio_render();
 static void presentacio_finalize();
 
@@ -45,6 +46,7 @@ const DIBUIXO dib_presentacio=
 {
     "presentacio",
 	"presentacio",
+	NULL,
     presentacio_init,
     presentacio_initgl,
     presentacio_render,
@@ -59,7 +61,7 @@ const static char *Titulo[]={
   NULL
   };
 
-static int presentacio_init()
+static int presentacio_init(void *init_params)
 {
 	size_t size=1;
 	char **str=(char **)Titulo;
@@ -151,7 +153,7 @@ static int espere_initgl()
 	return 0;
 }
 
-static int presentacio_initgl()
+static int presentacio_initgl(void *init_params)
 {
 	int ret=0;
 	
@@ -210,8 +212,8 @@ static void titulo_update(CAR *carsptr)
 static void presentacio_fin()
 {
 	state=FIN;
-	if (dibuixo_arg!=NULL)
-		glutKeyboardFunc(KeyboardFuncAnyKeyExit);
+	if (!demo)
+		waitanykey=1;
 }
 
 static void espere_update()

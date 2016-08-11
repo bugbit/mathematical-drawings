@@ -25,8 +25,8 @@ GLdouble aspectratio;
  
 static void changeSize(GLsizei w,GLsizei h)
 {
-	if (h==1)
-		h=0;
+	if (h==0)
+		h=1;
 	glViewport(0,0,w,h);
 	aspectratio=(GLfloat)w/(GLfloat)h;
 }
@@ -34,12 +34,6 @@ static void changeSize(GLsizei w,GLsizei h)
 static void finish()
 {
 	setdibuixo(NULL);
-}
-
-void KeyboardFuncEscape(unsigned char key,int x, int y)
-{
-	if (key==27)
-		quit();
 }
 
 int main(int argc, char **argv)
@@ -63,12 +57,11 @@ int main(int argc, char **argv)
 	glutReshapeFunc(changeSize);
     if (fullscreen)
         glutFullScreen();
-    
-    if (!setdibuixo((dibuixo_arg!=NULL) ? dibuixo_arg : (DIBUIXO *) &dib_presentacio ))
+    if (!initgl() && !setdibuixo((dibuixo_arg!=NULL) ? dibuixo_arg : (DIBUIXO *) &dib_presentacio ))
     {
 		atexit(finish);
 		if (demo || dibuixo_arg!=NULL)
-			glutKeyboardFunc(KeyboardFuncEscape);
+			glutKeyboardFunc(KeyboardFunc);
         glutMainLoop();
     }
     

@@ -11,14 +11,15 @@
 
 const char 
 	autor[]="Programa realitzat per Oscar Hernandez Baño en gcc",
-	texto_anykey_salir[]="Prem una tecla per sortir";
+	texto_anykey_salir[]="Prem una tecla per sortir",
+	texto_anykey_menu[]="Prem una tecla per anar al menu";
 
 char dib_error[128];
-int width=800,height=600,bpp=-1,fullscreen=0,loop=0,demo=0;
+int width=800,height=600,bpp=-1,fullscreen=0,loop=0,demo=0,waitanykey=0;
 
 const DIBUIXO *dibuixos[]=
 {
-    &dib_presentacio
+    &dib_presentacio, &dib_sierpinski
 };
 
 TIMER timer_dib;
@@ -105,7 +106,7 @@ int readargs(int argc, char **argv,int *exit)
             demo=1;
         else
         {
-            if (!(dib=lfind(arg,dibuixos,&dibuixos_count,sizeof(DIBUIXO),dibuixo_cmp)))
+            if (!(dib=lfind(arg,dibuixos,&dibuixos_count,sizeof(*dibuixos),dibuixo_cmp)))
             {
                 return seterror("%s dibuixo not found",arg);
             }
@@ -116,17 +117,23 @@ int readargs(int argc, char **argv,int *exit)
     return 0;
 }
 
+int initgl()
+{
+	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &glcmaxVertices);
+	
+	return 0;
+}
+
 int setdibuixo(DIBUIXO *dib)
 {
     int ret;    
     
     if (dibuixo_act!=NULL)
-        dibuixo_act->finalize();
-    
+        dibuixo_act->finalize();    
     dibuixo_act=dib;
 	if (dib)
 	{
-		if ((ret=dib->init()) || (ret=dib->initgl()))
+		if ((ret=dib->init(dib->init_params)) || (ret=dib->initgl(dib->init_params)))
 			perror(dib_error);
 		else
 		{
@@ -144,7 +151,17 @@ void quit()
 	exit(EXIT_SUCCESS);
 }
 
-void KeyboardFuncAnyKeyExit(unsigned char key,int x, int y)
+void KeyboardFunc(unsigned char key,int x, int y)
 {
-	quit();
+	if (waitanykey || key==27)
+		quit();
+}
+
+void WriteWaitKey()
+{
+	char *str=(dibuixo_arg!=NULL) ? (char *) texto_anykey_salir : (char *) texto_anykey_salir;
+	int divx=glutBitmapStrWidth( GLUT_BITMAP_HELVETICA_12,str);
+	
+	glRasterPos2i((width-divx)/2,0);
+	glutBitmapStr( GLUT_BITMAP_HELVETICA_12,str);
 }
