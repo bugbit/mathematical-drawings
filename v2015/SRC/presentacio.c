@@ -8,7 +8,7 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 
-#include <dibuixos.h>
+#include "dibuixos.h"
 
 #define O_OCULTO	0
 #define O_MOV		1

@@ -5,6 +5,8 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
+#include <GL/gl.h>
+#include <GL/glext.h>
 #include <GL/glut.h>
 
 #include "dibuixos.h"

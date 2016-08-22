@@ -1,0 +1,49 @@
+# Project: Dibuixos
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+OBJ      = main.o dibuixos.o glutil.o ifs.o menu.o presentacio.o sierpinski.o timer.o
+LINKOBJ  = main.o dibuixos.o glutil.o ifs.o menu.o presentacio.o sierpinski.o timer.o
+LIBS     = -L"C:/Programas/Dev-Cpp/MinGW64/lib32" -L"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -lglu32 -lfreeglut -lopengl32 -Wl,--subsystem,windows -m32 -g3
+INCS     = -I"C:/Programas/Dev-Cpp/MinGW64/include" -I"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"C:/Programas/Dev-Cpp/MinGW64/include" -I"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+BIN      = Dibuixos.exe
+CXXFLAGS = $(CXXINCS) -m32 -g3
+CFLAGS   = $(INCS) -m32 -g3
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+main.o: main.c
+	$(CC) -c main.c -o main.o $(CFLAGS)
+
+dibuixos.o: dibuixos.c
+	$(CC) -c dibuixos.c -o dibuixos.o $(CFLAGS)
+
+glutil.o: glutil.c
+	$(CC) -c glutil.c -o glutil.o $(CFLAGS)
+
+ifs.o: ifs.c
+	$(CC) -c ifs.c -o ifs.o $(CFLAGS)
+
+menu.o: menu.c
+	$(CC) -c menu.c -o menu.o $(CFLAGS)
+
+presentacio.o: presentacio.c
+	$(CC) -c presentacio.c -o presentacio.o $(CFLAGS)
+
+sierpinski.o: sierpinski.c
+	$(CC) -c sierpinski.c -o sierpinski.o $(CFLAGS)
+
+timer.o: timer.c
+	$(CC) -c timer.c -o timer.o $(CFLAGS)
