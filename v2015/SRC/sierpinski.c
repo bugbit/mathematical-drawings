@@ -161,7 +161,7 @@ static void sierpinski_update(unsigned int elapse)
 	if (s_line_rad>s_line_len)
 	{
 		if (s_line_tri_count++<2)
-			setline(s_triangle,(s_line_tri_ndx+2) % (2*3));
+			setline(s_triangle+(3*2*s_triangle_ndraw),(s_line_tri_ndx+2) % (2*3));
 		else
 		{
 			s_triangle_ndraw++;
@@ -204,7 +204,7 @@ static void sierpinski_update(unsigned int elapse)
 					(
 						s[2*stk->nlado],s[2*stk->nlado+1],
 						(s[2*i01]+s[2*i02])/2.0d,(s[2*i01+1]+s[2*i02+1])/2.0d,
-						(s[2*i11]+s[2*i11])/2.0d,(s[2*i11+1]+s[2*i12+1])/2.0d
+						(s[2*i11]+s[2*i12])/2.0d,(s[2*i11+1]+s[2*i12+1])/2.0d
 					);
 					
 					return;
@@ -227,23 +227,6 @@ static void sierpinski_render()
 	
 	glClearColor( 0.f, 0.f, 0.f, 1.f );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	if (!s_fin)
-	{
-		glColor3dv(s_line_color);
-		glBegin(GL_LINES);
-		glVertex2dv(s_point);
-		glVertex2d(s_point[0]+s_line_rad*cos(s_line_ang),s_point[1]+s_line_rad*sin(s_line_ang));
-		if (s_line_tri_count>0)
-		{
-			for(s=s_triangle+s_stack[s_stack_ndx].ndx,i=s_line_tri_count;i-->0;)
-			{
-				glVertex2dv(s);
-				s += 2;
-				glVertex2dv(s);
-			}
-		}
-		glEnd();		
-	}
 	if (s_triangle_ndraw>0)
 	{
 		glEnableClientState(GL_VERTEX_ARRAY);
@@ -265,6 +248,23 @@ static void sierpinski_render()
 			glColor3dv(c);
 		}
 		glEnd();
+	}
+	if (!s_fin)
+	{
+		glColor3dv(s_line_color);
+		glBegin(GL_LINES);
+		glVertex2dv(s_point);
+		glVertex2d(s_point[0]+s_line_rad*cos(s_line_ang),s_point[1]+s_line_rad*sin(s_line_ang));
+		if (s_line_tri_count>0)
+		{
+			for(s=s_triangle+s_stack[s_stack_ndx].ndx,i=s_line_tri_count;i-->0;)
+			{
+				glVertex2dv(s);
+				s += 2;
+				glVertex2dv(s);
+			}
+		}
+		glEnd();		
 	}
 	if (!demo)
 		glexFontEnd();		
