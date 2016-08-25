@@ -12,17 +12,24 @@
 #include "dibuixos.h"
 
 const char 
-	autor[]="Programa realitzat per Oscar Hernandez Baño en gcc",
+	autor[]="Programa realitzat per Oscar Hernandez Banyo en gcc",
 	texto_anykey_salir[]="Prem una tecla per sortir",
 	texto_anykey_menu[]="Prem una tecla per anar al menu";
 
 char dib_error[128];
 int width=800,height=600,bpp=-1,fullscreen=0,loop=0,demo=0,waitanykey=0;
 
-const DIBUIXO *dibuixos[]=
+static const DIBUIXO *dibuixos[]=
 {
     &dib_presentacio, &dib_sierpinski
 };
+
+static const DIBUIXO *dibuixos_demo[]=
+{
+    &dib_presentacio, &dib_sierpinski,NULL
+};
+
+static DIBUIXO **dibuixos_demo_act;
 
 TIMER timer_dib;
 
@@ -119,6 +126,23 @@ int readargs(int argc, char **argv,int *exit)
     return 0;
 }
 
+DIBUIXO *firstdibdemo()
+{
+	dibuixos_demo_act=dibuixos_demo;
+	
+	return  *dibuixos_demo_act;
+}
+
+void setdibnextdibdemo()
+{
+	DIBUIXO *dib=*++dibuixos_demo_act;
+	
+	setdibuixo(dib);
+	
+	if (!dib)
+		quit();
+}
+
 int initgl()
 {
 	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &glcmaxVertices);
@@ -164,6 +188,7 @@ void WriteWaitKey()
 	char *str=(dibuixo_arg!=NULL) ? (char *) texto_anykey_salir : (char *) texto_anykey_salir;
 	int divx=glutBitmapStrWidth( GLUT_BITMAP_HELVETICA_12,str);
 	
+	glColor3d(1,1,1);
 	glRasterPos2i((width-divx)/2,0);
 	glutBitmapStr( GLUT_BITMAP_HELVETICA_12,str);
 }

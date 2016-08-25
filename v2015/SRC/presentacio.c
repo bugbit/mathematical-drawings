@@ -36,6 +36,7 @@ static char *esp_textorender;
 static int esp_ndx,esp_len;
 static GLdouble esp_scale;
 static TIMER esp_titulo;
+static TIMER esp_nextdib;
 
 static int presentacio_init(void *init_params);
 static int presentacio_initgl(void *init_params);
@@ -214,6 +215,8 @@ static void presentacio_fin()
 	state=FIN;
 	if (!demo)
 		waitanykey=1;
+	else
+		init_timers(&esp_nextdib);	
 }
 
 static void espere_update()
@@ -272,6 +275,14 @@ static void presentacio_render()
 			break;
 		case ESPERE:
 			espere_update();
+			break;
+		case FIN:
+			if (demo && count_timers(&esp_nextdib,4000))
+			{
+				setdibnextdibdemo();
+				
+				return;
+			}
 			break;
 	}
 	glClearColor( 0.f, 0.f, 0.f, 1.f );

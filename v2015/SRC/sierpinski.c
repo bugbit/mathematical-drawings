@@ -73,11 +73,14 @@ static void sierpinski_func
 (
 	GLdouble x0,GLdouble y0,
 	GLdouble x1,GLdouble y1,
-	GLdouble x2,GLdouble y2
+	GLdouble x2,GLdouble y2,
+	int iter
 )
 {
 	GLdouble *s=s_triangle+(s_triangle_count);
+	GLdouble *c=s_triangle_colores+(s_triangle_count);
 	STACK *stk=s_stack+(++s_stack_ndx);
+	int i;
 	
 	s[0]=x0;
 	s[1]=y0;
@@ -85,11 +88,12 @@ static void sierpinski_func
 	s[3]=y1;
 	s[4]=x2;
 	s[5]=y2;
-	stk->iteracion=s_stack_ndx;
+	stk->iteracion=iter;
 	stk->ndx=s_triangle_count;
 	stk->nlado=-1;
 	setline(s,2);
-	memcpy(s_triangle_colores+s_triangle_count,s,2*3*sizeof(*s));
+	for (i=3;i-->0;c += 3)
+		memcpy(c,s_line_color,3*sizeof(*s_triangle_colores));
 	s_triangle_count+=2*3;
 	s_line_tri_count=0;
 }
@@ -99,20 +103,23 @@ static int buildtrianglesmaxinter()
 	int i=32*log(2)/log(3);
 	unsigned int n;
 	void *ptr;
+	void *ptr2;
 	
+	ptr=ptr2=NULL;
 	do
 	{
 		n=pow(3,i);
-		if ((ptr=calloc(2*2*3*n,sizeof(*s_triangle))) && (s_stack=calloc(i,sizeof(*s_stack))))
+		if ((ptr=calloc(2*3*n,sizeof(*s_triangle))) && (ptr2=calloc(2*3*n,sizeof(*s_triangle))) && (s_stack=calloc(i,sizeof(*s_stack))))
 			break;
 		FREE(ptr);
+		FREE(ptr2);
 	} while(--i>0);
 	if (ptr==NULL)
 		return seterror("buildtrianglesmaxinter: %s",strerror(errno));
 	
-	s_triangle_iter=i;
+	s_triangle_iter=i-1;
 	s_triangle=ptr;
-	s_triangle_colores=ptr+2*3*n;
+	s_triangle_colores=ptr2;
 	s_triangle_ndraw=s_triangle_count=0;
 	s_stack_ndx=-1;
 		
@@ -126,7 +133,7 @@ static int sierpinski_init(void *init_params)
 		
 	if (!demo)
 		waitanykey=1;
-	sierpinski_func(0,0,(GLdouble) width/2.0d,height,width,0);
+	sierpinski_func(0,0,(GLdouble) width/2.0d,height,width,0,s_triangle_iter);
 	/*s_triangle[0]=0;
 	s_triangle[1]=0;
 	s_triangle[2]=(GLdouble) width/2.0d;
@@ -147,6 +154,8 @@ static int sierpinski_initgl(void *init_params)
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);				// Black Background
 	glClearDepth(1.0f);									// Depth Buffer Setup
+	//glDisable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 	 
 	return 0;
 }
@@ -157,7 +166,7 @@ static void sierpinski_update(unsigned int elapse)
 	GLdouble *s;
 	int i01,i02,i11,i12;
 	
-	s_line_rad += (GLdouble) elapse/10.0d;
+	s_line_rad += (GLdouble) elapse/0.5d;
 	if (s_line_rad>s_line_len)
 	{
 		if (s_line_tri_count++<2)
@@ -165,14 +174,20 @@ static void sierpinski_update(unsigned int elapse)
 		else
 		{
 			s_triangle_ndraw++;
-			for(;;)
+			for(;!s_fin;)
 			{
 				if (s_stack_ndx<0)
 				{
 					s_fin=1;
-					break;
+					
+					return;
 				}
 				stk=s_stack+s_stack_ndx;
+				if (stk->iteracion<=0)
+				{
+					s_stack_ndx--;
+					continue;
+				}
 				s=s_triangle+stk->ndx;
 				switch(++(stk->nlado))
 				{
@@ -195,26 +210,20 @@ static void sierpinski_update(unsigned int elapse)
 						i12=2;
 						break;
 					default:
-						i01=-1;
-						break;
+						s_stack_ndx--;						
+						continue;
 				}
-				if (i01>=0)
-				{
-					sierpinski_func
-					(
-						s[2*stk->nlado],s[2*stk->nlado+1],
-						(s[2*i01]+s[2*i02])/2.0d,(s[2*i01+1]+s[2*i02+1])/2.0d,
-						(s[2*i11]+s[2*i12])/2.0d,(s[2*i11+1]+s[2*i12+1])/2.0d
-					);
-					
-					return;
-				}
+				sierpinski_func
+				(
+					s[2*stk->nlado],s[2*stk->nlado+1],
+					(s[2*i01]+s[2*i02])/2.0d,(s[2*i01+1]+s[2*i02+1])/2.0d,
+					(s[2*i11]+s[2*i12])/2.0d,(s[2*i11+1]+s[2*i12+1])/2.0d,
+					stk->iteracion-1
+				);
+				
+				return;
 			}
 		}
-		/*if (s_line_tri_ndx==2)
-		{
-			
-		}*/
 	}
 }
 
@@ -227,13 +236,15 @@ static void sierpinski_render()
 	
 	glClearColor( 0.f, 0.f, 0.f, 1.f );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	if (s_triangle_ndraw>0)
+	if (s_triangle_ndraw>0 && glcmaxVertices>0)
 	{
 		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
 		glVertexPointer(2, GL_DOUBLE, 0, s_triangle);
-		glColorPointer(2, GL_DOUBLE, 0, s_triangle_colores);
-		glDrawArrays(GL_TRIANGLES, 0, 2*3*min(s_triangle_ndraw,glcmaxVertices));
+		glColorPointer(3, GL_DOUBLE, 0, s_triangle_colores);
+		glDrawArrays(GL_TRIANGLES, 0, 3*min(s_triangle_ndraw,glcmaxVertices));
 		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
 	}
 	if (s_triangle_ndraw>glcmaxVertices)
 	{
@@ -267,7 +278,9 @@ static void sierpinski_render()
 		glEnd();		
 	}
 	if (!demo)
-		glexFontEnd();		
+	{
+		WriteWaitKey();
+	}
 	glutSwapBuffers();
 	if (!s_fin)
 		sierpinski_update(elapse);

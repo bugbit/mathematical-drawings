@@ -49,8 +49,10 @@ int seterror(char *fmt,...);
 int readargs(int argc, char **argv,int *exit);
 void showusage(const char *msgerror);
 void KeyboardFunc(unsigned char key,int x, int y);
+DIBUIXO *firstdibdemo();
 int initgl();
 int setdibuixo(DIBUIXO *dib);
+void setdibnextdibdemo();
 void quit();
 void WriteWaitKey();
 

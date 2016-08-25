@@ -56,8 +56,8 @@ int main(int argc, char **argv)
 	glutCreateWindow("Dibuixos");
 	glutReshapeFunc(changeSize);
     if (fullscreen)
-        glutFullScreen();
-    if (!initgl() && !setdibuixo((dibuixo_arg!=NULL) ? dibuixo_arg : (DIBUIXO *) &dib_presentacio ))
+        glutFullScreen();    	
+    if (!initgl() && !setdibuixo((demo) ? firstdibdemo() : (dibuixo_arg!=NULL) ? dibuixo_arg : (DIBUIXO *) &dib_presentacio ))
     {
 		atexit(finish);
 		if (demo || dibuixo_arg!=NULL)
