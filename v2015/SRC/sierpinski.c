@@ -63,9 +63,9 @@ static void setline(GLdouble s[],int ndx)
 	s_line_rad=0;
 	if (ndx==2)
 	{
-		s_line_color[0]=x/width;
-		s_line_color[1]=y/height;
-		s_line_color[2]=s_line_ang/M_PI_2;	
+		s_line_color[0]=1.0d-(x/width);
+		s_line_color[1]=1.0d-(y/height);
+		s_line_color[2]=1.0d-(s_line_ang/M_PI_2);	
 	}
 }
 
@@ -100,7 +100,9 @@ static void sierpinski_func
 
 static int buildtrianglesmaxinter()
 {
-	int i=32*log(2)/log(3);
+	int imaxint=32*log(2)/log(3);
+	int imaxw=getmaxitern2x(sqrt(width*width+(height*height/4)-50.d));
+	int i=min(imaxint,imaxw);
 	unsigned int n;
 	void *ptr;
 	void *ptr2;

@@ -4,8 +4,8 @@
 CPP      = g++.exe -D__DEBUG__
 CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
-OBJ      = main.o dibuixos.o glutil.o ifs.o menu.o presentacio.o sierpinski.o timer.o
-LINKOBJ  = main.o dibuixos.o glutil.o ifs.o menu.o presentacio.o sierpinski.o timer.o
+OBJ      = main.o dibuixos.o glutil.o ifs.o menu.o presentacio.o sierpinski.o timer.o math.o
+LINKOBJ  = main.o dibuixos.o glutil.o ifs.o menu.o presentacio.o sierpinski.o timer.o math.o
 LIBS     = -L"C:/Programas/Dev-Cpp/MinGW64/lib" -L"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -L"C:/Programas/Dev-Cpp/MinGW64/freeglut/lib/x64" -static-libgcc -lglu32 -lfreeglut_static -lopengl32 -lwinmm -lgdi32 -Wl,--subsystem,windows -g3
 INCS     = -I"C:/Programas/Dev-Cpp/MinGW64/include" -I"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Programas/Dev-Cpp/MinGW64/freeglut/include"
 CXXINCS  = -I"C:/Programas/Dev-Cpp/MinGW64/include" -I"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"C:/Programas/Dev-Cpp/MinGW64/freeglut/include"
@@ -47,3 +47,6 @@ sierpinski.o: sierpinski.c
 
 timer.o: timer.c
 	$(CC) -c timer.c -o timer.o $(CFLAGS)
+
+math.o: math.c
+	$(CC) -c math.c -o math.o $(CFLAGS)

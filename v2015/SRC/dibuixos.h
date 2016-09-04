@@ -5,7 +5,10 @@
 #include <GL/gl.h>
 
 #define FREE(p) if (p) {free(p); p=NULL; }
+
+#ifndef min
 #define min(a,b)((a<b) ? a : b)
+#endif
 
 #define glexStrokeStrHeight(f,str) glexStrokeHeight(f)
 #define glexStrokeMinHeight(f,str) glexStrokeHeight(f)
@@ -67,5 +70,7 @@ int glexStrokeMinWidth(void *font,char *str);
 void glutStrokeStr(void *font,char *str);
 int glutBitmapStrWidth(void *font, char *str);
 void glutBitmapStr(void *font,char *str);
+
+int getmaxitern2x(int num);
 
 #endif
