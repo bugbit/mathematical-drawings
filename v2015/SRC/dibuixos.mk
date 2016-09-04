@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=oscar
-Date                   :=27/08/16
+Date                   :=04/09/16
 CodeLitePath           :="/home/oscar/.codelite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/presentacio.c$(ObjectSuffix) $(IntermediateDirectory)/timer.c$(ObjectSuffix) $(IntermediateDirectory)/glutil.c$(ObjectSuffix) $(IntermediateDirectory)/ifs.c$(ObjectSuffix) $(IntermediateDirectory)/menu.c$(ObjectSuffix) $(IntermediateDirectory)/sierpinski.c$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/presentacio.c$(ObjectSuffix) $(IntermediateDirectory)/timer.c$(ObjectSuffix) $(IntermediateDirectory)/glutil.c$(ObjectSuffix) $(IntermediateDirectory)/ifs.c$(ObjectSuffix) $(IntermediateDirectory)/menu.c$(ObjectSuffix) $(IntermediateDirectory)/sierpinski.c$(ObjectSuffix) $(IntermediateDirectory)/math.c$(ObjectSuffix) 
 
 
 
@@ -164,6 +164,14 @@ $(IntermediateDirectory)/sierpinski.c$(DependSuffix): sierpinski.c
 
 $(IntermediateDirectory)/sierpinski.c$(PreprocessSuffix): sierpinski.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/sierpinski.c$(PreprocessSuffix) "sierpinski.c"
+
+$(IntermediateDirectory)/math.c$(ObjectSuffix): math.c $(IntermediateDirectory)/math.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/home/oscar/Proyectos/oscar/dibuixos/v2015/SRC/math.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/math.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/math.c$(DependSuffix): math.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/math.c$(ObjectSuffix) -MF$(IntermediateDirectory)/math.c$(DependSuffix) -MM "math.c"
+
+$(IntermediateDirectory)/math.c$(PreprocessSuffix): math.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/math.c$(PreprocessSuffix) "math.c"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

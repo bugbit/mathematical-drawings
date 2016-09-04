@@ -39,6 +39,7 @@
     <File Name="ifs.c"/>
     <File Name="menu.c"/>
     <File Name="sierpinski.c"/>
+    <File Name="math.c"/>
   </VirtualDirectory>
   <VirtualDirectory Name="data">
     <File Name="data/prueba.txt" ExcludeProjConfig="Debug"/>
