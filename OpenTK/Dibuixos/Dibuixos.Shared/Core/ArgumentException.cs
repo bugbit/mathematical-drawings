@@ -1,12 +1,12 @@
 ﻿using System;
-namespace Dibuixos.Shared
+namespace Dibuixos.Shared.Core
 {
-	public class ArgumentException : Exception
+	public class ArgumentException : DibuixosException
 	{
 		public ArgumentException()
 		{
 		}
 
-		public ArgumentException(Exception ex, string argMsg) : base(argMsg, ex) { }
+		public ArgumentException(Exception ex, string argMsg) : base(ex, argMsg) { }
 	}
 }

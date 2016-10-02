@@ -2,16 +2,18 @@
 using OpenTK;
 using OpenTK.Graphics;
 using Dibuixos.Shared;
+using Core=Dibuixos.Shared.Core;
 
 namespace Dibuixos.Desktop
 {
 	public class DibuixosWindowDesktop : GameWindow
 	{
-		private DibuixosApp mApp;
+		private Core.DibuixosApp mApp;
 
-		public DibuixosWindowDesktop(Arguments argArgs):base(argArgs.Width,argArgs.Height,GraphicsMode.Default,"mathematical-drawings",(argArgs.Flags.HasFlag(Arguments.EFlags.FullScreen)) ? GameWindowFlags.Fullscreen : GameWindowFlags.Default)
+		public DibuixosWindowDesktop(Core.Arguments argArgs):base(argArgs.Width,argArgs.Height,GraphicsMode.Default,"mathematical-drawings",(argArgs.Flags.HasFlag(Core.Arguments.EFlags.FullScreen)) ? GameWindowFlags.Fullscreen : GameWindowFlags.Default)
 		{
-			mApp = new DibuixosApp(this, argArgs);
+			mApp = new Core.DibuixosApp(this, argArgs);
+			mApp.DoExit += (sender, e) => Exit();
 		}
 
 		[STAThread]
@@ -19,11 +21,11 @@ namespace Dibuixos.Desktop
 		{
 			Console.WriteLine("Dibuixos - mathematical-drawings for C# .NET/Mono OpenTK\nCopyright 1995-2016 Oscar Hernández Bañó");
 
-			Arguments pArgs = null;
+			Core.Arguments pArgs = null;
 
 			try
 			{
-				pArgs = Arguments.Parse(args);
+				pArgs = Core.Arguments.Parse(args);
 			}
 			catch (Exception ex)
 			{
@@ -31,7 +33,7 @@ namespace Dibuixos.Desktop
 				Environment.Exit(1);
 			}
 
-			if (pArgs.Flags.HasFlag(Arguments.EFlags.Help))
+			if (pArgs.Flags.HasFlag(Core.Arguments.EFlags.Help))
 			{
 				Console.WriteLine(@"
 dibuixos [options] [dibuixo]\n\n""

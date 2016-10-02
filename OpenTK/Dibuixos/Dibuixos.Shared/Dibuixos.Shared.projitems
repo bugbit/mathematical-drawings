@@ -10,11 +10,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Core\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Dibuixo\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Dibuix\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Dibuix\Presentacio\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Dibuix\Menu\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Core\Arguments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ArgumentException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\DibuixosApp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dibuix\FactoryDibuixos.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dibuix\DibuixBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dibuix\IDibuix.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\DibuixosException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dibuix\DibuixOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dibuix\Presentacio\DibPresentacio.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\NextDibBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\INextDibBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dibuix\Menu\DibMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dibuix\IEndDib.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\NextDibDibArg.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\NextDibDefault.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\NextDibDemo.cs" />
   </ItemGroup>
 </Project>

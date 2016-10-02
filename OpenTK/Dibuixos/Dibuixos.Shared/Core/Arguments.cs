@@ -1,5 +1,7 @@
 ﻿using System;
-namespace Dibuixos.Shared
+using Dibuix=Dibuixos.Shared.Dibuix;
+
+namespace Dibuixos.Shared.Core
 {
 	/// <summary>
 	///
@@ -35,7 +37,7 @@ namespace Dibuixos.Shared
 
 		public bool FullScreen { get; set; }
 		public EFlags Flags { get; set; } = EFlags.Default;
-		public string Dibuixo { get; set; }
+		public Dibuix.IDibuix DibArg { get; set; }
 
 		public Arguments()
 		{
@@ -79,7 +81,7 @@ namespace Dibuixos.Shared
 					else if (pArg == "demo")
 						pArgs.Flags = EFlags.Demo;
 					else
-						pArgs.Dibuixo = pArg;
+						pArgs.DibArg = Dibuix.FactoryDibuixos.Instance.GetDibuix(pArg);
 				}
 				catch (Exception ex)
 				{
