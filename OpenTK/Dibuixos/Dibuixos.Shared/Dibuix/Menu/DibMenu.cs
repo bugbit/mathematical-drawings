@@ -15,7 +15,7 @@ namespace Dibuixos.Shared.Dibuix.Menu
 			throw new NotImplementedException ();
 		}
 
-		protected override void UnloadInternal ()
+		public override void  Unload (EventArgs e)
 		{
 			throw new NotImplementedException ();
 		}

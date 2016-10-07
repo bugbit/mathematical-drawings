@@ -24,12 +24,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\DibuixosException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dibuix\DibuixOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dibuix\Presentacio\DibPresentacio.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\NextDibBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\INextDibBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dibuix\Menu\DibMenu.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Dibuix\IEndDib.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\NextDibDibArg.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\NextDibDefault.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\NextDibDemo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\IFrame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\IFrameEnd.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Frame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\IFrameLoad.cs" />
   </ItemGroup>
 </Project>

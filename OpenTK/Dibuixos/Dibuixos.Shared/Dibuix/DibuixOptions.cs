@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenTK;
 
 namespace Dibuixos.Shared.Dibuix
 {
@@ -11,6 +12,8 @@ namespace Dibuixos.Shared.Dibuix
 		}
 
 		public EFlags Flags{ get; set; }
+
+		public Matrix4 ProjectionMatrix { get; set; }
 	}
 }
 

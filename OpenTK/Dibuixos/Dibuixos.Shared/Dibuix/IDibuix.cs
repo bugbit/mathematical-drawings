@@ -4,14 +4,9 @@ using OpenTK;
 
 namespace Dibuixos.Shared.Dibuix
 {
-	public interface IDibuix
+	public interface IDibuix : Core.IFrame,Core.IFrameEnd,Core.IFrameLoad
 	{
-		DibuixOptions Options{ get;}
-		IEndDib EndDib { get; set;}
-		void Load(EventArgs e);
-		void Unload(EventArgs e);
-		void RenderFrame(FrameEventArgs e);
-		void UpdateFrame(FrameEventArgs e);
+		DibuixOptions Options{ get; set;}
 	}
 }
 
