@@ -38,3 +38,9 @@ bin/
 # bgi
 *.bgi
 *.bgx
+
+# MonoGame/XNA Content
+
+*.jpg
+*.mgcb
+*.spritefont

@@ -11,14 +11,12 @@ namespace MathDraws.Shared.Core
 	/// <summary>
 	/// This is the main type for your game.
 	/// </summary>
-	public class MathDrawsGame : Game, IParams
+	public class MathDrawsGame : Game, IDibuixosService
 	{
 		private GraphicsDeviceManager mGraphics;
-		private string mDibArg;
 
-		public bool IsHelp { get; set; }
 		public bool IsLoop { get; set; }
-		public bool IsDemo { get; set; }
+		public IStateManager StateManager { get; private set; }
 
 		public MathDrawsGame()
 		{
@@ -34,10 +32,12 @@ namespace MathDraws.Shared.Core
 		/// </summary>
 		protected override void Initialize()
 		{
-			this.Services.AddService<IParams>(this);
-			mDibArg = null;
+			this.Services.AddService<IDibuixosService>(this);
+			StateManager = new StateManagerComponent(this);
 			ReadParams();
-			Components.Add(new Draws.PresentationDraw(this));
+			Components.Add(StateManager);
+			StateManager.PushState(null, new MathDraws.Shared.States.MainState(this), Modalities.Exclusive);
+			//Components.Add(new Draws.PresentationDraw(this));
 			// TODO: Add your initialization logic here
 
 			base.Initialize();
@@ -64,17 +64,8 @@ namespace MathDraws.Shared.Core
 			var pParams = this.LaunchParameters;
 			string pArg;
 
-			IsHelp = pParams.ContainsKey("--help");
 			mGraphics.IsFullScreen = pParams.ContainsKey("-f");
 			IsLoop = pParams.ContainsKey("-l");
-			if (pParams.TryGetValue("-d", out pArg))
-			{
-				IsDemo = pArg == "demo";
-				if (!IsDemo)
-					mDibArg = pArg;
-			}
-			else
-				IsDemo = false;
 			if (pParams.TryGetValue("-r", out pArg))
 			{
 				var pDims = pArg.Split('x');

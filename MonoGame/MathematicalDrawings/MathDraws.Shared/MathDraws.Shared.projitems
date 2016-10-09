@@ -10,8 +10,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Core\MathDrawsGame.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\IParams.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\IDibuixosService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draws\PresentationDraw.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\IState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\IStateManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Modalities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\StateManagerComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\GameComponentState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\DrawableGameComponentState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)States\MainState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ManagerFrameImages.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\FramesIntoComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
@@ -19,5 +28,8 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Core\" />
     <Folder Include="$(MSBuildThisFileDirectory)Draws\" />
+    <Folder Include="$(MSBuildThisFileDirectory)States\" />
+    <Folder Include="$(MSBuildThisFileDirectory)States\Intro\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Components\" />
   </ItemGroup>
 </Project>

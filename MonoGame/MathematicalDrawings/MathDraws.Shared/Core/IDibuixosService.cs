@@ -3,10 +3,9 @@ using Microsoft.Xna.Framework;
 
 namespace MathDraws.Shared.Core
 {
-	public interface IParams
+	public interface IDibuixosService
 	{
-		bool IsHelp { get; set; }
 		bool IsLoop { get; set; }
-		bool IsDemo { get; set; }
+		IStateManager StateManager { get; }
 	}
 }

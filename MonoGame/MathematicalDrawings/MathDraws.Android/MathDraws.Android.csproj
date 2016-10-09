@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MathDraws.Android</RootNamespace>
     <AssemblyName>MathDraws.Android</AssemblyName>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>

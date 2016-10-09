@@ -38,7 +38,7 @@ namespace MathDraws.Android
 		{
 			base.OnCreate(bundle);
 
-			var g = new Core.MathDrawsGame() { IsDemo = true };
+			var g = new Core.MathDrawsGame();
 			SetContentView(g.Services.GetService<View>());
 			g.Run();
 		}
