@@ -1,4 +1,4 @@
-XNA4\
+XNA40/
 
 # Object files
 *.o
@@ -39,8 +39,3 @@ bin/
 *.bgi
 *.bgx
 
-# MonoGame/XNA Content
-
-*.jpg
-*.mgcb
-*.spritefont
