@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using Draws = MathDraws.Shared.Draws;
+using MathDraws.Shared.Extensions;
 
 namespace MathDraws.Shared.Core
 {
@@ -32,7 +33,7 @@ namespace MathDraws.Shared.Core
 		/// </summary>
 		protected override void Initialize()
 		{
-			this.Services.AddService<IDibuixosService>(this);
+			this.Attach<IDibuixosService>(this);
 			StateManager = new StateManagerComponent(this);
 			ReadParams();
 			Components.Add(StateManager);
