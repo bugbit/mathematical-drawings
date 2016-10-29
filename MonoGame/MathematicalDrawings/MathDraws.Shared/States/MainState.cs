@@ -6,6 +6,7 @@ namespace MathDraws.Shared.States
 {
 	public class MainState : Core.GameComponentState
 	{
+		private MathDraws.Shared.Components.SplashComponent mSplash;
 		private MathDraws.Shared.Components.FramesIntoComponent mFrames;
 
 		public MainState(Game argGame):base(argGame)
@@ -14,8 +15,10 @@ namespace MathDraws.Shared.States
 
 		public override void Enter(GameTime gameTime)
 		{
-			mFrames = new MathDraws.Shared.Components.FramesIntoComponent(Game);
-			Game.Components.Add(mFrames);
+			mSplash = new MathDraws.Shared.Components.SplashComponent (Game);
+			Game.Components.Add (mSplash);
+			//mFrames = new MathDraws.Shared.Components.FramesIntoComponent(Game);
+			//Game.Components.Add(mFrames);
 			base.Enter(gameTime);
 		}
 
