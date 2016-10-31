@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Drawing.Imaging;
 
 #if !MINIMAL
 using System.Drawing;
+using System.Drawing.Imaging;
 #endif
 using OpenTK;
 using OpenTK.Platform;
@@ -16,6 +16,7 @@ using OpenTK.Graphics.ES11;
 
 #elif GLES20
 using OpenTK.Graphics.ES20;
+using Android.Graphics;
 
 #elif GLES30
 using OpenTK.Graphics.ES30;
