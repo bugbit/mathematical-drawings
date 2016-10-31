@@ -40,6 +40,9 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+    <None Include="Data\Textures\dosemu.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DibuixosWindowDesktop.cs" />
@@ -50,11 +53,6 @@
   <Import Project="..\packages\OpenTK.Next.1.1.1616.8959\build\OpenTK.Next.targets" Condition="Exists('..\packages\OpenTK.Next.1.1.1616.8959\build\OpenTK.Next.targets')" />
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Data\Fonts\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\Fonts\times.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Folder Include="Data\Textures\" />
   </ItemGroup>
 </Project>

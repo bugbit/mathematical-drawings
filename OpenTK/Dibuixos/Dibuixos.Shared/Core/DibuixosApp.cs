@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Imaging;
 
 #if !MINIMAL
 using System.Drawing;
@@ -45,26 +46,83 @@ namespace Dibuixos.Shared.Core
 			if (argArgs.Flags.HasFlag (Arguments.EFlags.Demo))
 				mDibOpts.Flags |= Dibuix.DibuixOptions.EFlags.Demo;
 			argWindow.Load += DibuixosApp_Load;
+			argWindow.Unload += DibuixosApp_UnLoad;
 			argWindow.Resize += DibuixosApp_Resize;
 			//argWindow.Run(60);
 		}
 
+		private int texture;
+
 		private void DibuixosApp_Load (object sender, EventArgs e)
 		{
+			/*
 			mDib = Dibuix.FactoryDibuixos.Instance.Presentacio.Invoke ();
 			mDib.Options = mDibOpts;
 			mDib.FrameEnd += (s, e2) => OnDoExit(e2) ;
 			mDib.Load (e);
-			/*
-			mWindow.RenderFrame += (s, e2) => {
+			*/
+
+			using (var bitmap = new Bitmap (@"Data/Textures/dosemu.bmp")) {
+				GL.ClearColor (Color.MidnightBlue);
+				GL.Enable (EnableCap.Texture2D);
+
+				GL.Hint (HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
+
+				GL.GenTextures (1, out texture);
+				GL.BindTexture (TextureTarget.Texture2D, texture);
+				GL.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+				GL.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+				BitmapData data = bitmap.LockBits (new System.Drawing.Rectangle (0, 0, bitmap.Width, bitmap.Height),
+					                 ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+				GL.TexImage2D (TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
+					OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+
+				bitmap.UnlockBits (data);
+			}
+			mWindow.Resize += (s, e2) => 
+			{
+				var pClientRectangle = mWindow.ClientRectangle;
+
+				GL.Viewport(pClientRectangle.X, pClientRectangle.Y, pClientRectangle.Width, pClientRectangle.Height);
+				GL.MatrixMode(MatrixMode.Projection);
+				GL.LoadIdentity();
+				GL.Ortho(-1.0, 1.0, -1.0, 1.0, 0.0, 4.0);
+			};
+			mWindow.RenderFrame += (s, e2) => 
+			{
+				GL.Clear(ClearBufferMask.ColorBufferBit);
+
+				GL.MatrixMode(MatrixMode.Modelview);
+				GL.LoadIdentity();
+				GL.BindTexture(TextureTarget.Texture2D, texture);
+
+				GL.Begin(BeginMode.Quads);
+
+				GL.TexCoord2(0.0f, 1.0f); GL.Vertex2(-0.6f, -0.4f);
+				GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(0.6f, -0.4f);
+				GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(0.6f, 0.4f);
+				GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(-0.6f, 0.4f);
+
+				GL.End();
+
+
+				mWindow.SwapBuffers ();
+			};
+			/*mWindow.RenderFrame += (s, e2) => {
 				GL.ClearColor (Color4.Purple);
 				GL.Clear (ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 				mWindow.SwapBuffers ();
-			};
-			*/
-			mWindow.RenderFrame += DibuixosApp_RenderFrame;
-			mWindow.UpdateFrame += DibuixosApp_UpdateFrame;
+			};*/
+			//mWindow.RenderFrame += DibuixosApp_RenderFrame;
+			//mWindow.UpdateFrame += DibuixosApp_UpdateFrame;
+		}
+
+		private void DibuixosApp_UnLoad (object sender, EventArgs e)
+		{
+			GL.DeleteTextures(1, ref texture);
 		}
 
 		private void DibuixosApp_Resize(object sender, EventArgs e)
