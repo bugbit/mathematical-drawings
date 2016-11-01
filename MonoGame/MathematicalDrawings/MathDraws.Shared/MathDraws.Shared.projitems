@@ -19,10 +19,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\GameComponentState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\DrawableGameComponentState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)States\MainState.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\ManagerFrameImages.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Components\FramesIntoComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\GameExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\SplashComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\CharsComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\SpriteFontExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Math\NCalculatePi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entity\clsCharsPi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\TimeStuffUpdate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)States\Intro\IntroState.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
@@ -34,5 +38,7 @@
     <Folder Include="$(MSBuildThisFileDirectory)States\Intro\" />
     <Folder Include="$(MSBuildThisFileDirectory)Components\" />
     <Folder Include="$(MSBuildThisFileDirectory)Extensions\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Math\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Entity\" />
   </ItemGroup>
 </Project>

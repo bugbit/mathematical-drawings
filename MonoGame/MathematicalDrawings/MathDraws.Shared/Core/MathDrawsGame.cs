@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 using Draws = MathDraws.Shared.Draws;
 using MathDraws.Shared.Extensions;
+using MathDraws.Shared.Entity;
 
 namespace MathDraws.Shared.Core
 {
@@ -18,6 +19,11 @@ namespace MathDraws.Shared.Core
 
 		public bool IsLoop { get; set; }
 		public IStateManager StateManager { get; private set; }
+		public string PiStr{ get; private set; }
+		public MathDraws.Shared.Components.CharsComponent Chars{ get;private set; }
+		public SpriteFont FontChars{ get;private set; }
+		public clsCharsPi CharsPi { get;set;}
+		public TimeStuffUpdate TheTimeStuffUpdate{ get;private set;}
 
 		public MathDrawsGame()
 		{
@@ -31,13 +37,17 @@ namespace MathDraws.Shared.Core
 		/// related content.  Calling base.Initialize will enumerate through any components
 		/// and initialize them as well.
 		/// </summary>
-		protected override void Initialize()
+		protected async override void Initialize()
 		{
+			var pCalcPi = new Math.NCalculatePi ().Calc (1000);
+
 			this.Attach<IDibuixosService>(this);
 			StateManager = new StateManagerComponent(this);
 			ReadParams();
 			Components.Add(StateManager);
-			StateManager.PushState(null, new MathDraws.Shared.States.MainState(this), Modalities.Exclusive);
+			Chars=new MathDraws.Shared.Components.CharsComponent(this);
+			TheTimeStuffUpdate = new TimeStuffUpdate (this);
+			PiStr=await pCalcPi;
 			//Components.Add(new Draws.PresentationDraw(this));
 			// TODO: Add your initialization logic here
 
@@ -86,6 +96,8 @@ namespace MathDraws.Shared.Core
 		protected override void LoadContent()
 		{
 			//TODO: use this.Content to load your game content here 
+			FontChars=Content.Load<SpriteFont>("Fonts/Digits");
+			StateManager.PushState(null, new MathDraws.Shared.States.MainState(this), Modalities.Exclusive);
 		}
 
 		/// <summary>
