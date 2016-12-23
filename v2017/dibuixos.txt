@@ -1,0 +1,1 @@
+./Debug/main.c.o ./Debug/dibuixos.c.o ./Debug/demo.c.o
