@@ -21,6 +21,15 @@
 
 int main(int argc, char **argv)
 {
+	int ret=readargs(argc,argv);
+	
+	if (isnosucess(ret))
+	{
+		showusage((ret==RET_ERROR) ? dib_error : NULL);
+		
+		return (ret!=RET_ERROR) ? EXIT_SUCCESS : EXIT_FAILURE;
+	}
 	printf("hello world\n");
-	return 0;
+	
+	return EXIT_SUCCESS;
 }

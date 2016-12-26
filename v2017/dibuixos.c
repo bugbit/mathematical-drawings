@@ -21,7 +21,7 @@ int seterror(char *fmt,...)
 	vsprintf (dib_error,fmt, args);
 	va_end (args);
 	
-	return -1;
+	return RET_ERROR;
 }
 
 static int dibuixo_cmp(const void *arg,const void *dib)
@@ -29,29 +29,25 @@ static int dibuixo_cmp(const void *arg,const void *dib)
     return strcmp((const char *) arg,((*(DIBUIXOS **)dib))->name);
 }
 
-int readargs(int argc, char **argv,int *exit)
+int readargs(int argc, char **argv)
 {
     char *arg;
-    *exit=0;
     DIBUIXOS **dib=NULL,*dibl;
+	int ret=RET_SUCESS;
     
-    for(;argc>0;argc--,argv++)
+    while (--argc>0)
     {
-        arg=*argv;
+        arg=*++argv;
         if (!strcmp(arg,"--help"))
-        {
-            *exit=1;
-            
-            return 0;
-        }
+            return RET_EXIT;
         if (!strncmp(arg,"-r",2))
         {
-            if (sscanf(arg,"%dx%dx%d",&width,&height,&bpp)<2)
+            if (sscanf(arg+2,"%dx%dx%d",&width,&height,&bpp)<2)
             {
                 return seterror("%s option error",arg);
             }
         }
-        else if (!strcmp(arg,"-r"))
+        else if (!strcmp(arg,"-f"))
             fullscreen=1;
         else if (!strcmp(arg,"-l"))
             loop=1;
@@ -73,10 +69,50 @@ int readargs(int argc, char **argv,int *exit)
         }
     }
 	dibl=(dib==NULL) ? &dib_demo : *dib;
-	if (dibl->readargs(argc,argv))
-		return -1;
+	if (isnosucess((ret=dibl->readargs(--argc,++argv))))
+		return ret;
 		
 	dibuixo_arg=dibl;
     
-    return 0;
+    return ret;
+}
+
+void showusage(const char *msgerror)
+{
+    char msg[2048];
+	int i=dibuixos_count;
+	DIBUIXOS **dib=dibuixos;
+	char **descptr;
+    
+    if (msgerror==NULL)
+        *msg='\x0';
+    else
+        sprintf(msg,"error: %s\n\n",msgerror);
+    strcat
+        (
+            msg,
+            "dibuixos [options] [dibuixo]\n"
+			"\n"
+			"\toptions:\n"
+			"\t\t--help : show usage\n"
+ 			"\t\t-r<width>x<height>x[bpp] : resolucion. Default -r800x600\n"
+ 			"\t\t-f : fullscreen\n"
+ 			"\t\t-l : play demo in infinite loop\n"
+ 			"\tdibuixo default demo\n"
+			"\n"
+ 			"\tdibuixo:\n"
+        );
+    for(;i-->0;dib++)
+	{		
+		for(descptr=(*dib)->description;(*descptr)!=NULL;descptr++)
+		{
+			strcat(msg,"\t\t");
+			strcat(msg,*descptr);
+			strcat(msg,"\n");			
+		}
+	}
+	if (msgerror!=NULL)
+		fputs(msg,stderr);
+    else
+        printf("%s", msg);
 }
