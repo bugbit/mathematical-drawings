@@ -24,12 +24,16 @@ int main(int argc, char **argv)
 	int ret=readargs(argc,argv);
 	
 	if (isnosucess(ret))
-	{
 		showusage((ret==RET_ERROR) ? dib_error : NULL);
-		
-		return (ret!=RET_ERROR) ? EXIT_SUCCESS : EXIT_FAILURE;
-	}
-	printf("hello world\n");
+	else
+	{		
+		if (issucess((ret=init())))
+			if (issucess((ret=initgl())))
+			 dibuixo_arg->run();
+		deinit();
+		if (ret==RET_ERROR)
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"dibuixos matematics",dib_error,NULL);
+	}		
 	
-	return EXIT_SUCCESS;
+	return (ret!=RET_ERROR) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

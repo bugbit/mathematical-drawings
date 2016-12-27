@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=oscar
-Date                   :=26/12/16
+Date                   :=27/12/16
 CodeLitePath           :="/home/oscar/.codelite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -35,12 +35,12 @@ PreprocessOnlySwitch   :=-E
 ObjectsFileList        :="dibuixos.txt"
 PCHCompileFlags        :=
 MakeDirCommand         :=mkdir -p
-LinkOptions            :=  
+LinkOptions            :=  `sdl2-config --libs`
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch). 
 IncludePCH             := 
 RcIncludePath          := 
-Libs                   := 
-ArLibs                 :=  
+Libs                   := $(LibrarySwitch)GL $(LibrarySwitch)GLU $(LibrarySwitch)SDL2_mixer 
+ArLibs                 :=  "GL" "GLU" "SDL2_mixer" 
 LibPath                := $(LibraryPathSwitch). 
 
 ##
@@ -51,7 +51,7 @@ AR       := /usr/bin/ar rcu
 CXX      := /usr/bin/g++
 CC       := /usr/bin/gcc
 CXXFLAGS :=  -g -O0 -Wall $(Preprocessors)
-CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
+CFLAGS   :=  -g -O0 -Wall `sdl2-config --cflags` $(Preprocessors)
 ASFLAGS  := 
 AS       := /usr/bin/as
 
@@ -60,7 +60,8 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/demo.c$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/demo.c$(ObjectSuffix) $(IntermediateDirectory)/util.c$(ObjectSuffix) $(IntermediateDirectory)/glutil.c$(ObjectSuffix) $(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) $(IntermediateDirectory)/fg_font.c$(ObjectSuffix) $(IntermediateDirectory)/fg_font_data.c$(ObjectSuffix) $(IntermediateDirectory)/fg_stroke_mono_roman.c$(ObjectSuffix) $(IntermediateDirectory)/fg_stroke_roman.c$(ObjectSuffix) \
+	
 
 
 
@@ -77,6 +78,12 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 	@echo "" > $(IntermediateDirectory)/.d
 	@echo $(Objects0)  > $(ObjectsFileList)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
+
+PostBuild:
+	@echo Executing Post Build commands ...
+	rm -f -R ./Debug/data
+	cp -R ./data ./Debug/data
+	@echo Done
 
 MakeIntermediateDirs:
 	@test -d ./Debug || $(MakeDirCommand) ./Debug
@@ -119,6 +126,62 @@ $(IntermediateDirectory)/demo.c$(DependSuffix): demo.c
 
 $(IntermediateDirectory)/demo.c$(PreprocessSuffix): demo.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/demo.c$(PreprocessSuffix) "demo.c"
+
+$(IntermediateDirectory)/util.c$(ObjectSuffix): util.c $(IntermediateDirectory)/util.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/util.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/util.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/util.c$(DependSuffix): util.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/util.c$(ObjectSuffix) -MF$(IntermediateDirectory)/util.c$(DependSuffix) -MM "util.c"
+
+$(IntermediateDirectory)/util.c$(PreprocessSuffix): util.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/util.c$(PreprocessSuffix) "util.c"
+
+$(IntermediateDirectory)/glutil.c$(ObjectSuffix): glutil.c $(IntermediateDirectory)/glutil.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/glutil.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/glutil.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/glutil.c$(DependSuffix): glutil.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/glutil.c$(ObjectSuffix) -MF$(IntermediateDirectory)/glutil.c$(DependSuffix) -MM "glutil.c"
+
+$(IntermediateDirectory)/glutil.c$(PreprocessSuffix): glutil.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/glutil.c$(PreprocessSuffix) "glutil.c"
+
+$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix): ninedigitsofpi.c $(IntermediateDirectory)/ninedigitsofpi.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/ninedigitsofpi.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/ninedigitsofpi.c$(DependSuffix): ninedigitsofpi.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) -MF$(IntermediateDirectory)/ninedigitsofpi.c$(DependSuffix) -MM "ninedigitsofpi.c"
+
+$(IntermediateDirectory)/ninedigitsofpi.c$(PreprocessSuffix): ninedigitsofpi.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/ninedigitsofpi.c$(PreprocessSuffix) "ninedigitsofpi.c"
+
+$(IntermediateDirectory)/fg_font.c$(ObjectSuffix): fg_font.c $(IntermediateDirectory)/fg_font.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/fg_font.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/fg_font.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/fg_font.c$(DependSuffix): fg_font.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/fg_font.c$(ObjectSuffix) -MF$(IntermediateDirectory)/fg_font.c$(DependSuffix) -MM "fg_font.c"
+
+$(IntermediateDirectory)/fg_font.c$(PreprocessSuffix): fg_font.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/fg_font.c$(PreprocessSuffix) "fg_font.c"
+
+$(IntermediateDirectory)/fg_font_data.c$(ObjectSuffix): fg_font_data.c $(IntermediateDirectory)/fg_font_data.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/fg_font_data.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/fg_font_data.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/fg_font_data.c$(DependSuffix): fg_font_data.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/fg_font_data.c$(ObjectSuffix) -MF$(IntermediateDirectory)/fg_font_data.c$(DependSuffix) -MM "fg_font_data.c"
+
+$(IntermediateDirectory)/fg_font_data.c$(PreprocessSuffix): fg_font_data.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/fg_font_data.c$(PreprocessSuffix) "fg_font_data.c"
+
+$(IntermediateDirectory)/fg_stroke_mono_roman.c$(ObjectSuffix): fg_stroke_mono_roman.c $(IntermediateDirectory)/fg_stroke_mono_roman.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/fg_stroke_mono_roman.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/fg_stroke_mono_roman.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/fg_stroke_mono_roman.c$(DependSuffix): fg_stroke_mono_roman.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/fg_stroke_mono_roman.c$(ObjectSuffix) -MF$(IntermediateDirectory)/fg_stroke_mono_roman.c$(DependSuffix) -MM "fg_stroke_mono_roman.c"
+
+$(IntermediateDirectory)/fg_stroke_mono_roman.c$(PreprocessSuffix): fg_stroke_mono_roman.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/fg_stroke_mono_roman.c$(PreprocessSuffix) "fg_stroke_mono_roman.c"
+
+$(IntermediateDirectory)/fg_stroke_roman.c$(ObjectSuffix): fg_stroke_roman.c $(IntermediateDirectory)/fg_stroke_roman.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/fg_stroke_roman.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/fg_stroke_roman.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/fg_stroke_roman.c$(DependSuffix): fg_stroke_roman.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/fg_stroke_roman.c$(ObjectSuffix) -MF$(IntermediateDirectory)/fg_stroke_roman.c$(DependSuffix) -MM "fg_stroke_roman.c"
+
+$(IntermediateDirectory)/fg_stroke_roman.c$(PreprocessSuffix): fg_stroke_roman.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/fg_stroke_roman.c$(PreprocessSuffix) "fg_stroke_roman.c"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

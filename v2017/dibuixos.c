@@ -2,9 +2,11 @@
 
 #include "dibuixos.h"
 
-char dib_error[128];
+char dib_error[128],kPathSeparator,path_data[128];
 int width=800,height=600,bpp=-1,fullscreen=0,loop=0;
 DIBUIXOS *dibuixo_arg;
+
+static char kPathDataShare[]="/usr/lib/shared/dibuixos";
 
 static DIBUIXOS *dibuixos[]=
 {
@@ -12,6 +14,10 @@ static DIBUIXOS *dibuixos[]=
 };
 
 static size_t dibuixos_count=sizeof(dibuixos)/sizeof(*dibuixos);
+
+static SDL_Window *displayWindow;
+SDL_Renderer *displayRenderer;
+SDL_RendererInfo displayRendererInfo;
 
 int seterror(char *fmt,...)
 {
@@ -29,15 +35,39 @@ static int dibuixo_cmp(const void *arg,const void *dib)
     return strcmp((const char *) arg,((*(DIBUIXOS **)dib))->name);
 }
 
+static void getpath_data(char *fileexe,int lng)
+{	
+	memset(path_data,0,sizeof path_data);
+	strncpy(path_data,fileexe,lng);
+	path_data[lng]=kPathSeparator;
+	strcat(path_data,"data");
+	
+	if (!exist_dir(path_data))
+		sprintf(path_data,"%cusr%clib%cshare%cdibuixos",kPathSeparator,kPathSeparator,kPathSeparator,kPathSeparator);
+}
+
+static void readfileexe(char *fileexe)
+{
+	char *sep=strrchr(fileexe, '/');
+	int lng;
+	
+	if (sep==NULL)
+		sep=strrchr(fileexe, '\\');		
+	kPathSeparator= *sep;
+	lng=sep-fileexe;
+	getpath_data(fileexe,lng);
+}
+
 int readargs(int argc, char **argv)
 {
     char *arg;
     DIBUIXOS **dib=NULL,*dibl;
 	int ret=RET_SUCESS;
     
+	readfileexe(*argv++);
     while (--argc>0)
     {
-        arg=*++argv;
+        arg=*argv++;
         if (!strcmp(arg,"--help"))
             return RET_EXIT;
         if (!strncmp(arg,"-r",2))
@@ -115,4 +145,41 @@ void showusage(const char *msgerror)
 		fputs(msg,stderr);
     else
         printf("%s", msg);
+}
+
+int init()
+{
+	Uint32 flags=SDL_WINDOW_OPENGL;
+	
+	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+	{
+		return seterror( "SDL could not initialize video system! SDL_Error: %s\n", SDL_GetError() );
+	}
+	if (fullscreen)
+		flags |= SDL_WINDOW_FULLSCREEN;
+	SDL_CreateWindowAndRenderer(width, height, flags, &displayWindow, &displayRenderer);
+	SDL_GetRendererInfo(displayRenderer, &displayRendererInfo);
+	/*TODO: Check that we have OpenGL */
+    if ((displayRendererInfo.flags & SDL_RENDERER_ACCELERATED) == 0 || 
+        (displayRendererInfo.flags & SDL_RENDERER_TARGETTEXTURE) == 0) {
+        /*TODO: Handle this. We have no render surface and not accelerated. */
+}
+	if (!fullscreen)
+		SDL_SetWindowTitle(displayWindow,"Dibuixos Matematics");
+	
+	return dibuixo_arg->init();
+}
+
+int initgl()
+{
+	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &glcmaxVertices);
+	glexOrthoWindow();
+	
+	return dibuixo_arg->initgl();
+}
+
+void deinit()
+{
+	dibuixo_arg->deinit();
+	SDL_Quit();
 }
