@@ -3,14 +3,13 @@
 #include "dibuixos.h"
 
 char dib_error[128],kPathSeparator,path_data[128];
-int width=800,height=600,bpp=-1,fullscreen=0,loop=0;
-DIBUIXOS *dibuixo_arg;
+int width=800,height=600,bpp=-1,fullscreen=0,loop=0,quitanykey=1;
+GLdouble aspectratio;
+DIBUIX *dibuixo_arg;
 
-static char kPathDataShare[]="/usr/lib/shared/dibuixos";
-
-static DIBUIXOS *dibuixos[]=
+static DIBUIXODEF *dibuixos[]=
 {
-	&dib_demo
+	&dib_demo,&dib_pi
 };
 
 static size_t dibuixos_count=sizeof(dibuixos)/sizeof(*dibuixos);
@@ -18,6 +17,8 @@ static size_t dibuixos_count=sizeof(dibuixos)/sizeof(*dibuixos);
 static SDL_Window *displayWindow;
 SDL_Renderer *displayRenderer;
 SDL_RendererInfo displayRendererInfo;
+
+TIMER timer_dib,timer_update;
 
 int seterror(char *fmt,...)
 {
@@ -32,7 +33,7 @@ int seterror(char *fmt,...)
 
 static int dibuixo_cmp(const void *arg,const void *dib)
 {
-    return strcmp((const char *) arg,((*(DIBUIXOS **)dib))->name);
+    return strcmp((const char *) arg,((*(DIBUIXODEF **)dib))->name);
 }
 
 static void getpath_data(char *fileexe,int lng)
@@ -58,11 +59,27 @@ static void readfileexe(char *fileexe)
 	getpath_data(fileexe,lng);
 }
 
+static DIBUIX *mallocdib(DIBUIXODEF *def)
+{
+	DIBUIX *dib=(DIBUIX *) malloc(sizeof(DIBUIX)+def->size);
+	
+	if (dib==NULL)
+		seterror(strerror(errno));
+	else
+	{
+		dib->def=def;
+		memset(&dib->data,0,def->size);
+	}
+	
+	return dib;
+}
+
 int readargs(int argc, char **argv)
 {
     char *arg;
-    DIBUIXOS **dib=NULL,*dibl;
+    DIBUIXODEF **dib=NULL,*dibl;
 	int ret=RET_SUCESS;
+	DIBUIX *db;
     
 	readfileexe(*argv++);
     while (--argc>0)
@@ -99,10 +116,18 @@ int readargs(int argc, char **argv)
         }
     }
 	dibl=(dib==NULL) ? &dib_demo : *dib;
-	if (isnosucess((ret=dibl->readargs(--argc,++argv))))
-		return ret;
+	db=mallocdib(dibl);
+	if (db==NULL)
+		return RET_ERROR;
 		
-	dibuixo_arg=dibl;
+	if (isnosucess((ret=dibl->readargs(&db->data,--argc,++argv))))
+	{
+		free(db);
+		
+		return ret;
+	}
+		
+	dibuixo_arg=db;
     
     return ret;
 }
@@ -111,7 +136,7 @@ void showusage(const char *msgerror)
 {
     char msg[2048];
 	int i=dibuixos_count;
-	DIBUIXOS **dib=dibuixos;
+	DIBUIXODEF **dib=dibuixos;
 	char **descptr;
     
     if (msgerror==NULL)
@@ -167,19 +192,97 @@ int init()
 	if (!fullscreen)
 		SDL_SetWindowTitle(displayWindow,"Dibuixos Matematics");
 	
-	return dibuixo_arg->init();
+	return dibuixo_arg->def->init(&dibuixo_arg->data);
+}
+ 
+static void changeSize(GLsizei w,GLsizei h)
+{
+	if (h==0)
+		h=1;
+	glViewport(0,0,w,h);
+	aspectratio=(GLfloat)w/(GLfloat)h;
 }
 
 int initgl()
 {
+	changeSize(width,height);
 	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &glcmaxVertices);
 	glexOrthoWindow();
 	
-	return dibuixo_arg->initgl();
+	return dibuixo_arg->def->initgl(&dibuixo_arg->data);
+}
+
+void run()
+{
+	init_timers(&timer_dib);
+	init_timers(&timer_update);
+	dibuixo_arg->def->run(&dibuixo_arg->data);
 }
 
 void deinit()
 {
-	dibuixo_arg->deinit();
+	dibuixo_arg->def->deinit(&dibuixo_arg->data);
+	free(dibuixo_arg);
 	SDL_Quit();
+}
+
+int updatex(SDL_Event *ev)
+{
+	int ret;
+	
+	elapse_timers(&timer_update,1);
+	if ((ret=SDL_PollEvent(ev)))
+	{
+		switch (ev->type) {
+			case SDL_QUIT:
+				return RET_CANCEL;
+			case SDL_KEYDOWN:
+				if (quitanykey)
+				{
+					SDL_Quit();
+					
+					return RET_CANCEL;					
+				}
+				break;
+		}
+	}
+	
+	return ret;
+}
+
+int update()
+{
+	SDL_Event ev;
+	
+	return updatex(&ev);
+}
+
+int timestuff(int keyfinish,int rate,void *data, void (*update) (void *data), void (*render) (void *data), int maxtime)
+{
+	int elapse=1000000 / rate;
+	SDL_Event ev;
+	int ret;
+	TIMER time,time2;
+	int dorender=1;
+	
+	init_timers(&time);
+	init_timers(&time2);
+	while (!count_timers(&time,maxtime))
+	{
+		if (isnosucess((ret=updatex(&ev))))
+			return ret;
+		if (count_timers(&time2,rate))
+		{
+			if (update!=NULL)
+				update(data);
+			dorender=1;
+		}
+		if (dorender && render!=NULL)
+		{
+			render(data);
+			dorender=0;
+		}
+	}
+	
+	return RET_SUCESS;
 }

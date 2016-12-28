@@ -2,6 +2,8 @@
 
 #define  __DIBUIXOS_H__
 
+#include <SDL2/SDL.h>
+
 #define	RET_SUCESS		0
 #define	RET_ERROR		-1
 #define	RET_EXIT		-2
@@ -9,34 +11,71 @@
 
 #define	issucess(r)		(r>=RET_SUCESS)
 #define	isnosucess(r)	(r<RET_SUCESS)
-#define glswap()	SDL_RenderPresent(displayRenderer)
+#define FREE(p) if (p) {free(p); p=NULL; }
+#define glxswap()	SDL_RenderPresent(displayRenderer)
+#define getfccarsptr(fc)	&fc->cars
+#define	seterrorno()	seterror(strerror(errno))
+
+#ifndef min
+#define min(a,b)((a<b) ? a : b)
+#endif
+
 
 typedef struct
 {
 	char *name;
-	int (*readargs)(int argc, char **argv);
-	int (*init)();
-	int (*initgl)();
-	void (*run)();
-	void (*deinit)();
+	int size;
+	int (*readargs)(void *data,int argc, char **argv);
+	int (*init)(void *data);
+	int (*initgl)(void *data);
+	void (*run)(void *data);
+	void (*deinit)(void *data);
 	char *description[];
-} DIBUIXOS;
+} DIBUIXODEF;
 
-extern DIBUIXOS dib_demo;
-extern DIBUIXOS *dibuixo_arg;
+typedef struct
+{
+	DIBUIXODEF *def;
+	struct {} data;
+} DIBUIX;
 
-extern char dib_error[128],kPathSeparator,path_data[128];
-extern int width,height,bpp,fullscreen,loop;
-extern SDL_Renderer *displayRenderer;
-extern SDL_RendererInfo displayRendererInfo;
+typedef struct
+{
+	unsigned int ticksf;
+	unsigned int ticks;
+	unsigned int elapsetime;
+} TIMER;
+
+typedef struct
+{
+	int width,height;
+	char *cars,*cars_act;
+	char ninedig[9+1+2];
+	int at,position;
+} LISTDECIMALPI;
 
 // main
+
+extern DIBUIXODEF dib_demo,dib_pi;
+extern DIBUIX *dibuixo_arg;
+
+extern char dib_error[128],kPathSeparator,path_data[128];
+extern int width,height,bpp,fullscreen,loop,quitanykey;
+extern GLdouble aspectratio;
+extern SDL_Renderer *displayRenderer;
+extern SDL_RendererInfo displayRendererInfo;
+extern TIMER timer_dib,timer_update;
+
 int seterror(char *fmt,...);
 int readargs(int argc, char **argv);
 void showusage(const char *msgerror);
 int init();
 int initgl();
+void run();
 void deinit();
+int updatex(SDL_Event *ev);
+int update();
+int timestuff(int keyfinish,int rate,void *data, void (*update) (void *data), void (*render) (void *data), int maxtime);
 
 // util
 int exist_dir(char *dir);
@@ -48,10 +87,25 @@ extern GLint glcmaxVertices;
 
 void glexOrthoW();
 void glexOrthoWindow();
+char *glexBitmapMakeCars(int width,int height);
+char *glexBitmapCarsScrollUp(char *str);
 
 // math
 
 int ninedigitsofpi(int n);
+
+// timer
+
+void init_timers(TIMER *timer);
+unsigned int elapse_timers(TIMER *timer,int reset);
+int count_timers(TIMER *timer,unsigned int counter);
+
+// pi
+
+int lpi_make(LISTDECIMALPI *lpi);
+void lpi_next(LISTDECIMALPI *lpi,int ndec);
+void lpi_render(LISTDECIMALPI *lpi);
+void lpi_next_slow(LISTDECIMALPI *lpi);
 
 // freeglut
 

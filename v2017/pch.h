@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <math.h>
+#include <errno.h>
 
 #include <GL/glu.h>
 #include <SDL2/SDL.h>

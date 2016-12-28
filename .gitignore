@@ -32,10 +32,15 @@ XNA40/
 
 # Debug files
 *.dSYM/
+Debug/
 
 bin/
 
 # bgi
 *.bgi
 *.bgx
+
+# codelite
+
+.codelite/
 

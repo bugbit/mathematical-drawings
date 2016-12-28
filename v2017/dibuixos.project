@@ -10,12 +10,14 @@
     <File Name="demo.c"/>
     <File Name="util.c"/>
     <File Name="glutil.c"/>
-    <File Name="ninedigitsofpi.c"/>
     <File Name="fg_font.c"/>
     <File Name="fg_font_data.c"/>
     <File Name="fg.h"/>
     <File Name="fg_stroke_mono_roman.c"/>
     <File Name="fg_stroke_roman.c"/>
+    <File Name="timer.c"/>
+    <File Name="ninedigitsofpi.c"/>
+    <File Name="pi.c"/>
   </VirtualDirectory>
   <VirtualDirectory Name="data">
     <File Name="data/demo.mp3"/>
@@ -31,7 +33,7 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O0;-Wall;`sdl2-config --cflags`" Assembler="" Required="yes" PreCompiledHeader="pch.h" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O3;-O0;-Wall;`sdl2-config --cflags`" Assembler="" Required="yes" PreCompiledHeader="pch.h" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
       </Compiler>
       <Linker Options="`sdl2-config --libs`" Required="yes">
@@ -40,7 +42,7 @@
         <Library Value="SDL2_mixer"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="pi" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>

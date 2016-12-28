@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 	{		
 		if (issucess((ret=init())))
 			if (issucess((ret=initgl())))
-			 dibuixo_arg->run();
+			 run();
 		deinit();
 		if (ret==RET_ERROR)
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"dibuixos matematics",dib_error,NULL);

@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=oscar
-Date                   :=27/12/16
+Date                   :=28/12/16
 CodeLitePath           :="/home/oscar/.codelite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -51,7 +51,7 @@ AR       := /usr/bin/ar rcu
 CXX      := /usr/bin/g++
 CC       := /usr/bin/gcc
 CXXFLAGS :=  -g -O0 -Wall $(Preprocessors)
-CFLAGS   :=  -g -O0 -Wall `sdl2-config --cflags` $(Preprocessors)
+CFLAGS   :=  -g -O3 -O0 -Wall `sdl2-config --cflags` $(Preprocessors)
 ASFLAGS  := 
 AS       := /usr/bin/as
 
@@ -60,8 +60,8 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/demo.c$(ObjectSuffix) $(IntermediateDirectory)/util.c$(ObjectSuffix) $(IntermediateDirectory)/glutil.c$(ObjectSuffix) $(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) $(IntermediateDirectory)/fg_font.c$(ObjectSuffix) $(IntermediateDirectory)/fg_font_data.c$(ObjectSuffix) $(IntermediateDirectory)/fg_stroke_mono_roman.c$(ObjectSuffix) $(IntermediateDirectory)/fg_stroke_roman.c$(ObjectSuffix) \
-	
+Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/demo.c$(ObjectSuffix) $(IntermediateDirectory)/util.c$(ObjectSuffix) $(IntermediateDirectory)/glutil.c$(ObjectSuffix) $(IntermediateDirectory)/fg_font.c$(ObjectSuffix) $(IntermediateDirectory)/fg_font_data.c$(ObjectSuffix) $(IntermediateDirectory)/fg_stroke_mono_roman.c$(ObjectSuffix) $(IntermediateDirectory)/fg_stroke_roman.c$(ObjectSuffix) $(IntermediateDirectory)/timer.c$(ObjectSuffix) \
+	$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) $(IntermediateDirectory)/pi.c$(ObjectSuffix) 
 
 
 
@@ -143,14 +143,6 @@ $(IntermediateDirectory)/glutil.c$(DependSuffix): glutil.c
 $(IntermediateDirectory)/glutil.c$(PreprocessSuffix): glutil.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/glutil.c$(PreprocessSuffix) "glutil.c"
 
-$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix): ninedigitsofpi.c $(IntermediateDirectory)/ninedigitsofpi.c$(DependSuffix)
-	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/ninedigitsofpi.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/ninedigitsofpi.c$(DependSuffix): ninedigitsofpi.c
-	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) -MF$(IntermediateDirectory)/ninedigitsofpi.c$(DependSuffix) -MM "ninedigitsofpi.c"
-
-$(IntermediateDirectory)/ninedigitsofpi.c$(PreprocessSuffix): ninedigitsofpi.c
-	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/ninedigitsofpi.c$(PreprocessSuffix) "ninedigitsofpi.c"
-
 $(IntermediateDirectory)/fg_font.c$(ObjectSuffix): fg_font.c $(IntermediateDirectory)/fg_font.c$(DependSuffix)
 	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/fg_font.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/fg_font.c$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/fg_font.c$(DependSuffix): fg_font.c
@@ -182,6 +174,30 @@ $(IntermediateDirectory)/fg_stroke_roman.c$(DependSuffix): fg_stroke_roman.c
 
 $(IntermediateDirectory)/fg_stroke_roman.c$(PreprocessSuffix): fg_stroke_roman.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/fg_stroke_roman.c$(PreprocessSuffix) "fg_stroke_roman.c"
+
+$(IntermediateDirectory)/timer.c$(ObjectSuffix): timer.c $(IntermediateDirectory)/timer.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/timer.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/timer.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/timer.c$(DependSuffix): timer.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/timer.c$(ObjectSuffix) -MF$(IntermediateDirectory)/timer.c$(DependSuffix) -MM "timer.c"
+
+$(IntermediateDirectory)/timer.c$(PreprocessSuffix): timer.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/timer.c$(PreprocessSuffix) "timer.c"
+
+$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix): ninedigitsofpi.c $(IntermediateDirectory)/ninedigitsofpi.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/ninedigitsofpi.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/ninedigitsofpi.c$(DependSuffix): ninedigitsofpi.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) -MF$(IntermediateDirectory)/ninedigitsofpi.c$(DependSuffix) -MM "ninedigitsofpi.c"
+
+$(IntermediateDirectory)/ninedigitsofpi.c$(PreprocessSuffix): ninedigitsofpi.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/ninedigitsofpi.c$(PreprocessSuffix) "ninedigitsofpi.c"
+
+$(IntermediateDirectory)/pi.c$(ObjectSuffix): pi.c $(IntermediateDirectory)/pi.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/pi.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/pi.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/pi.c$(DependSuffix): pi.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/pi.c$(ObjectSuffix) -MF$(IntermediateDirectory)/pi.c$(DependSuffix) -MM "pi.c"
+
+$(IntermediateDirectory)/pi.c$(PreprocessSuffix): pi.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/pi.c$(PreprocessSuffix) "pi.c"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

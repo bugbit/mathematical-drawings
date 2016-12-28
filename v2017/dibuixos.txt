@@ -1,1 +1,1 @@
-./Debug/main.c.o ./Debug/dibuixos.c.o ./Debug/demo.c.o ./Debug/util.c.o ./Debug/glutil.c.o ./Debug/ninedigitsofpi.c.o ./Debug/fg_font.c.o ./Debug/fg_font_data.c.o ./Debug/fg_stroke_mono_roman.c.o ./Debug/fg_stroke_roman.c.o
+./Debug/main.c.o ./Debug/dibuixos.c.o ./Debug/demo.c.o ./Debug/util.c.o ./Debug/glutil.c.o ./Debug/fg_font.c.o ./Debug/fg_font_data.c.o ./Debug/fg_stroke_mono_roman.c.o ./Debug/fg_stroke_roman.c.o ./Debug/timer.c.o ./Debug/ninedigitsofpi.c.o ./Debug/pi.c.o
