@@ -18,6 +18,7 @@
     <File Name="timer.c"/>
     <File Name="ninedigitsofpi.c"/>
     <File Name="pi.c"/>
+    <File Name="fastpi.c"/>
   </VirtualDirectory>
   <VirtualDirectory Name="data">
     <File Name="data/demo.mp3"/>

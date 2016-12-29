@@ -61,7 +61,7 @@ AS       := /usr/bin/as
 ##
 CodeLiteDir:=/usr/share/codelite
 Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/demo.c$(ObjectSuffix) $(IntermediateDirectory)/util.c$(ObjectSuffix) $(IntermediateDirectory)/glutil.c$(ObjectSuffix) $(IntermediateDirectory)/fg_font.c$(ObjectSuffix) $(IntermediateDirectory)/fg_font_data.c$(ObjectSuffix) $(IntermediateDirectory)/fg_stroke_mono_roman.c$(ObjectSuffix) $(IntermediateDirectory)/fg_stroke_roman.c$(ObjectSuffix) $(IntermediateDirectory)/timer.c$(ObjectSuffix) \
-	$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) $(IntermediateDirectory)/pi.c$(ObjectSuffix) 
+	$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) $(IntermediateDirectory)/pi.c$(ObjectSuffix) $(IntermediateDirectory)/fastpi.c$(ObjectSuffix) 
 
 
 
@@ -198,6 +198,14 @@ $(IntermediateDirectory)/pi.c$(DependSuffix): pi.c
 
 $(IntermediateDirectory)/pi.c$(PreprocessSuffix): pi.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/pi.c$(PreprocessSuffix) "pi.c"
+
+$(IntermediateDirectory)/fastpi.c$(ObjectSuffix): fastpi.c $(IntermediateDirectory)/fastpi.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/fastpi.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/fastpi.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/fastpi.c$(DependSuffix): fastpi.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/fastpi.c$(ObjectSuffix) -MF$(IntermediateDirectory)/fastpi.c$(DependSuffix) -MM "fastpi.c"
+
+$(IntermediateDirectory)/fastpi.c$(PreprocessSuffix): fastpi.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/fastpi.c$(PreprocessSuffix) "fastpi.c"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

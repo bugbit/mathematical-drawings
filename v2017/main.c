@@ -22,7 +22,10 @@
 
 int main(int argc, char **argv)
 {
+	char pi[100+3];
 	int ret=readargs(argc,argv);
+	
+	fastpi(pi,0,100);
 	
 	if (isnosucess(ret))
 		showusage((ret==RET_ERROR) ? dib_error : NULL);

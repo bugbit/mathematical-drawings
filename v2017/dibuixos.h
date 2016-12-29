@@ -114,6 +114,7 @@ char *glexBitmapCarsScrollUp(char *str);
 
 int ninedigitsofpi(int n);
 int thread_ninedigitpi(int *at);
+int fastpi(char *str,int at,int numdec);
 
 // timer
 
