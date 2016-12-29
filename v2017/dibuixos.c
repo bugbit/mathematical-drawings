@@ -3,7 +3,7 @@
 #include "dibuixos.h"
 
 char dib_error[128],kPathSeparator,path_data[128];
-int width=800,height=600,bpp=-1,fullscreen=0,loop=0,quitanykey=1;
+int width=800,height=600,bpp=-1,fullscreen=0,loop=0,monocpu=0,quitanykey=1,numcpu;
 GLdouble aspectratio;
 DIBUIX *dibuixo_arg;
 
@@ -98,6 +98,8 @@ int readargs(int argc, char **argv)
             fullscreen=1;
         else if (!strcmp(arg,"-l"))
             loop=1;
+		else if (!strcmp(arg,"--monocpu"))
+            monocpu=1;
         else if (!strncmp(arg,"-",1))
         {
             return seterror("%s option error",arg);
@@ -153,6 +155,7 @@ void showusage(const char *msgerror)
  			"\t\t-r<width>x<height>x[bpp] : resolucion. Default -r800x600\n"
  			"\t\t-f : fullscreen\n"
  			"\t\t-l : play demo in infinite loop\n"
+			"\t\t--monocpu : no use paralel algoritms"
  			"\tdibuixo default demo\n"
 			"\n"
  			"\tdibuixo:\n"
@@ -175,11 +178,15 @@ void showusage(const char *msgerror)
 int init()
 {
 	Uint32 flags=SDL_WINDOW_OPENGL;
-	
+	int ret;
+		
+	numcpu=(monocpu) ? 1 : SDL_GetCPUCount();
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
 	{
 		return seterror( "SDL could not initialize video system! SDL_Error: %s\n", SDL_GetError() );
 	}
+	if (isnosucess((ret=initmuxtexreservecpu())))
+		return ret;
 	if (fullscreen)
 		flags |= SDL_WINDOW_FULLSCREEN;
 	SDL_CreateWindowAndRenderer(width, height, flags, &displayWindow, &displayRenderer);
@@ -221,6 +228,7 @@ void run()
 
 void deinit()
 {
+	deinitmuxtexreservecpu();
 	dibuixo_arg->def->deinit(&dibuixo_arg->data);
 	free(dibuixo_arg);
 	SDL_Quit();
@@ -259,7 +267,6 @@ int update()
 
 int timestuff(int keyfinish,int rate,void *data, void (*update) (void *data), void (*render) (void *data), int maxtime)
 {
-	int elapse=1000000 / rate;
 	SDL_Event ev;
 	int ret;
 	TIMER time,time2;

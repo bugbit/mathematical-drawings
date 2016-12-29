@@ -177,3 +177,8 @@ int ninedigitsofpi(int n)
 
 	return (int)(sum * 1e9);
 }
+
+int thread_ninedigitpi(int *at)
+{
+	return ninedigitsofpi(*at);
+}

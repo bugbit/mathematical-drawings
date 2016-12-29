@@ -11,6 +11,7 @@
  *  -r<width>x<height>x[bpp] : resolucion. Default -r800x600
  *  -f : fullscreen
  *  -l : play demo in infinite loop
+ *  --monocpu : no use paralel algoritms
  *  dibuixo default demo
  *
  * dibuixo:

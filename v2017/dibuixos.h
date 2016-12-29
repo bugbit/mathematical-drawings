@@ -2,7 +2,10 @@
 
 #define  __DIBUIXOS_H__
 
+#include <stdlib.h>
+
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 
 #define	RET_SUCESS		0
 #define	RET_ERROR		-1
@@ -15,6 +18,7 @@
 #define glxswap()	SDL_RenderPresent(displayRenderer)
 #define getfccarsptr(fc)	&fc->cars
 #define	seterrorno()	seterror(strerror(errno))
+#define lpi_isuntilat(lpi)	(lpi->at>=lpi->untilat)
 
 #ifndef min
 #define min(a,b)((a<b) ? a : b)
@@ -48,10 +52,21 @@ typedef struct
 
 typedef struct
 {
+	int finish,at;
+	int nummaxthread,numdigits;
+	SDL_Thread **threads,*thread;
+	SDL_mutex *mutexadd,*muteunitat;
+	SDL_cond *condunitat;
+	int *ninedig_t;
+	struct _LISTNINEPIS
+	{
+		int ninedig;
+		struct _LISTNINEPIS *next;
+	} *first,*last;
 	int width,height;
 	char *cars,*cars_act;
 	char ninedig[9+1+2];
-	int at,position;
+	int position,untilat;
 } LISTDECIMALPI;
 
 // main
@@ -60,7 +75,7 @@ extern DIBUIXODEF dib_demo,dib_pi;
 extern DIBUIX *dibuixo_arg;
 
 extern char dib_error[128],kPathSeparator,path_data[128];
-extern int width,height,bpp,fullscreen,loop,quitanykey;
+extern int width,height,bpp,fullscreen,loop,monocpu,quitanykey,numcpu;
 extern GLdouble aspectratio;
 extern SDL_Renderer *displayRenderer;
 extern SDL_RendererInfo displayRendererInfo;
@@ -80,6 +95,11 @@ int timestuff(int keyfinish,int rate,void *data, void (*update) (void *data), vo
 // util
 int exist_dir(char *dir);
 void getfiledata(char *filedest,char *filename);
+int initmuxtexreservecpu();
+void deinitmuxtexreservecpu();
+int reservenumcpus(int numcpus,int force);
+int reservemaxnumcpus();
+void dereservenumcpus(int numcpus);
 
 // glutil
 
@@ -93,6 +113,7 @@ char *glexBitmapCarsScrollUp(char *str);
 // math
 
 int ninedigitsofpi(int n);
+int thread_ninedigitpi(int *at);
 
 // timer
 
@@ -103,6 +124,11 @@ int count_timers(TIMER *timer,unsigned int counter);
 // pi
 
 int lpi_make(LISTDECIMALPI *lpi);
+void lpi_destroy(LISTDECIMALPI *lpi);
+int lpi_initthread(LISTDECIMALPI *lpi);
+void lpi_donethread(LISTDECIMALPI *lpi,int async);
+int lpi_nextninedigitpi(LISTDECIMALPI *lpi);
+void lpi_waitunitat(LISTDECIMALPI *lpi,int untilat);
 void lpi_next(LISTDECIMALPI *lpi,int ndec);
 void lpi_render(LISTDECIMALPI *lpi);
 void lpi_next_slow(LISTDECIMALPI *lpi);
