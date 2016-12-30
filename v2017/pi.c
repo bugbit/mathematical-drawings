@@ -21,48 +21,49 @@ DIBUIXODEF dib_pi=
 	}
 };
 
+static char pi2str[]="3.";
+
 int lpi_make(LISTDECIMALPI *lpi)
 {
-	int w=width/8,h=height/9;
+	int w=width/8,h=(height/13)-3;
 	
 	lpi->thread=NULL;
-	lpi->threads=NULL;
-	lpi->ninedig_t=NULL;
-	lpi->mutexadd=lpi->muteunitat=NULL;
-	lpi->condunitat=NULL;
+	lpi->mutexadd=NULL;
 	lpi->nummaxthread=numcpu+1;
+	lpi->lfirst=lpi->llast=lpi->ldfirst=lpi->ldlast=lpi->lact=NULL;
+	lpi->fastpi=1;
+	lpi->blnumdec=2*w*h;
+	lpi->blmaxelapse=1000;
 	if ((lpi->cars=glexBitmapMakeCars(w,h))==NULL)
 		return RET_ERROR;
-	if ((lpi->threads=calloc(lpi->nummaxthread,sizeof(SDL_Thread *)))==NULL)
-		return seterrorno();
-	memset(lpi->threads,0,lpi->nummaxthread*sizeof(SDL_Thread *));
-	if ((lpi->ninedig_t=calloc(lpi->nummaxthread,sizeof(int)))==NULL)
-		return seterrorno();
 	if ((lpi->mutexadd=SDL_CreateMutex())==NULL)
 		return seterror("Don't can create mutexadd: %s", SDL_GetError());
-	if ((lpi->muteunitat=SDL_CreateMutex())==NULL)
-		return seterror("Don't can create muteunitat: %s", SDL_GetError());
-	if ((lpi->condunitat=SDL_CreateCond())==NULL)
-		return seterror("Don't can create condunitat: %s", SDL_GetError());
 	lpi->cars_act=lpi->cars;
 	lpi->width=w;
 	lpi->height=h;
-	lpi->position=-1;
-	lpi->untilat=0;
+	lpi->pistr=pi2str;
 		
 	return RET_SUCESS;
 }
 
-static void freelistninedigitsofpi(LISTDECIMALPI *lpi)
+static void lpi_freelist(struct _LISTDECSPI *ptr0)
 {
-	struct _LISTNINEPIS *ptr=lpi->first,*ptr2;
+	struct _LISTDECSPI *ptr=ptr0,*ptr2;
 	
 	while(ptr!=NULL)
 	{
 		ptr2=ptr;
 		ptr=ptr->next;
+		FREE(ptr2->decstr);
 		free(ptr2);
 	}
+}
+
+static void freelistninedigitsofpi(LISTDECIMALPI *lpi)
+{
+	lpi_freelist(lpi->ldfirst);
+	lpi_freelist(lpi->lfirst);
+	lpi->lfirst=lpi->llast=lpi->ldfirst=lpi->ldlast=lpi->lact=NULL;
 }
 
 void lpi_destroy(LISTDECIMALPI *lpi)
@@ -71,78 +72,151 @@ void lpi_destroy(LISTDECIMALPI *lpi)
 		lpi_donethread(lpi,0);
 	if (lpi->mutexadd!=NULL)
 		SDL_DestroyMutex(lpi->mutexadd);
-	if (lpi->muteunitat!=NULL)
-		SDL_DestroyMutex(lpi->muteunitat);
-	if (lpi->condunitat!=NULL)
-		SDL_DestroyCond(lpi->condunitat);
 	FREE(lpi->cars);
-	FREE(lpi->threads);
-	FREE(lpi->ninedig_t);
 	freelistninedigitsofpi(lpi);
 }
 
-static void addninedigitsofpi(LISTDECIMALPI *lpi)
+static struct _LISTDECSPI *lpi_deasignldfirst(LISTDECIMALPI *lpi)
 {
-	int n=0,i,*ninedig_t;
-	struct _LISTNINEPIS *ptr,*ptr0=NULL,*ptr2=NULL;
+	struct _LISTDECSPI *ptr=NULL;
 	
-	for (i=0,ninedig_t=lpi->ninedig_t;i<lpi->numdigits;i++)
-	{	
-		ptr=malloc(sizeof(struct _LISTNINEPIS));
-		if (ptr==NULL)
-			break;
-		n++;
-		if (ptr0==NULL)
-			ptr0=ptr;
-		if (ptr2!=NULL)
-			ptr2->next=ptr;
-		ptr2=ptr;
-		ptr->ninedig=*ninedig_t++;
-		ptr->next=NULL;		
-	}
-	if (ptr0==NULL || SDL_LockMutex(lpi->mutexadd)<0)
-		return ;
-	lpi->at += 9*n;
-	if (lpi->first==NULL)
-		lpi->first=ptr0;
-	if (lpi->last!=NULL)	
-		lpi->last->next=ptr0;
-	lpi->last=ptr2;
-	SDL_UnlockMutex(lpi->mutexadd);
-	if (SDL_LockMutex(lpi->muteunitat)==0)
+	if (SDL_LockMutex(lpi->mutexadd)==0)
 	{
-		if (lpi_isuntilat(lpi))
-			SDL_CondSignal(lpi->condunitat);
-		SDL_UnlockMutex(lpi->muteunitat);
+		ptr=lpi->ldfirst;
+		if (ptr)
+		{
+			lpi->ldfirst=ptr->next;
+			if (!lpi->ldfirst)
+				lpi->ldlast=NULL;
+			ptr->next=NULL;
+		}
+		SDL_UnlockMutex(lpi->mutexadd);
 	}
+	
+	return ptr;
+}
+
+static struct _LISTDECSPI *lpi_deasignlfirst(LISTDECIMALPI *lpi)
+{
+	struct _LISTDECSPI *ptr=NULL;
+	
+	if (SDL_LockMutex(lpi->mutexadd)==0)
+	{
+		ptr=lpi->lfirst;
+		if (ptr)
+		{
+			lpi->lfirst=ptr->next;
+			if (!lpi->lfirst)
+				lpi->llast=NULL;
+			ptr->next=NULL;
+		}
+		SDL_UnlockMutex(lpi->mutexadd);
+	}
+	
+	return ptr;
+}
+
+static void lpi_addldlast(LISTDECIMALPI *lpi,struct _LISTDECSPI *ptr)
+{
+	if (SDL_LockMutex(lpi->mutexadd)==0)
+	{
+		ptr->next=lpi->ldlast;
+		if (lpi->ldfirst==NULL)
+			lpi->ldfirst=ptr;
+		lpi->ldlast=ptr;
+		SDL_UnlockMutex(lpi->mutexadd);
+	}
+	else
+		free(ptr);
+}
+
+static void lpi_addllast(LISTDECIMALPI *lpi,struct _LISTDECSPI *ptr)
+{
+	if (SDL_LockMutex(lpi->mutexadd)==0)
+	{
+		ptr->next=lpi->llast;
+		if (lpi->lfirst==NULL)
+			lpi->lfirst=ptr;
+		lpi->llast=ptr;
+		SDL_UnlockMutex(lpi->mutexadd);
+	}
+	else
+		free(ptr);
+}
+
+static struct _LISTDECSPI *lpi_getlistdecspi(LISTDECIMALPI *lpi,int *new)
+{
+	struct _LISTDECSPI *ptr=lpi_deasignldfirst(lpi);
+	
+	while ((ptr=lpi_deasignldfirst(lpi))!=NULL)
+		if (ptr->numdec>=lpi->blnumdec)
+			break;
+	*new=!ptr;
+	if (*new)
+	{
+		ptr=malloc(sizeof(*ptr));
+		if (ptr)
+		{			
+			if ((ptr->decstr=calloc(lpi->blnumdec+1,sizeof(char *)))==NULL)
+			{	
+				ptr->numdec=0;
+				lpi_addldlast(lpi,ptr);
+				ptr=NULL;
+			}
+			else
+				ptr->numdec=lpi->blnumdec;
+		}
+	}
+	if (ptr && ptr->numdec>0)
+		memset(ptr->decstr,'\x0',ptr->numdec+1);
+		
+	return ptr;
 }
 
 static int lpi_thread(LISTDECIMALPI *lpi)
 {
-	int at2;
-	int cpus,i,*ninedig_t,*dump;
-	SDL_Thread **threads;
+	TIMER timer;
+	struct _LISTDECSPI *ptr;
+	int new,ret;
 	
 	lpi->at=1;
+	init_timers(&timer);
 	while (!lpi->finish)
 	{
-		cpus=reservemaxnumcpus();
-		for(at2=lpi->at,i=0,ninedig_t=lpi->ninedig_t,threads=lpi->threads;i<cpus;)
+		ptr=lpi_getlistdecspi(lpi,&new);
+		if (!ptr)
+			continue;
+		for(;;)
 		{
-			dump=ninedig_t;
-			*ninedig_t++=at2;
-			at2 += 9;
-			i++;
-			if ((*threads++=SDL_CreateThread(thread_ninedigitpi,"thread_ninedigitpi",dump))==NULL)
+			elapse_timers(&timer,1);
+			ret=calcpimulticore(ptr->decstr,lpi->at,lpi->blnumdec,(lpi->fastpi) ? fastpi: ninedigitpi_calcpi);
+			elapse_timers(&timer,0);
+			if (isnosucess(ret))
+			{
+				if (lpi->fastpi)
+				{
+					lpi->fastpi=0;
+					lpi->blnumdec /= 16;
+					if (lpi->blnumdec<1)
+						lpi->blnumdec=1;
+				}
+				else if (lpi->blnumdec>1)
+					lpi->blnumdec--;
+				continue;
+			}
+			else
 				break;
 		}
-		lpi->numdigits=++i;
-		*ninedig_t=ninedigitsofpi(at2);
-		at2 += 9;
-		for(ninedig_t=lpi->ninedig_t,threads=lpi->threads;i-->0;threads++,ninedig_t++)
-			SDL_WaitThread(*threads,ninedig_t);
-		dereservenumcpus(cpus);
-		addninedigitsofpi(lpi);
+		lpi->at += lpi->blnumdec;
+		if (timer.elapsetime>lpi->blmaxelapse)
+		{
+			/*
+				lpi->blnumdec -> timer.elapsetime
+				 x		 -> lpi->blmaxelapse
+			*/
+			lpi->blnumdec=(long)lpi->blnumdec*lpi->blmaxelapse/timer.elapsetime;
+		}
+		lpi_addllast(lpi,ptr);
 	}
 	
 	return 0;
@@ -173,59 +247,15 @@ void lpi_donethread(LISTDECIMALPI *lpi,int async)
 	}
 }
 
-int lpi_nextninedigitpi(LISTDECIMALPI *lpi)
-{
-	int ret;
-	struct _LISTNINEPIS *ptr;
-	
-	if (SDL_LockMutex(lpi->mutexadd)<0)
-		return -1;
-		
-	if (lpi->first==NULL)
-	{	
-		SDL_UnlockMutex(lpi->mutexadd);	
-		
-		return -1;		
-	}
-	ptr	=lpi->first;
-	ret=ptr->ninedig;
-	lpi->first=ptr->next;
-	//free(ptr);
-	SDL_UnlockMutex(lpi->mutexadd);
-	
-	return ret;
-}
-
-void lpi_waitunitat(LISTDECIMALPI *lpi,int untilat)
-{
-	if (SDL_LockMutex(lpi->muteunitat)==0)
-	{
-		lpi->untilat=untilat;
-		while (!lpi_isuntilat(lpi))
-			SDL_CondWait(lpi->condunitat,lpi->muteunitat);
-		SDL_UnlockMutex(lpi->muteunitat);
-	}
-}
-
 void lpi_next(LISTDECIMALPI *lpi,int ndec)
 {
-	char *str;
-	int ninedigit;
-	
-	if (lpi->position<0)
-	{
-		strcpy(&lpi->ninedig,"3.");
-		lpi->position=0;
-	}	
-	for(str=lpi->ninedig+lpi->position;ndec>0;)
-	{		
-		if(*str=='\x0')
+	while(ndec>0)
+	{	
+		if(*(lpi->pistr)=='\x0')
 		{
-			if ((ninedigit=lpi_nextninedigitpi(lpi))<0)
-				continue;
-			sprintf(&lpi->ninedig,"%09i",ninedigit);			
-			lpi->position=0;
-			str=lpi->ninedig;
+			if ((lpi->lact=lpi_deasignlfirst(lpi))==NULL)
+				return;
+			lpi->pistr=lpi->lact->decstr;
 			continue;
 		}
 		switch(*(lpi->cars_act))
@@ -237,8 +267,7 @@ void lpi_next(LISTDECIMALPI *lpi,int ndec)
 				lpi->cars_act++;
 				break;
 			default:
-				*(lpi->cars_act++)=*str++;
-				lpi->position++;
+				*(lpi->cars_act++)=*(lpi->pistr++);
 				ndec--;
 		}
 	}
@@ -252,7 +281,7 @@ void lpi_next_slow(LISTDECIMALPI *lpi)
 void lpi_render(LISTDECIMALPI *lpi)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glColor3d(0.0, 0.0, 1.0);
+	glColor3d(1.0, 1.0, 1.0);
 	glRasterPos2f(0, 13);
 	glutBitmapString(GLUT_BITMAP_8_BY_13,lpi->cars);
 	glxswap();	
@@ -275,9 +304,13 @@ static int pi_initgl(Pi *data)
 
 static void pi_run(Pi *data)
 {
+	//char pi[100+1];
+	
+	//ninedigitpi_calcpi(pi,1,100);
+	//calcpimulticore(pi,1,100,ninedigitpi_calcpi);
+	
 	lpi_initthread(&data->listpi);
-	//lpi_waitunitat(&data->listpi,1000 /*2*data->listpi.width*data->listpi.height*/);
-	while(timestuff(10,1,&data->listpi,lpi_next_slow,lpi_render,2*1000000)!=RET_CANCEL);
+	while(timestuff(5,1,&data->listpi,lpi_next_slow,lpi_render,2*1000000)!=RET_CANCEL);
 	lpi_donethread(&data->listpi,0);
 }
 

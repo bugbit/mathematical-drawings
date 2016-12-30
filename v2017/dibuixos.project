@@ -19,6 +19,7 @@
     <File Name="ninedigitsofpi.c"/>
     <File Name="pi.c"/>
     <File Name="fastpi.c"/>
+    <File Name="math.c"/>
   </VirtualDirectory>
   <VirtualDirectory Name="data">
     <File Name="data/demo.mp3"/>

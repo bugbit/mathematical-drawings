@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=oscar
-Date                   :=29/12/16
+Date                   :=30/12/16
 CodeLitePath           :="/home/oscar/.codelite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -61,7 +61,7 @@ AS       := /usr/bin/as
 ##
 CodeLiteDir:=/usr/share/codelite
 Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/dibuixos.c$(ObjectSuffix) $(IntermediateDirectory)/demo.c$(ObjectSuffix) $(IntermediateDirectory)/util.c$(ObjectSuffix) $(IntermediateDirectory)/glutil.c$(ObjectSuffix) $(IntermediateDirectory)/fg_font.c$(ObjectSuffix) $(IntermediateDirectory)/fg_font_data.c$(ObjectSuffix) $(IntermediateDirectory)/fg_stroke_mono_roman.c$(ObjectSuffix) $(IntermediateDirectory)/fg_stroke_roman.c$(ObjectSuffix) $(IntermediateDirectory)/timer.c$(ObjectSuffix) \
-	$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) $(IntermediateDirectory)/pi.c$(ObjectSuffix) $(IntermediateDirectory)/fastpi.c$(ObjectSuffix) 
+	$(IntermediateDirectory)/ninedigitsofpi.c$(ObjectSuffix) $(IntermediateDirectory)/pi.c$(ObjectSuffix) $(IntermediateDirectory)/fastpi.c$(ObjectSuffix) $(IntermediateDirectory)/math.c$(ObjectSuffix) 
 
 
 
@@ -206,6 +206,14 @@ $(IntermediateDirectory)/fastpi.c$(DependSuffix): fastpi.c
 
 $(IntermediateDirectory)/fastpi.c$(PreprocessSuffix): fastpi.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/fastpi.c$(PreprocessSuffix) "fastpi.c"
+
+$(IntermediateDirectory)/math.c$(ObjectSuffix): math.c $(IntermediateDirectory)/math.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/datos/proyectos/oscar/dibuixos/v2017/math.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/math.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/math.c$(DependSuffix): math.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/math.c$(ObjectSuffix) -MF$(IntermediateDirectory)/math.c$(DependSuffix) -MM "math.c"
+
+$(IntermediateDirectory)/math.c$(PreprocessSuffix): math.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/math.c$(PreprocessSuffix) "math.c"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

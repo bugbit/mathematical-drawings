@@ -65,7 +65,7 @@ char *glexBitmapCarsScrollUp(char *str)
 	 * 
 	 */
 	memcpy(str,newline,n2);
-	memset(last,' ',n);
+	memset(last,' ',n-1);
 	
 	return last;
 }

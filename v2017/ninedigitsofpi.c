@@ -178,7 +178,20 @@ int ninedigitsofpi(int n)
 	return (int)(sum * 1e9);
 }
 
-int thread_ninedigitpi(int *at)
+int ninedigitpi_calcpi(char *str,int at,int numdec)
 {
-	return ninedigitsofpi(*at);
+	char ninedig[9+1];
+	int n;
+	
+	while(numdec>0)
+	{
+		sprintf(ninedig,"%09i",ninedigitsofpi(at));
+		at += 9;
+		n=min(numdec,9);
+		memcpy(str,ninedig,n);
+		str += n;
+		numdec -= n;
+	}
+	
+	return 0;
 }

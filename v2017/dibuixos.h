@@ -54,19 +54,18 @@ typedef struct
 {
 	int finish,at;
 	int nummaxthread,numdigits;
-	SDL_Thread **threads,*thread;
-	SDL_mutex *mutexadd,*muteunitat;
-	SDL_cond *condunitat;
-	int *ninedig_t;
-	struct _LISTNINEPIS
+	SDL_Thread *thread;
+	SDL_mutex *mutexadd;
+	struct _LISTDECSPI
 	{
-		int ninedig;
-		struct _LISTNINEPIS *next;
-	} *first,*last;
+		int numdec;
+		char *decstr;
+		struct _LISTDECSPI *next;
+	} *lfirst,*llast,*ldfirst,*ldlast,*lact;
 	int width,height;
-	char *cars,*cars_act;
-	char ninedig[9+1+2];
-	int position,untilat;
+	char *cars,*cars_act,*pistr;
+	int position;
+	int fastpi,blnumdec,blmaxelapse;
 } LISTDECIMALPI;
 
 // main
@@ -113,8 +112,9 @@ char *glexBitmapCarsScrollUp(char *str);
 // math
 
 int ninedigitsofpi(int n);
-int thread_ninedigitpi(int *at);
+int ninedigitpi_calcpi(char *str,int at,int numdec);
 int fastpi(char *str,int at,int numdec);
+int calcpimulticore(char *str,int at,int numdec,int (*calcpi)(char *str,int at,int numdec));
 
 // timer
 
@@ -129,7 +129,6 @@ void lpi_destroy(LISTDECIMALPI *lpi);
 int lpi_initthread(LISTDECIMALPI *lpi);
 void lpi_donethread(LISTDECIMALPI *lpi,int async);
 int lpi_nextninedigitpi(LISTDECIMALPI *lpi);
-void lpi_waitunitat(LISTDECIMALPI *lpi,int untilat);
 void lpi_next(LISTDECIMALPI *lpi,int ndec);
 void lpi_render(LISTDECIMALPI *lpi);
 void lpi_next_slow(LISTDECIMALPI *lpi);

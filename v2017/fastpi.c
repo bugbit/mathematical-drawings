@@ -7,6 +7,7 @@ int fastpi(char *str,int at,int numdec)
 	int digits=at+numdec-1,ret=RET_SUCESS;
 	int len,j,i;
 	unsigned int *x,*r,*pi,carry,num,dem,c,q;
+	char *str2;
 	
 	digits++;
 	len=digits*10/3+2;
@@ -42,17 +43,17 @@ int fastpi(char *str,int at,int numdec)
 						x[j] = r[j] * 10;
 				}
 				
-				c=0;
+				c=0;				
+				str2=str+numdec;
+				*str2--='\x0';
 				
-				for(i = digits - 1,j=0; i >=0; i--,j++)
+				for(i = digits - 1,j=numdec; j>0; i--,j--)
 				{
 					pi[i] += c;
 					c = pi[i] / 10;
 
-					if (j>=at)
-						*str++='0'+(pi[i] % 10);
+					*str2--='0'+(pi[i] % 10);
 				}
-				*str++='\x0';
 				
 				free(pi);
 			}
