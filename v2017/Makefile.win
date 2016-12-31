@@ -4,8 +4,8 @@
 CPP      = g++.exe -D__DEBUG__
 CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
-OBJ      = main.o dibuixos.o demo.o
-LINKOBJ  = main.o dibuixos.o demo.o
+OBJ      = main.o dibuixos.o demo.o fastpi.o fg_font.o fg_font_data.o fg_stroke_mono_roman.o fg_stroke_roman.o glutil.o math.o ninedigitsofpi.o pi.o timer.o util.o
+LINKOBJ  = main.o dibuixos.o demo.o fastpi.o fg_font.o fg_font_data.o fg_stroke_mono_roman.o fg_stroke_roman.o glutil.o math.o ninedigitsofpi.o pi.o timer.o util.o
 LIBS     = -L"C:/Programas/Dev-Cpp/MinGW64/lib" -L"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -L"C:/Programas/Dev-Cpp/MinGW64/freeglut/lib/x64" -static-libgcc -lglu32 -lfreeglut_static -lopengl32 -lwinmm -lgdi32 -Wl,--subsystem,windows -g3
 INCS     = -I"C:/Programas/Dev-Cpp/MinGW64/include" -I"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Programas/Dev-Cpp/MinGW64/freeglut/include"
 CXXINCS  = -I"C:/Programas/Dev-Cpp/MinGW64/include" -I"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"C:/Programas/Dev-Cpp/MinGW64/freeglut/include"
@@ -32,3 +32,36 @@ dibuixos.o: dibuixos.c
 
 demo.o: demo.c
 	$(CC) -c demo.c -o demo.o $(CFLAGS)
+
+fastpi.o: fastpi.c
+	$(CC) -c fastpi.c -o fastpi.o $(CFLAGS)
+
+fg_font.o: fg_font.c
+	$(CC) -c fg_font.c -o fg_font.o $(CFLAGS)
+
+fg_font_data.o: fg_font_data.c
+	$(CC) -c fg_font_data.c -o fg_font_data.o $(CFLAGS)
+
+fg_stroke_mono_roman.o: fg_stroke_mono_roman.c
+	$(CC) -c fg_stroke_mono_roman.c -o fg_stroke_mono_roman.o $(CFLAGS)
+
+fg_stroke_roman.o: fg_stroke_roman.c
+	$(CC) -c fg_stroke_roman.c -o fg_stroke_roman.o $(CFLAGS)
+
+glutil.o: glutil.c
+	$(CC) -c glutil.c -o glutil.o $(CFLAGS)
+
+math.o: math.c
+	$(CC) -c math.c -o math.o $(CFLAGS)
+
+ninedigitsofpi.o: ninedigitsofpi.c
+	$(CC) -c ninedigitsofpi.c -o ninedigitsofpi.o $(CFLAGS)
+
+pi.o: pi.c
+	$(CC) -c pi.c -o pi.o $(CFLAGS)
+
+timer.o: timer.c
+	$(CC) -c timer.c -o timer.o $(CFLAGS)
+
+util.o: util.c
+	$(CC) -c util.c -o util.o $(CFLAGS)
