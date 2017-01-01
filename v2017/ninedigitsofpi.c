@@ -73,8 +73,8 @@ int is_prime(int n)
 {
 	if( (n % 2) == 0 ) return 0;
 
-	int r = (int)(sqrt(n));
-	for( int i = 3; i <= r; i += 2 )
+	int r = (int)(sqrt(n)),i;
+	for(i = 3; i <= r; i += 2 )
 	{
 		if( (n % i) == 0 ) return 0;
 	}
@@ -105,15 +105,15 @@ int ninedigitsofpi(int n)
 	int kq2 = 0;
 	int t = 0;
 	int v = 0;
-	int s = 0;
+	int s = 0,a,i,k;
 	double sum = 0.0;
 
-	for( int a = 3; a <= (2*N); a = next_prime(a) )
+	for( a = 3; a <= (2*N); a = next_prime(a) )
 	{
 		vmax = (int)(log(2*N)/log(a));
 		av = 1;
 
-		for( int i = 0; i < vmax; ++i ) av = av*a;
+		for( i = 0; i < vmax; ++i ) av = av*a;
 
 		s = 0;
 		num = 1;
@@ -122,7 +122,7 @@ int ninedigitsofpi(int n)
 		kq = 1;
 		kq2 = 1;
 
-		for( int k = 1; k <= N; ++k ) 
+		for( k = 1; k <= N; ++k ) 
 		{
 			t = k;
 			if( kq >= a ) 
@@ -164,7 +164,7 @@ int ninedigitsofpi(int n)
 				t = inv_mod(den, av);
 				t = mul_mod(t, num, av);
 				t = mul_mod(t, k, av);
-				for( int i = v; i < vmax; ++i ) t = mul_mod(t, a, av);
+				for(i = v; i < vmax; ++i ) t = mul_mod(t, a, av);
 				s += t;
 				if( s>=av ) s -= av;
 			}
