@@ -173,7 +173,7 @@ static struct _LISTDECSPI *lpi_getlistdecspi(LISTDECIMALPI *lpi,int *new)
 	return ptr;
 }
 
-static int lpi_thread(LISTDECIMALPI *lpi)
+int lpi_thread(LISTDECIMALPI *lpi)
 {
 	TIMER timer;
 	struct _LISTDECSPI *ptr;
