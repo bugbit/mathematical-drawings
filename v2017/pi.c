@@ -225,7 +225,7 @@ int lpi_thread(LISTDECIMALPI *lpi)
 int lpi_initthread(LISTDECIMALPI *lpi)
 {
 	reservenumcpus(1,1);
-	if ((lpi->thread=SDL_CreateThread(lpi_thread,"lpi_thread",lpi))==NULL)
+	if ((lpi->thread=SDL_CreateThread(lpi_thread,"lpi",lpi))==NULL)
 	{
 		dereservenumcpus(1);
 		

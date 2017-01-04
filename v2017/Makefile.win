@@ -6,12 +6,12 @@ CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
 OBJ      = main.o dibuixos.o demo.o fastpi.o fg_font.o fg_font_data.o fg_stroke_mono_roman.o fg_stroke_roman.o glutil.o math.o ninedigitsofpi.o pi.o timer.o util.o
 LINKOBJ  = main.o dibuixos.o demo.o fastpi.o fg_font.o fg_font_data.o fg_stroke_mono_roman.o fg_stroke_roman.o glutil.o math.o ninedigitsofpi.o pi.o timer.o util.o
-LIBS     = -L"C:/Programas/Dev-Cpp/MinGW64/lib32" -L"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -L"C:/Programas/Dev-Cpp/MinGW64/freeglut/lib" -static-libgcc -static-libgcc -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lglu32 -lopengl32 -lwinmm -lgdi32 -m32 -g3
+LIBS     = -L"C:/Programas/Dev-Cpp/MinGW64/lib32" -L"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -L"C:/Programas/Dev-Cpp/MinGW64/freeglut/lib" -static-libgcc -mwindows -mwindows  -pthread  -static-libgcc -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lglu32 -lopengl32 -lwinmm -lgdi32 -m32 -g3
 INCS     = -I"C:/Programas/Dev-Cpp/MinGW64/include" -I"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Programas/Dev-Cpp/MinGW64/freeglut/include"
 CXXINCS  = -I"C:/Programas/Dev-Cpp/MinGW64/include" -I"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"C:/Programas/Dev-Cpp/MinGW64/freeglut/include"
 BIN      = Dibuixos.exe
-CXXFLAGS = $(CXXINCS) -Ofast -m32 -g3
-CFLAGS   = $(INCS) -Ofast -m32 -g3 -include pch.h
+CXXFLAGS = $(CXXINCS) -m32 -g3
+CFLAGS   = $(INCS) -m32 -g3 -include pch.h
 RM       = rm.exe -f
 
 .PHONY: all all-before all-after clean clean-custom
