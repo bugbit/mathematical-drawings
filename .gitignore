@@ -44,6 +44,11 @@ bin/
 
 .codelite/
 
+Library/
+Temp/
+Obj/
+Build/
+Builds/
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
