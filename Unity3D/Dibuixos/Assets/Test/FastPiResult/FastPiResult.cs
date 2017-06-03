@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FastPiResult : MonoBehaviour {
-    int digits = 200;
+public class FastPiResult : MonoBehaviour
+{
+    public int digits = 200;
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         var pWatch = new System.Diagnostics.Stopwatch();
 
         pWatch.Start();
@@ -20,8 +22,13 @@ public class FastPiResult : MonoBehaviour {
         for (int j = 0; j < x.Length; j++)
             x[j] = 20;
 
+        var pWatch1 = new System.Diagnostics.Stopwatch();
+
         for (int i = 0; i < digits; i++)
         {
+            pWatch1.Reset();
+            pWatch1.Start();
+
             uint carry = 0;
             for (int j = 0; j < x.Length; j++)
             {
@@ -44,6 +51,10 @@ public class FastPiResult : MonoBehaviour {
 
             for (int j = 0; j < x.Length; j++)
                 x[j] = r[j] * 10;
+
+            pWatch1.Stop();
+
+            Debug.Log(string.Format("N. {0} Calculate pi {1} digits total: {2}", i, digits, pWatch1.ElapsedMilliseconds));
         }
 
         var result = "";
@@ -59,11 +70,12 @@ public class FastPiResult : MonoBehaviour {
         }
 
         pWatch.Stop();
-        Debug.Log(string.Format("Calculate pi: {0}", pWatch.ElapsedMilliseconds));
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        Debug.Log(string.Format("Calculate pi {0} digits total: {1}", digits, pWatch.ElapsedMilliseconds));
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 }
