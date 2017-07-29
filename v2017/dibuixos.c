@@ -193,9 +193,10 @@ int init()
 	SDL_GetRendererInfo(displayRenderer, &displayRendererInfo);
 	/*TODO: Check that we have OpenGL */
     if ((displayRendererInfo.flags & SDL_RENDERER_ACCELERATED) == 0 || 
-        (displayRendererInfo.flags & SDL_RENDERER_TARGETTEXTURE) == 0) {
-        /*TODO: Handle this. We have no render surface and not accelerated. */
-}
+        (displayRendererInfo.flags & SDL_RENDERER_TARGETTEXTURE) == 0) 
+		{
+        	/*TODO: Handle this. We have no render surface and not accelerated. */
+		}
 	if (!fullscreen)
 		SDL_SetWindowTitle(displayWindow,"Dibuixos Matematics");
 	
@@ -293,3 +294,4 @@ int timestuff(int keyfinish,int rate,void *data, void (*update) (void *data), vo
 	
 	return RET_SUCESS;
 }
+
