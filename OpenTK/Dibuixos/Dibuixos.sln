@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dibuixos.Shared", "Dibuixos.Shared\Dibuixos.Shared.shproj", "{21D6BE61-B1DB-475E-99BE-AF60D83EE8E7}"
@@ -7,19 +7,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos.Desktop", "Dibuixo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos.Android", "Dibuixos.Android\Dibuixos.Android.csproj", "{28D25CB8-A9B1-4E7B-8E8A-4F76E385D571}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos", "Dibuixos\Dibuixos.csproj", "{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Debug|x86.ActiveCfg = Debug|x86
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Debug|x86.Build.0 = Debug|x86
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Release|x86.ActiveCfg = Release|x86
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Release|x86.Build.0 = Release|x86
 		{28D25CB8-A9B1-4E7B-8E8A-4F76E385D571}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{28D25CB8-A9B1-4E7B-8E8A-4F76E385D571}.Debug|x86.Build.0 = Debug|Any CPU
 		{28D25CB8-A9B1-4E7B-8E8A-4F76E385D571}.Release|x86.ActiveCfg = Release|Any CPU
 		{28D25CB8-A9B1-4E7B-8E8A-4F76E385D571}.Release|x86.Build.0 = Release|Any CPU
+		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Debug|x86.ActiveCfg = Debug|x86
+		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Debug|x86.Build.0 = Debug|x86
+		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Release|x86.ActiveCfg = Release|x86
+		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Release|x86.Build.0 = Release|x86
+		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Debug|x86.ActiveCfg = Debug|x86
+		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Debug|x86.Build.0 = Debug|x86
+		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Release|x86.ActiveCfg = Release|x86
+		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal

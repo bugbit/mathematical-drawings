@@ -85,10 +85,6 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable\" />
-    <Folder Include="Data\" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Shaders\Shader.fsh" />
     <EmbeddedResource Include="Shaders\Shader.vsh" />
   </ItemGroup>
