@@ -1,31 +1,55 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dibuixos.Shared", "Dibuixos.Shared\Dibuixos.Shared.shproj", "{21D6BE61-B1DB-475E-99BE-AF60D83EE8E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos.Desktop", "Dibuixos.Desktop\Dibuixos.Desktop.csproj", "{B7FFB455-0E1A-4902-B122-A96F046170F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos.Android", "Dibuixos.Android\Dibuixos.Android.csproj", "{28D25CB8-A9B1-4E7B-8E8A-4F76E385D571}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos", "Dibuixos\Dibuixos.csproj", "{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Builders", "Builders", "{040E5967-E760-4991-A3E2-1F32746D9C2E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuilderGLUTNativeDataToManaged", "BuilderGLUTNativeDataToManaged\BuilderGLUTNativeDataToManaged.vcxproj", "{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Dibuixos.Shared\Dibuixos.Shared.projitems*{21d6be61-b1db-475e-99be-af60d83ee8e7}*SharedItemsImports = 13
+		Dibuixos.Shared\Dibuixos.Shared.projitems*{b7ffb455-0e1a-4902-b122-a96f046170f0}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{28D25CB8-A9B1-4E7B-8E8A-4F76E385D571}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{28D25CB8-A9B1-4E7B-8E8A-4F76E385D571}.Debug|x86.Build.0 = Debug|Any CPU
-		{28D25CB8-A9B1-4E7B-8E8A-4F76E385D571}.Release|x86.ActiveCfg = Release|Any CPU
-		{28D25CB8-A9B1-4E7B-8E8A-4F76E385D571}.Release|x86.Build.0 = Release|Any CPU
+		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Debug|x64.ActiveCfg = Debug|x86
 		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Debug|x86.ActiveCfg = Debug|x86
 		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Debug|x86.Build.0 = Debug|x86
+		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Release|x64.ActiveCfg = Release|x86
 		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Release|x86.ActiveCfg = Release|x86
 		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Release|x86.Build.0 = Release|x86
+		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Debug|x64.ActiveCfg = Debug|x86
 		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Debug|x86.ActiveCfg = Debug|x86
 		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Debug|x86.Build.0 = Debug|x86
+		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Release|x64.ActiveCfg = Release|x86
 		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Release|x86.ActiveCfg = Release|x86
 		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Release|x86.Build.0 = Release|x86
+		{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8}.Debug|x64.ActiveCfg = Debug|x64
+		{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8}.Debug|x64.Build.0 = Debug|x64
+		{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8}.Debug|x86.ActiveCfg = Debug|Win32
+		{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8}.Debug|x86.Build.0 = Debug|Win32
+		{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8}.Release|x64.ActiveCfg = Release|x64
+		{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8}.Release|x64.Build.0 = Release|x64
+		{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8}.Release|x86.ActiveCfg = Release|Win32
+		{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8} = {040E5967-E760-4991-A3E2-1F32746D9C2E}
 	EndGlobalSection
 EndGlobal
