@@ -51,6 +51,7 @@
 */
 
 #include "stdafx.h"
+#include "GLUT.h"
 
 /*
 * The following bitmapped fonts are defined in this file:
@@ -2018,3 +2019,13 @@ TimesRoman24_Character_240,TimesRoman24_Character_241,TimesRoman24_Character_242
 const SFG_Font fgFontTimesRoman24 = { "-adobe-times-medium-r-normal--24-240-75-75-p-124-iso8859-1", 256, 29, TimesRoman24_Character_Map, 0, 7 };
 
 
+void GLUT::CreateFontsBitMap(GLUT::SFG_Fonts^ pFonts)
+{
+	pFonts->FontFixed8x13 = CreateFont((::SFG_Font *)&::fgFontFixed8x13);
+	pFonts->FontFixed9x15 = CreateFont((::SFG_Font *)&::fgFontFixed9x15);
+	pFonts->FontHelvetica10 = CreateFont((::SFG_Font *)&::fgFontHelvetica10);
+	pFonts->FontHelvetica12 = CreateFont((::SFG_Font *)&::fgFontHelvetica12);
+	pFonts->FontHelvetica18 = CreateFont((::SFG_Font *)&::fgFontHelvetica18);
+	pFonts->FontTimesRoman10 = CreateFont((::SFG_Font *)&::fgFontTimesRoman10);
+	pFonts->FontTimesRoman24 = CreateFont((::SFG_Font *)&::fgFontTimesRoman24);
+}

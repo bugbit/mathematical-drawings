@@ -7,4 +7,5 @@
 
 // TODO: mencionar aquí los encabezados adicionales que el programa necesita
 #include <stdlib.h>
+#include <memory.h>
 #include "fg.h"
