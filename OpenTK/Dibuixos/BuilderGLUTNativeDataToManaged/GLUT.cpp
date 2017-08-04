@@ -7,7 +7,8 @@ GLUT::GLUT()
 
 void GLUT::CreateAndWriteFonts()
 {
-	System::IO::StreamWriter^ pWriter = nullptr;
+	System::IO::FileStream ^ pFile = nullptr;
+	System::IO::Compression::GZipStream^ pZip = nullptr;
 
 	try
 	{
@@ -18,14 +19,19 @@ void GLUT::CreateAndWriteFonts()
 		CreateFontStrokeRoman(pFonts);
 
 		auto pXmlSerializer = gcnew System::Xml::Serialization::XmlSerializer(GLUT::SFG_Fonts::typeid);
-		pWriter = gcnew System::IO::StreamWriter(L"fgFonts.xml");
+		pFile = System::IO::File::Create(L"..\\Dibuixos\\Resources\\fgFonts.xml.gz");
+		pZip = gcnew System::IO::Compression::GZipStream(pFile, System::IO::Compression::CompressionMode::Compress);
 
-		pXmlSerializer->Serialize(pWriter, pFonts);
+		pXmlSerializer->Serialize(pZip, pFonts);
+		pZip->Close();
+		pFile->Close();
 	}
 	finally
 	{
-		if (pWriter != nullptr)
-			delete pWriter;
+		if (pZip != nullptr)
+			delete pZip;
+		if (pFile != nullptr)
+			delete pFile;
 	}
 }
 

@@ -61,27 +61,12 @@ namespace Dibuixos.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;SFG_Fonts xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
-        ///  &lt;StrokeMonoRoman&gt;
-        ///    &lt;Characters&gt;
-        ///      &lt;SFG_StrokeChar&gt;
-        ///        &lt;Number&gt;0&lt;/Number&gt;
-        ///        &lt;Right&gt;0&lt;/Right&gt;
-        ///      &lt;/SFG_StrokeChar&gt;
-        ///      &lt;SFG_StrokeChar&gt;
-        ///        &lt;Number&gt;0&lt;/Number&gt;
-        ///        &lt;Right&gt;0&lt;/Right&gt;
-        ///      &lt;/SFG_StrokeChar&gt;
-        ///      &lt;SFG_StrokeChar&gt;
-        ///        &lt;Number&gt;0&lt;/Number&gt;
-        ///        &lt;Right&gt;0&lt;/Right&gt;
-        ///      &lt;/SFG_StrokeChar&gt;
-        ///      &lt;SFG_S [resto de la cadena truncado]&quot;;.
+        ///   Busca un recurso adaptado de tipo System.Byte[].
         /// </summary>
-        internal static string fgFonts {
+        internal static byte[] fgFonts_xml {
             get {
-                return ResourceManager.GetString("fgFonts", resourceCulture);
+                object obj = ResourceManager.GetObject("fgFonts_xml", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }
