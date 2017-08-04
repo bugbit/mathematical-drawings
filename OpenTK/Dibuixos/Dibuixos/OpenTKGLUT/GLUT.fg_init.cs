@@ -6,8 +6,8 @@ namespace OpenTKGLUT
 	{
 		public static void glutInit(string[] args)
 		{
-			//Makefgstroke_mono_roman();
-		}
-	}
+            fgLoadFonts();
+        }
+    }
 }
 
