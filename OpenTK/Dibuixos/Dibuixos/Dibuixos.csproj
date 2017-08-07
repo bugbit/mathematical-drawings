@@ -36,14 +36,13 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
-    <Reference Include="System.XML" />
     <Reference Include="System.Xml.Serialization" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dibuixos\Core\Arguments.cs" />
     <Compile Include="OpenTKGLUT\GLUT.fg_font.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Dibuixos\DibuixosBaseWindow.cs" />
     <Compile Include="Dibuixos\DibuixosWindowDesktop.cs" />
     <Compile Include="OpenTKGLUT\GLUT.cs" />
     <Compile Include="OpenTKGLUT\GLUT.Internal.cs" />
@@ -53,6 +52,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Dibuixos\DibuixosWindow.cs" />
+    <Compile Include="Dibuixos\Core\Dibuix.cs" />
+    <Compile Include="Dibuixos\Demo\DibuixDemo.cs" />
+    <Compile Include="Dibuixos\Core\CoRoutine.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -66,5 +69,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dibuixos\Demo\" />
   </ItemGroup>
 </Project>

@@ -4,10 +4,16 @@ namespace OpenTKGLUT
 {
 	public static partial class GLUT
 	{
-		public static void glutInit(string[] args)
+		public static bool Inicializated { get; private set; }
+
+		public static void glutInit (string[] args)
 		{
-            fgLoadFonts();
-        }
-    }
+			try {
+				fgLoadFonts ();
+			} finally {
+				Inicializated = true;
+			}
+		}
+	}
 }
 
