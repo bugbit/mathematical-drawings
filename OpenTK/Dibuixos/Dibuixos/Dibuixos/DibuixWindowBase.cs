@@ -10,15 +10,14 @@ using System.Collections;
 
 namespace Dibuixos
 {
-    public class DibuixosWindow : GameWindow
+    public class DibuixWindowBase : GameWindow
     {
-		private Core.Dibuix mDibuix = null;
 		private Core.CoRoutine mCoRoutineLoad=new Core.CoRoutine();
 
         public Core.Arguments Args { get; private set; }
         public Matrix4 ProjectionMatrix { get; private set; }
 
-		public DibuixosWindow(Core.Arguments argArgs) : base(argArgs.Width,argArgs.Height,GraphicsMode.Default,"mathematical-drawings",(argArgs.FullScreen) ? GameWindowFlags.Fullscreen : GameWindowFlags.Default)
+		public DibuixWindowBase(Core.Arguments argArgs) : base(argArgs.Width,argArgs.Height,GraphicsMode.Default,"mathematical-drawings",(argArgs.FullScreen) ? GameWindowFlags.Fullscreen : GameWindowFlags.Default)
         {
             Args = argArgs;
         }
@@ -27,12 +26,17 @@ namespace Dibuixos
         {			
             base.OnLoad(e);
 
+			OnResize (EventArgs.Empty);
 			mCoRoutineLoad.Start (CoRoutineLoad ());
 			do
 			{
 				RenderSplash();
-			} while ( mCoRoutineLoad.Loop());
+			} while ( mCoRoutineLoad.Loop(LoopLoadValue));
         }
+
+		virtual protected void LoopLoadValue(Core.CoRoutine argR,object argValue)
+		{
+		}
 
         protected override void OnResize(EventArgs e)
         {
@@ -50,10 +54,7 @@ namespace Dibuixos
 		}
 
 		virtual protected void RenderSplash()
-		{
-			GL.ClearColor (Color.MidnightBlue);
-			GL.Clear(ClearBufferMask.ColorBufferBit);
-			SwapBuffers ();
+		{			
 		}
 
 		virtual protected IEnumerator CoRoutineLoad()
@@ -61,12 +62,11 @@ namespace Dibuixos
 			GLUT.glutInit(Args.Args);
 
 			yield return null;
+		}
 
-			mDibuix = new Dibuixos.Demo.DibuixDemo (Args.Args);
-
-			yield return mDibuix.CoRoutineLoad ();
-
-			yield break;
+		protected bool IsAnyKey()
+		{
+			return OpenTK.Input.Keyboard.GetState ().IsAnyKeyDown;
 		}
     }
 }

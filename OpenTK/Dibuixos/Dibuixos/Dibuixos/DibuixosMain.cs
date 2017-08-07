@@ -3,7 +3,7 @@ using Core = Dibuixos.Core;
 
 namespace Dibuixos
 {
-    class DibuixosWindowDesktop
+    class DibuixosMain
     {
 		public static void Main(string[] args)
         {
@@ -26,7 +26,7 @@ namespace Dibuixos
 
 				return;
 			}
-            using (var pGameWindow = new DibuixosWindow(pArgs))
+			using (var pGameWindow = new Dibuixos.Demo.DibuixWindowDemo(pArgs))
             {
                 pGameWindow.Run();
             }

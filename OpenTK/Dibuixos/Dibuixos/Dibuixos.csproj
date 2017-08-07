@@ -43,7 +43,6 @@
     <Compile Include="Dibuixos\Core\Arguments.cs" />
     <Compile Include="OpenTKGLUT\GLUT.fg_font.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Dibuixos\DibuixosWindowDesktop.cs" />
     <Compile Include="OpenTKGLUT\GLUT.cs" />
     <Compile Include="OpenTKGLUT\GLUT.Internal.cs" />
     <Compile Include="OpenTKGLUT\GLUT.fg_init.cs" />
@@ -52,10 +51,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Dibuixos\DibuixosWindow.cs" />
-    <Compile Include="Dibuixos\Core\Dibuix.cs" />
-    <Compile Include="Dibuixos\Demo\DibuixDemo.cs" />
     <Compile Include="Dibuixos\Core\CoRoutine.cs" />
+    <Compile Include="Dibuixos\DibuixosMain.cs" />
+    <Compile Include="Dibuixos\DibuixWindowBase.cs" />
+    <Compile Include="Dibuixos\Demo\DibuixWindowDemo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
