@@ -12,7 +12,7 @@ namespace Dibuixos
 {
     public class DibuixWindowBase : GameWindow
     {
-		private Core.CoRoutine mCoRoutineLoad=new Core.CoRoutine();
+		protected readonly Core.ManagerRenderFrame mRenderFrame=new Core.ManagerRenderFrame();
 
         public Core.Arguments Args { get; private set; }
         public Matrix4 ProjectionMatrix { get; private set; }
@@ -24,19 +24,8 @@ namespace Dibuixos
 
         protected override void OnLoad(EventArgs e)
         {			
-            base.OnLoad(e);
-
-			OnResize (EventArgs.Empty);
-			mCoRoutineLoad.Start (CoRoutineLoad ());
-			do
-			{
-				RenderSplash();
-			} while ( mCoRoutineLoad.Loop(LoopLoadValue));
+			GLUT.glutInit(Args.Args);
         }
-
-		virtual protected void LoopLoadValue(Core.CoRoutine argR,object argValue)
-		{
-		}
 
         protected override void OnResize(EventArgs e)
         {
@@ -50,23 +39,19 @@ namespace Dibuixos
 
 		protected override void OnRenderFrame (FrameEventArgs e)
 		{
-			base.OnRenderFrame (e);
-		}
-
-		virtual protected void RenderSplash()
-		{			
-		}
-
-		virtual protected IEnumerator CoRoutineLoad()
-		{
-			GLUT.glutInit(Args.Args);
-
-			yield return null;
+			mRenderFrame.RenderFrame (e);
+			SwapBuffers ();
 		}
 
 		protected bool IsAnyKey()
 		{
 			return OpenTK.Input.Keyboard.GetState ().IsAnyKeyDown;
+		}
+
+		protected void ExitIfAnyKey()
+		{
+			if (IsAnyKey ())
+				Exit ();
 		}
     }
 }

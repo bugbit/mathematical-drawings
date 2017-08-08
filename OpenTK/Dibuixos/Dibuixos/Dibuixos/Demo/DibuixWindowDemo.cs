@@ -1,7 +1,5 @@
 ﻿using System;
 using Core=Dibuixos.Core;
-using OpenTK.Graphics.OpenGL;
-using System.Drawing;
 
 namespace Dibuixos.Demo
 {
@@ -11,38 +9,10 @@ namespace Dibuixos.Demo
 		{
 		}
 
-		protected override void RenderSplash ()
+		protected override void OnLoad (EventArgs e)
 		{
-			GL.ClearColor (Color.MidnightBlue);
-			GL.Clear(ClearBufferMask.ColorBufferBit);
-			SwapBuffers ();
-		}
-
-		protected override void LoopLoadValue (Core.CoRoutine argR, object argValue)
-		{
-			ExitIfAnyKey ();
-		}
-
-		private void ExitIfAnyKey()
-		{
-			if (IsAnyKey ())
-				Exit ();
-		}
-
-		protected override System.Collections.IEnumerator CoRoutineLoad ()
-		{
-			yield return base.CoRoutineLoad ();
-
-//			for (;;) {
-//				ExitIfAnyKey ();
-//				yield return null;
-//			}
-			yield break;
-		}
-
-		protected override void OnRenderFrame (OpenTK.FrameEventArgs e)
-		{
-			RenderSplash ();
+			base.OnLoad (e);
+			mRenderFrame.Render = new SplashRender ();
 		}
 
 		protected override void OnUpdateFrame (OpenTK.FrameEventArgs e)

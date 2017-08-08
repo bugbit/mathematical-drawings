@@ -103,7 +103,7 @@ GLUT::SFG_StrokeFont^ GLUT::CreateFont(::SFG_StrokeFont *f)
 			}
 
 			pCar->Right = (*ptr)->Right;
-			pCar->Number = l;
+			pCar->Number = l2;
 			pCar->Strips = pStrips;
 		}
 		pCars[i] = pCar;

@@ -55,6 +55,12 @@
     <Compile Include="Dibuixos\DibuixosMain.cs" />
     <Compile Include="Dibuixos\DibuixWindowBase.cs" />
     <Compile Include="Dibuixos\Demo\DibuixWindowDemo.cs" />
+    <Compile Include="Dibuixos\Core\IRenderFrame.cs" />
+    <Compile Include="Dibuixos\Core\RenderFrameNull.cs" />
+    <Compile Include="Dibuixos\Core\ManagerRenderFrame.cs" />
+    <Compile Include="Dibuixos\Renders\TitleFontStrokeRender.cs" />
+    <Compile Include="Dibuixos\Core\GLUtil.cs" />
+    <Compile Include="Dibuixos\Demo\SplashRender.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -71,5 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dibuixos\Demo\" />
+    <Folder Include="Dibuixos\Renders\" />
   </ItemGroup>
 </Project>
