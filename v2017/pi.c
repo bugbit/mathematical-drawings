@@ -2,10 +2,24 @@
 
 #include "dibuixos.h"
 
+/*
 typedef struct
 {
-	LISTDECIMALPI listpi;
-} Pi;
+	int finish,at;
+	int nummaxthread,numdigits;
+	SDL_Thread *thread;
+	SDL_mutex *mutexadd;
+	struct _LISTDECSPI
+	{
+		int numdec;
+		char *decstr;
+		struct _LISTDECSPI *next;
+	} *lfirst,*llast,*ldfirst,*ldlast,*lact;
+	int width,height;
+	char *cars,*cars_act,*pistr;
+	int position;
+	int fastpi,blnumdec,blmaxelapse;
+} LISTDECIMALPI;
 
 static int pi_readargs(Pi *data,int argc, char **argv);
 static int pi_init(Pi *data);
@@ -209,11 +223,7 @@ int lpi_thread(LISTDECIMALPI *lpi)
 		}
 		lpi->at += lpi->blnumdec;
 		if (timer.elapsetime>lpi->blmaxelapse)
-		{
-			/*
-				lpi->blnumdec -> timer.elapsetime
-				 x		 -> lpi->blmaxelapse
-			*/
+		{			
 			lpi->blnumdec=(long)lpi->blnumdec*lpi->blmaxelapse/timer.elapsetime;
 		}
 		lpi_addllast(lpi,ptr);
@@ -318,3 +328,5 @@ static void pi_deinit(Pi *data)
 {
 	lpi_destroy(&data->listpi);
 }
+
+*/

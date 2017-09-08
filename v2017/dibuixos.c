@@ -6,13 +6,6 @@ char dib_error[128],kPathSeparator,path_data[128];
 int width=800,height=600,bpp=-1,fullscreen=0,loop=0,monocpu=0,quitanykey=1,numcpu,numpart=-1;
 GLdouble aspectratio;
 
-static DIBUIXODEF *dibuixos[]=
-{
-	&dib_pi
-};
-
-static size_t dibuixos_count=sizeof(dibuixos)/sizeof(*dibuixos);
-
 static SDL_Window *displayWindow;
 SDL_Renderer *displayRenderer;
 SDL_RendererInfo displayRendererInfo;
@@ -28,11 +21,6 @@ int seterror(char *fmt,...)
 	va_end (args);
 	
 	return RET_ERROR;
-}
-
-static int dibuixo_cmp(const void *arg,const void *dib)
-{
-    return strcmp((const char *) arg,((*(DIBUIXODEF **)dib))->name);
 }
 
 static void getpath_data(char *fileexe,int lng)
@@ -58,27 +46,10 @@ static void readfileexe(char *fileexe)
 	getpath_data(fileexe,lng);
 }
 
-static DIBUIX *mallocdib(DIBUIXODEF *def)
-{
-	DIBUIX *dib=(DIBUIX *) malloc(sizeof(DIBUIX)+def->size);
-	
-	if (dib==NULL)
-		seterror(strerror(errno));
-	else
-	{
-		dib->def=def;
-		memset(&dib->data,0,def->size);
-	}
-	
-	return dib;
-}
-
 int readargs(int argc, char **argv)
 {
     char *arg;
-    DIBUIXODEF **dib=NULL,*dibl;
-	int ret=RET_SUCESS;
-	DIBUIX *db;
+    int ret=RET_SUCESS;
     
 	readfileexe(*argv++);
     while (--argc>0)
@@ -123,8 +94,6 @@ int readargs(int argc, char **argv)
 void showusage(const char *msgerror)
 {
     char msg[2048];
-	int i=dibuixos_count;
-	DIBUIXODEF **dib=dibuixos;
 	char **descptr;
     
     if (msgerror==NULL)
@@ -141,20 +110,8 @@ void showusage(const char *msgerror)
  			"\t\t-r<width>x<height>x[bpp] : resolucion. Default -r800x600\n"
  			"\t\t-f : fullscreen\n"
  			"\t\t-l : play demo in infinite loop\n"
-			"\t\t--monocpu : no use paralel algoritms"
- 			"\tdibuixo default demo\n"
-			"\n"
- 			"\tdibuixo:\n"
+			//"\t\t--monocpu : no use paralel algoritms"
         );
-    for(;i-->0;dib++)
-	{		
-		for(descptr=(*dib)->description;(*descptr)!=NULL;descptr++)
-		{
-			strcat(msg,"\t\t");
-			strcat(msg,*descptr);
-			strcat(msg,"\n");			
-		}
-	}
 	if (msgerror!=NULL)
 		fputs(msg,stderr);
     else
