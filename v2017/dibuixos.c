@@ -3,13 +3,12 @@
 #include "dibuixos.h"
 
 char dib_error[128],kPathSeparator,path_data[128];
-int width=800,height=600,bpp=-1,fullscreen=0,loop=0,monocpu=0,quitanykey=1,numcpu;
+int width=800,height=600,bpp=-1,fullscreen=0,loop=0,monocpu=0,quitanykey=1,numcpu,numpart=-1;
 GLdouble aspectratio;
-DIBUIX *dibuixo_arg;
 
 static DIBUIXODEF *dibuixos[]=
 {
-	&dib_demo,&dib_pi
+	&dib_pi
 };
 
 static size_t dibuixos_count=sizeof(dibuixos)/sizeof(*dibuixos);
@@ -106,30 +105,17 @@ int readargs(int argc, char **argv)
         }
         else
         {
-            if (!(dib=lfind(arg,dibuixos,&dibuixos_count,sizeof(*dibuixos),dibuixo_cmp)))
-            {
-                return seterror("%s dibuixo not found",arg);
-            }
-			
 			break;
             //dibuixo_arg=*dib;
 			
 			//return (*dib)->readargs(argc,argv);
         }
     }
-	dibl=(dib==NULL) ? &dib_demo : *dib;
-	db=mallocdib(dibl);
-	if (db==NULL)
-		return RET_ERROR;
 		
-	if (isnosucess((ret=dibl->readargs(&db->data,--argc,++argv))))
-	{
-		free(db);
-		
+	if (isnosucess((ret=demo_readargs(--argc,++argv))))
+	{		
 		return ret;
 	}
-		
-	dibuixo_arg=db;
     
     return ret;
 }
@@ -200,7 +186,7 @@ int init()
 	if (!fullscreen)
 		SDL_SetWindowTitle(displayWindow,"Dibuixos Matematics");
 	
-	return dibuixo_arg->def->init(&dibuixo_arg->data);
+	return demo_init();
 }
  
 static void changeSize(GLsizei w,GLsizei h)
@@ -217,21 +203,20 @@ int initgl()
 	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &glcmaxVertices);
 	glexOrthoWindow();
 	
-	return dibuixo_arg->def->initgl(&dibuixo_arg->data);
+	return demo_initgl();
 }
 
 void run()
 {
 	init_timers(&timer_dib);
 	init_timers(&timer_update);
-	dibuixo_arg->def->run(&dibuixo_arg->data);
+	demo_run();
 }
 
 void deinit()
 {
 	deinitmuxtexreservecpu();
-	dibuixo_arg->def->deinit(&dibuixo_arg->data);
-	free(dibuixo_arg);
+	demo_deinit();
 	SDL_Quit();
 }
 

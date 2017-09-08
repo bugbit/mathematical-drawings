@@ -70,11 +70,10 @@ typedef struct
 
 // main
 
-extern DIBUIXODEF dib_demo,dib_pi;
-extern DIBUIX *dibuixo_arg;
+extern DIBUIXODEF dib_pi;
 
 extern char dib_error[128],kPathSeparator,path_data[128];
-extern int width,height,bpp,fullscreen,loop,monocpu,quitanykey,numcpu;
+extern int width,height,bpp,fullscreen,loop,monocpu,quitanykey,numcpu,numpart;
 extern GLdouble aspectratio;
 extern SDL_Renderer *displayRenderer;
 extern SDL_RendererInfo displayRendererInfo;
@@ -99,6 +98,13 @@ void deinitmuxtexreservecpu();
 int reservenumcpus(int numcpus,int force);
 int reservemaxnumcpus();
 void dereservenumcpus(int numcpus);
+
+int demo_readargs(int argc, char **argv);
+int demo_init();
+int demo_init();
+int demo_initgl();
+void demo_run();
+void demo_deinit();
 
 // glutil
 
