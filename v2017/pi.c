@@ -2,6 +2,36 @@
 
 #include "dibuixos.h"
 
+static char *lpi_str="3.",lpi_9str[10],*lpi_stract,*lpi_pistr;
+static int lpi_at=1;
+static TIMER lpi_time;
+
+void lpi_init()
+{
+	lpi_stract=lpi_str;
+	init_timers(&lpi_time);
+	if ((lpi_pistr=glexBitmapMakeCars(w8c,h13c))==NULL)
+		return RET_ERROR;
+	
+	return lpi_splash();
+}
+
+void lpi_deinit()
+{
+	FREE(lpi_pistr);
+}
+
+int lpi_splash()
+{	
+	if (update()==RET_CANCEL)
+		return RET_CANCEL;
+		
+	if (!count_timers(&lpi_time,1000))
+		return RET_SUCESS;
+		
+	return RET_SUCESS;
+}
+
 /*
 typedef struct
 {

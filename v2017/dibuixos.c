@@ -3,7 +3,8 @@
 #include "dibuixos.h"
 
 char dib_error[128],kPathSeparator,path_data[128];
-int width=800,height=600,bpp=-1,fullscreen=0,loop=0,monocpu=0,quitanykey=1,numcpu,numpart=-1;
+int width=800,height=600,bpp=-1,fullscreen=0,loop=0,monocpu=0,quitanykey=1,numcpu,numpart=-1,
+w8c,h13c;
 GLdouble aspectratio;
 
 static SDL_Window *displayWindow;
@@ -94,7 +95,6 @@ int readargs(int argc, char **argv)
 void showusage(const char *msgerror)
 {
     char msg[2048];
-	char **descptr;
     
     if (msgerror==NULL)
         *msg='\x0';
@@ -142,6 +142,8 @@ int init()
 		}
 	if (!fullscreen)
 		SDL_SetWindowTitle(displayWindow,"Dibuixos Matematics");
+	w8c=width/8;
+	h13c=(height/13)-3;
 	
 	return demo_init();
 }
@@ -175,6 +177,7 @@ void deinit()
 	deinitmuxtexreservecpu();
 	demo_deinit();
 	SDL_Quit();
+	lpi_deinit();
 }
 
 int updatex(SDL_Event *ev)

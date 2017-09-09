@@ -34,7 +34,8 @@ typedef struct
 // main
 
 extern char dib_error[128],kPathSeparator,path_data[128];
-extern int width,height,bpp,fullscreen,loop,monocpu,quitanykey,numcpu,numpart;
+extern int width,height,bpp,fullscreen,loop,monocpu,quitanykey,numcpu,numpart,
+w8c,h13c;
 extern GLdouble aspectratio;
 extern SDL_Renderer *displayRenderer;
 extern SDL_RendererInfo displayRendererInfo;
@@ -91,7 +92,9 @@ int count_timers(TIMER *timer,unsigned int counter);
 
 // pi
 
-
+void lpi_init();
+void lpi_deinit();
+int lpi_splash();
 
 // freeglut
 

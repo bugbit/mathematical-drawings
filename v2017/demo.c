@@ -24,6 +24,7 @@ int demo_init()
 {
 	int flags = MIX_INIT_MP3;
 	char filemp3[512];
+	int err;
 	 
 	if (SDL_Init(SDL_INIT_AUDIO) < 0) 
         return seterror( "SDL could not initialize sound system! SDL_Error: %s\n", SDL_GetError() );
@@ -35,6 +36,8 @@ int demo_init()
 	getfiledata(filemp3,"demo.mp3");
 	if ((music = Mix_LoadMUS(filemp3))==NULL)
 		return seterror("error %s\n",Mix_GetError());
+	if (isnosucess((err=lpi_splash())))
+		return err;
 	
 	return RET_SUCESS;
 }
@@ -49,12 +52,15 @@ void demo_run()
 	Mix_PlayMusic(music, 1);
 	while(update()!=RET_CANCEL)
 	{
+		lpi_splash();
+		/*
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glColor3d(1.0, 0.0, 0.0);
 		glRasterPos2f(0, 13);
 		glutBitmapString(GLUT_BITMAP_8_BY_13,"31415927\nhola\n");
 		//glutBitmapString(GLUT_BITMAP_8_BY_13,"31415927");
-		glxswap();		
+		glxswap();
+		*/		
 	}
 	//SDL_Delay(5000);
 }
