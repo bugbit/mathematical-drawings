@@ -57,7 +57,7 @@ Builds/
 /Assets/AssetStoreTools*
 
 # Visual Studio 2015 cache directory
-/.vs/
+.vs/
 *.VC.db
 ipch
 
