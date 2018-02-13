@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dibuixos.Shared", "Dibuixos.Shared\Dibuixos.Shared.shproj", "{21D6BE61-B1DB-475E-99BE-AF60D83EE8E7}"
 EndProject
@@ -19,10 +19,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos.Pruebas.Desktop", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos.Pruebas.Android", "Dibuixos.Pruebas.Android\Dibuixos.Pruebas.Android.csproj", "{AF426A1F-C137-4E38-BC1B-CFBDD6F5AEDC}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GLNativeWindowsHandle", "GLNativeWindowsHandle\GLNativeWindowsHandle.shproj", "{2F8B64A3-0588-4B1F-AFD8-8B27F2D85DE9}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Dibuixos.Pruebas.Shared\Dibuixos.Pruebas.Shared.projitems*{00ecb157-7ca2-4a77-8e88-e4ad958be6cc}*SharedItemsImports = 4
+		GLNativeWindowsHandle\GLNativeWindowsHandle.projitems*{00ecb157-7ca2-4a77-8e88-e4ad958be6cc}*SharedItemsImports = 4
 		Dibuixos.Shared\Dibuixos.Shared.projitems*{21d6be61-b1db-475e-99be-af60d83ee8e7}*SharedItemsImports = 13
+		GLNativeWindowsHandle\GLNativeWindowsHandle.projitems*{2f8b64a3-0588-4b1f-afd8-8b27f2d85de9}*SharedItemsImports = 13
 		Dibuixos.Pruebas.Shared\Dibuixos.Pruebas.Shared.projitems*{af426a1f-c137-4e38-bc1b-cfbdd6f5aedc}*SharedItemsImports = 4
 		Dibuixos.Shared\Dibuixos.Shared.projitems*{b7ffb455-0e1a-4902-b122-a96f046170f0}*SharedItemsImports = 4
 		Dibuixos.Pruebas.Shared\Dibuixos.Pruebas.Shared.projitems*{e25ee5a2-6963-4be0-b61c-0f125fb975dd}*SharedItemsImports = 13
