@@ -34,12 +34,20 @@
     <Reference Include="OpenTK">
       <HintPath>..\packages\OpenTK.2.0.0\lib\net20\OpenTK.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Serialization" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dibuixos\Browser\frmBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dibuixos\Browser\frmBrowser.Designer.cs">
+      <DependentUpon>frmBrowser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dibuixos\Core\Arguments.cs" />
     <Compile Include="OpenTKGLUT\GLUT.fg_font.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,13 +78,13 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <EmbeddedResource Include="Dibuixos\Browser\frmBrowser.resx">
+      <DependentUpon>frmBrowser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dibuixos\Demo\" />
-    <Folder Include="Dibuixos\Renders\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
