@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBrowser));
             this.toolTipSamples = new System.Windows.Forms.ToolTip(this.components);
             this.treeViewSamples = new System.Windows.Forms.TreeView();
             this.contextMenuStripSamples = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -44,13 +45,21 @@
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripDescription = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabSource = new System.Windows.Forms.TabPage();
+            this.txtSource = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.tabOutput = new System.Windows.Forms.TabPage();
             this.contextMenuStripSamples.SuspendLayout();
             this.contextMenuStripOutput.SuspendLayout();
             this.contextMenuStripSource.SuspendLayout();
             this.contextMenuStripDescription.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabSource.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSource)).BeginInit();
             this.SuspendLayout();
             // 
             // treeViewSamples
@@ -157,9 +166,85 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.treeViewSamples);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Size = new System.Drawing.Size(769, 411);
             this.splitContainer1.SplitterDistance = 256;
             this.splitContainer1.TabIndex = 4;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabSource);
+            this.tabControl1.Controls.Add(this.tabOutput);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(509, 411);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabSource
+            // 
+            this.tabSource.Controls.Add(this.txtSource);
+            this.tabSource.Location = new System.Drawing.Point(4, 22);
+            this.tabSource.Name = "tabSource";
+            this.tabSource.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSource.Size = new System.Drawing.Size(501, 385);
+            this.tabSource.TabIndex = 0;
+            this.tabSource.Text = "Source";
+            this.tabSource.UseVisualStyleBackColor = true;
+            // 
+            // txtSource
+            // 
+            this.txtSource.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.txtSource.AutoIndentCharsPatterns = "\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\n^\\s*(case|default)\\s*[^:]*(" +
+    "?<range>:)\\s*(?<range>[^;]+);\n";
+            this.txtSource.AutoScrollMinSize = new System.Drawing.Size(915, 14);
+            this.txtSource.BackBrush = null;
+            this.txtSource.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
+            this.txtSource.CharHeight = 14;
+            this.txtSource.CharWidth = 8;
+            this.txtSource.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtSource.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.txtSource.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtSource.IsReplaceMode = false;
+            this.txtSource.Language = FastColoredTextBoxNS.Language.CSharp;
+            this.txtSource.LeftBracket = '(';
+            this.txtSource.LeftBracket2 = '{';
+            this.txtSource.Location = new System.Drawing.Point(3, 3);
+            this.txtSource.Name = "txtSource";
+            this.txtSource.Paddings = new System.Windows.Forms.Padding(0);
+            this.txtSource.RightBracket = ')';
+            this.txtSource.RightBracket2 = '}';
+            this.txtSource.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.txtSource.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtSource.ServiceColors")));
+            this.txtSource.Size = new System.Drawing.Size(495, 379);
+            this.txtSource.TabIndex = 0;
+            this.txtSource.Text = "// Dibuixos - mathematical-drawings for C# .NET/Mono OpenTK\\nCopyright 1995-2015-" +
+    "2016-2017 Oscar Hernández Bañó";
+            this.txtSource.Zoom = 100;
+            // 
+            // tabOutput
+            // 
+            this.tabOutput.Location = new System.Drawing.Point(4, 22);
+            this.tabOutput.Name = "tabOutput";
+            this.tabOutput.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOutput.Size = new System.Drawing.Size(501, 385);
+            this.tabOutput.TabIndex = 1;
+            this.tabOutput.Text = "Output";
+            this.tabOutput.UseVisualStyleBackColor = true;
             // 
             // frmBrowser
             // 
@@ -174,8 +259,12 @@
             this.contextMenuStripSource.ResumeLayout(false);
             this.contextMenuStripDescription.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabSource.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -197,5 +286,9 @@
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripDescription;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabSource;
+        private System.Windows.Forms.TabPage tabOutput;
+        private FastColoredTextBoxNS.FastColoredTextBox txtSource;
     }
 }
