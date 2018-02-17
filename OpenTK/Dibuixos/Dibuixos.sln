@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dibuixos.Shared", "Dibuixos.Shared\Dibuixos.Shared.shproj", "{21D6BE61-B1DB-475E-99BE-AF60D83EE8E7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos.Desktop", "Dibuixos.Desktop\Dibuixos.Desktop.csproj", "{B7FFB455-0E1A-4902-B122-A96F046170F0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos", "Dibuixos\Dibuixos.csproj", "{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Builders", "Builders", "{040E5967-E760-4991-A3E2-1F32746D9C2E}"
@@ -19,16 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos.Pruebas.Desktop", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibuixos.Pruebas.Android", "Dibuixos.Pruebas.Android\Dibuixos.Pruebas.Android.csproj", "{AF426A1F-C137-4E38-BC1B-CFBDD6F5AEDC}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GLNativeWindowsHandle", "GLNativeWindowsHandle\GLNativeWindowsHandle.shproj", "{2F8B64A3-0588-4B1F-AFD8-8B27F2D85DE9}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Dibuixos.Pruebas.Shared\Dibuixos.Pruebas.Shared.projitems*{00ecb157-7ca2-4a77-8e88-e4ad958be6cc}*SharedItemsImports = 4
-		GLNativeWindowsHandle\GLNativeWindowsHandle.projitems*{00ecb157-7ca2-4a77-8e88-e4ad958be6cc}*SharedItemsImports = 4
-		Dibuixos.Shared\Dibuixos.Shared.projitems*{21d6be61-b1db-475e-99be-af60d83ee8e7}*SharedItemsImports = 13
-		GLNativeWindowsHandle\GLNativeWindowsHandle.projitems*{2f8b64a3-0588-4b1f-afd8-8b27f2d85de9}*SharedItemsImports = 13
 		Dibuixos.Pruebas.Shared\Dibuixos.Pruebas.Shared.projitems*{af426a1f-c137-4e38-bc1b-cfbdd6f5aedc}*SharedItemsImports = 4
-		Dibuixos.Shared\Dibuixos.Shared.projitems*{b7ffb455-0e1a-4902-b122-a96f046170f0}*SharedItemsImports = 4
 		Dibuixos.Pruebas.Shared\Dibuixos.Pruebas.Shared.projitems*{e25ee5a2-6963-4be0-b61c-0f125fb975dd}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,15 +30,8 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Debug|x64.ActiveCfg = Debug|x86
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Debug|x86.ActiveCfg = Debug|x86
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Debug|x86.Build.0 = Debug|x86
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Release|Any CPU.ActiveCfg = Release|x86
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Release|x64.ActiveCfg = Release|x86
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Release|x86.ActiveCfg = Release|x86
-		{B7FFB455-0E1A-4902-B122-A96F046170F0}.Release|x86.Build.0 = Release|x86
 		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Debug|Any CPU.Build.0 = Debug|x86
 		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Debug|x64.ActiveCfg = Debug|x86
 		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Debug|x86.ActiveCfg = Debug|x86
 		{F6C2AA49-4A8C-4031-86F1-C403E6EA9BFC}.Debug|x86.Build.0 = Debug|x86
@@ -67,7 +50,6 @@ Global
 		{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8}.Release|x86.ActiveCfg = Release|Win32
 		{27D1C76C-BCCA-4A3D-A66F-C2063F9607F8}.Release|x86.Build.0 = Release|Win32
 		{00ECB157-7CA2-4A77-8E88-E4AD958BE6CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00ECB157-7CA2-4A77-8E88-E4AD958BE6CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00ECB157-7CA2-4A77-8E88-E4AD958BE6CC}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{00ECB157-7CA2-4A77-8E88-E4AD958BE6CC}.Debug|x64.Build.0 = Debug|Any CPU
 		{00ECB157-7CA2-4A77-8E88-E4AD958BE6CC}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -79,8 +61,6 @@ Global
 		{00ECB157-7CA2-4A77-8E88-E4AD958BE6CC}.Release|x86.ActiveCfg = Release|Any CPU
 		{00ECB157-7CA2-4A77-8E88-E4AD958BE6CC}.Release|x86.Build.0 = Release|Any CPU
 		{AF426A1F-C137-4E38-BC1B-CFBDD6F5AEDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF426A1F-C137-4E38-BC1B-CFBDD6F5AEDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF426A1F-C137-4E38-BC1B-CFBDD6F5AEDC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{AF426A1F-C137-4E38-BC1B-CFBDD6F5AEDC}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{AF426A1F-C137-4E38-BC1B-CFBDD6F5AEDC}.Debug|x64.Build.0 = Debug|Any CPU
 		{AF426A1F-C137-4E38-BC1B-CFBDD6F5AEDC}.Debug|x64.Deploy.0 = Debug|Any CPU
