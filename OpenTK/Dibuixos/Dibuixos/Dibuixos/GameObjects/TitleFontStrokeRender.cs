@@ -3,7 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTKGLUT;
 using System.Drawing;
 
-namespace Dibuixos.Renders
+namespace Dibuixos.GameObjects
 {
     public class TitleFontStrokeRender : Core.IRenderFrame
     {

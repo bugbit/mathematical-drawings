@@ -73,6 +73,5 @@
     <None Include="Resources\140505-133938.jpg" />
   </ItemGroup>
   <Import Project="..\Dibuixos.Pruebas.Shared\Dibuixos.Pruebas.Shared.projitems" Label="Shared" />
-  <Import Project="..\GLNativeWindowsHandle\GLNativeWindowsHandle.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
