@@ -29,7 +29,10 @@ namespace Dibuixos.Draws.Text
         private int mFont = GLUT.GLUT_STROKE_MONO_ROMAN;
         private List<Caracter> mCars = new List<Caracter>();
         private double cx, cy;
+        private IEnumerable<Caracter> mCarsAct;
         private int mIdxCar = 0;
+        private double mCountTime;
+        private double mSpeed = 1;
 
         public TextInSpiralCenterFontStroken() : base(800, 600, GraphicsMode.Default, "Texts", GameWindowFlags.FixedWindow) { }
 
@@ -38,6 +41,7 @@ namespace Dibuixos.Draws.Text
             base.OnLoad(e);
             GLUT.glutInit(new string[0]);
             CreateCarsTexto(new[] { "DIBUIXOS", "MATEMATICS", });
+            mCarsAct = mCars;
         }
 
         private void calc_car_xy(Caracter cars)
@@ -126,6 +130,8 @@ namespace Dibuixos.Draws.Text
 
             var cars = (from c in mCars where c.modo != Modos.O_OCULTO select c);
 
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
             foreach (var c in cars)
             {
                 GL.PushMatrix();
@@ -142,9 +148,49 @@ namespace Dibuixos.Draws.Text
             if (Keyboard[Key.Escape])
                 Exit();
 
-            var ecars = mCars.Skip(mIdxCar);
+            mCountTime += e.Time;
 
+            while (mCountTime > mSpeed)
+            {
+                Caracter cars;
 
+                mCountTime -= mSpeed;
+                for (; ; )
+                {
+                    cars = mCarsAct.FirstOrDefault();
+
+                    if (cars == null)
+                    {
+                        mCarsAct = mCars.Where(c => c.modo != Modos.O_NOMOV);
+                    }
+                    else
+                        break;
+                }
+                if (cars != null)
+                {
+                    if (cars.modo == Modos.O_MOV)
+                    {
+                        cars.rad = Math.Min(cars.rad + cars.arad, cars.rad0);
+                        cars.ang -= cars.aang;
+                        while (cars.ang < 0) cars.ang += 2 * Math.PI;
+                        if (cars.steps-- <= 0)
+                        {
+                            cars.rad = cars.rad0;
+                            cars.anc = cars.anc0;
+                            cars.ang = cars.ang0;
+                            cars.modo = Modos.O_NOMOV;
+                        }
+                        mCarsAct = mCarsAct.Skip(1);
+                    }
+                    else
+                    {
+                        cars.modo = Modos.O_MOV;
+                        mCarsAct = mCars;
+                    }
+                    cars.anc = Math.Min(cars.anc + cars.aanc, cars.anc0);
+                    calc_car_xy(cars);
+                }
+            }
         }
 
 
