@@ -56,6 +56,9 @@
     <Reference Include="OpenTK, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.3.0.0-pre\lib\net20\OpenTK.dll</HintPath>
     </Reference>
+    <Reference Include="QuickFont, Version=3.0.2.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QuickFont.3.0.2.1\lib\net40\QuickFont.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -89,10 +92,12 @@
     <Compile Include="Dibuixos\Core\IRenderFrame.cs" />
     <Compile Include="Dibuixos\GameObjects\TitleFontStrokeRender.cs" />
     <Compile Include="Dibuixos\Core\GLUtil.cs" />
+    <Compile Include="TextInSpiralCenterFontQuickFont.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Fonts\HappySans.ttf" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Resources\fgFonts.xml.gz" />
