@@ -10,6 +10,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+Dibuixos - mathematical-drawings for C# .NET/Mono OpenTK\nCopyright 1995-2015-2016 Oscar Hernández Bañó
+*/
+
 namespace Dibuixos
 {
     public class TextInSpiralCenterFontQuickFont : GameWindow
@@ -34,6 +38,8 @@ namespace Dibuixos
         private IEnumerable<Caracter> mCarsAct;
         private double mCountTime;
         private double mSpeed = .01;
+        private double mCountTimeHide;
+        private double mSpeedHide = .5;
 
         public TextInSpiralCenterFontQuickFont() : base(800, 600, GraphicsMode.Default, "QuickFont Example", GameWindowFlags.Default, DisplayDevice.Default, 3, 2, GraphicsContextFlags.Default)
         { }
@@ -166,12 +172,10 @@ namespace Dibuixos
             if (Keyboard[Key.Escape])
                 Exit();
 
-            mCountTime += e.Time;
+            mCountTimeHide += e.Time;
 
-            while (mCountTime > mSpeed)
+            while (mCountTimeHide > mSpeedHide)
             {
-                Caracter cars;
-
                 if (mCarsIni.First().modo == Modos.O_FIN)
                 {
                     var pQuery = (from c in mCarsIni where c.modo == Modos.O_FIN select c).ToArray();
@@ -187,6 +191,15 @@ namespace Dibuixos
                     }
                     mCarsIni = mCarsIni.Skip(1);
                 }
+                mCountTimeHide -= mSpeedHide;
+            }
+
+            mCountTime += e.Time;
+
+            while (mCountTime > mSpeed)
+            {
+                Caracter cars;
+
                 mCountTime -= mSpeed;
                 for (; ; )
                 {
