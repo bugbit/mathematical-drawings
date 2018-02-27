@@ -36,12 +36,13 @@ namespace Dibuixos
         private double cx, cy;
         private IEnumerable<Caracter> mCarsIni;
         private IEnumerable<Caracter> mCarsAct;
-        private double mCountTime;
-        private double mSpeed = .01;
+        private double mTimeFinishTextAll = 5;
+        private double mShowSpeed = .001;
+        private double mShowCountTime;
         private double mCountTimeHide;
         private double mSpeedHide = .5;
 
-        public TextInSpiralCenterFontQuickFont() : base(800, 600, GraphicsMode.Default, "QuickFont Example", GameWindowFlags.Default, DisplayDevice.Default, 3, 2, GraphicsContextFlags.Default)
+        public TextInSpiralCenterFontQuickFont() : base(800, 600, GraphicsMode.Default, "Text In Spiral Center Quick Font", GameWindowFlags.Default, DisplayDevice.Default, 3, 2, GraphicsContextFlags.Default)
         { }
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace Dibuixos
             mFont = new QFont("Fonts/HappySans.ttf", 30, new QuickFont.Configuration.QFontBuilderConfiguration(true));
             mDrawingFont = new QFontDrawing();
             GL.ClearColor(Color4.CornflowerBlue);
-            CreateCarsTexto(new[] { "DIBUIXOS", "MATEMATICS", });
+            CreateCarsTexto(new[] { "Dibuixos", "Matematics", "mathematical-drawings for C#" });
             mCarsAct = mCarsIni = mCars.AsEnumerable();
         }
 
@@ -80,6 +81,7 @@ namespace Dibuixos
         {
             double rad, arad, divx, divy, div, anc, alfa, beta;
             int ncars;
+            int maxstep = 0, countcars = 0;
 
             rad = Math.Min(Width, Height) / 2.0d;
             cx = Width / 2.0d;
@@ -128,10 +130,14 @@ namespace Dibuixos
                     cars.aanc = anc / ((double)cars.steps + 1.0d);
                     calc_car_xy(cars);
                     beta += alfa;
+                    maxstep = Math.Max(maxstep, cars.steps);
+                    countcars++;
                 }
                 rad -= arad;
                 anc /= 2.0d;
             }
+            mShowSpeed = mTimeFinishTextAll / (Maths.MathEx.SumaDeGauss(countcars, 1, countcars) + maxstep);
+            mSpeedHide = mTimeFinishTextAll / countcars;
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -194,13 +200,13 @@ namespace Dibuixos
                 mCountTimeHide -= mSpeedHide;
             }
 
-            mCountTime += e.Time;
+            mShowCountTime += e.Time;
 
-            while (mCountTime > mSpeed)
+            while (mShowCountTime > mShowSpeed)
             {
                 Caracter cars;
 
-                mCountTime -= mSpeed;
+                mShowCountTime -= mShowSpeed;
                 for (; ; )
                 {
                     cars = mCarsAct.FirstOrDefault();
@@ -230,7 +236,7 @@ namespace Dibuixos
                             cars.rad = cars.rad0;
                             cars.anc = cars.anc0;
                             cars.ang = cars.ang0;
-                            cars.modo = Modos.O_NOMOV;
+                            cars.modo = Modos.O_FIN;
                         }
                         mCarsAct = mCarsAct.Skip(1);
                     }
