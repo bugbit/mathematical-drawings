@@ -18,29 +18,29 @@ namespace Dibuixos
 {
     public class TextInSpiralCenterFontQuickFont : GameWindow
     {
-        private enum Modos { O_OCULTO, O_MOV, O_NOMOV, O_FIN }
-
         private class Caracter
         {
             public double rad0, rad, arad, x, y, div, scale, anc, anc0, aanc;
             public double ang0, ang, aang;
             public int steps;
             public char car;
-            public Modos modo;
         }
 
         private Matrix4 mProjectionMatrix;
         private QFont mFont;
         private QFontDrawing mDrawingFont;
+        private readonly Queue<Caracter> mCarsNew = new Queue<Caracter>();
         private readonly List<Caracter> mCars = new List<Caracter>();
-        private double cx, cy;
-        private IEnumerable<Caracter> mCarsIni;
+        private readonly List<Caracter> mCarsToHide = new List<Caracter>();
         private IEnumerable<Caracter> mCarsAct;
+        private double cx, cy;
         private double mTimeFinishTextAll = 5;
+        private double mTimeText = 0;
         private double mShowSpeed = .001;
         private double mShowCountTime;
         private double mCountTimeHide;
         private double mSpeedHide = .5;
+        private bool mHaveTextToHide = false;
 
         public TextInSpiralCenterFontQuickFont() : base(800, 600, GraphicsMode.Default, "Text In Spiral Center Quick Font", GameWindowFlags.Default, DisplayDevice.Default, 3, 2, GraphicsContextFlags.Default)
         { }
@@ -67,7 +67,7 @@ namespace Dibuixos
             mDrawingFont = new QFontDrawing();
             GL.ClearColor(Color4.CornflowerBlue);
             CreateCarsTexto(new[] { "Dibuixos", "Matematics", "mathematical-drawings for C#" });
-            mCarsAct = mCarsIni = mCars.AsEnumerable();
+            mCarsAct = mCars;
         }
 
         private void calc_car_xy(Caracter cars)
@@ -119,12 +119,11 @@ namespace Dibuixos
                         aang = alfa,
                         rad0 = rad,
                         rad = 0,
-                        modo = Modos.O_OCULTO,
                         anc0 = anc,
                         anc = 1,
                     };
 
-                    mCars.Add(cars);
+                    mCarsNew.Enqueue(cars);
                     cars.steps = (int)((cars.ang - cars.ang0) / cars.aang);
                     cars.arad = rad / (double)cars.steps;
                     cars.aanc = anc / ((double)cars.steps + 1.0d);
@@ -144,7 +143,7 @@ namespace Dibuixos
         {
             base.OnRenderFrame(e);
 
-            var cars = (from c in mCarsIni where c.modo != Modos.O_OCULTO select c);
+            var cars = mCarsToHide.Concat(mCars).ToArray();
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -178,28 +177,33 @@ namespace Dibuixos
             if (Keyboard[Key.Escape])
                 Exit();
 
-            mCountTimeHide += e.Time;
-
-            while (mCountTimeHide > mSpeedHide)
+            mTimeText += e.Time;
+            //mShowSpeed = (mTimeFinishTextAll - mTimeText) / Math.Max(mCars.Count, 1);
+            //mSpeedHide = (mTimeFinishTextAll - mTimeText) / Math.Max(mCarsToHide.Count, 1);
+            if (mHaveTextToHide)
             {
-                if (mCarsIni.First().modo == Modos.O_FIN)
+                mCountTimeHide += e.Time;
+
+                while (mCountTimeHide > mSpeedHide)
                 {
-                    var pQuery = (from c in mCarsIni where c.modo == Modos.O_FIN select c).ToArray();
-
-                    for (int i = pQuery.Length - 1; i > 0; i--)
+                    if (mCarsToHide.Count > 0)
                     {
-                        var c = pQuery[i];
-                        var c2 = pQuery[i - 1];
+                        for (int i = mCarsToHide.Count - 1; i > 0; i--)
+                        {
+                            var c = mCarsToHide[i];
+                            var c2 = mCarsToHide[i - 1];
 
-                        c.x = c2.x;
-                        c.y = c2.y;
-                        c.scale = c2.scale;
+                            c.x = c2.x;
+                            c.y = c2.y;
+                            c.scale = c2.scale;
+                        }
+                        mCarsToHide.RemoveAt(0);
                     }
-                    mCarsIni = mCarsIni.Skip(1);
+                    else
+                        mHaveTextToHide = false;
+                    mCountTimeHide -= mSpeedHide;
                 }
-                mCountTimeHide -= mSpeedHide;
             }
-
             mShowCountTime += e.Time;
 
             while (mShowCountTime > mShowSpeed)
@@ -213,41 +217,40 @@ namespace Dibuixos
 
                     if (cars == null)
                     {
-                        mCarsAct = mCarsIni.Where(c => c.modo != Modos.O_NOMOV && c.modo != Modos.O_FIN);
-                        if (!mCarsAct.Any())
+                        mCarsAct = mCars;
+                        if (mCarsNew.Count > 0)
                         {
-                            foreach (var c in mCarsIni)
-                                c.modo = Modos.O_FIN;
+                            mCars.Add(mCarsNew.Dequeue());
+                        }
+                        else if (mCars.Count <= 0)
+                        {
+                            mHaveTextToHide = true;
                             CreateCarsTexto(new[] { "No hay caminos para la paz.", "La paz es el camino", "(Gandhi)" });
+
+                            return;
                         }
                     }
                     else
                         break;
                 }
-                if (cars != null)
+                cars.rad = Math.Min(cars.rad + cars.arad, cars.rad0);
+                cars.ang -= cars.aang;
+                while (cars.ang < 0) cars.ang += 2 * Math.PI;
+                if (cars.steps-- <= 0)
                 {
-                    if (cars.modo == Modos.O_MOV)
-                    {
-                        cars.rad = Math.Min(cars.rad + cars.arad, cars.rad0);
-                        cars.ang -= cars.aang;
-                        while (cars.ang < 0) cars.ang += 2 * Math.PI;
-                        if (cars.steps-- <= 0)
-                        {
-                            cars.rad = cars.rad0;
-                            cars.anc = cars.anc0;
-                            cars.ang = cars.ang0;
-                            cars.modo = Modos.O_FIN;
-                        }
-                        mCarsAct = mCarsAct.Skip(1);
-                    }
-                    else
-                    {
-                        cars.modo = Modos.O_MOV;
-                        mCarsAct = mCarsIni.Where(c => c.modo != Modos.O_FIN);
-                    }
-                    cars.anc = Math.Min(cars.anc + cars.aanc, cars.anc0);
-                    calc_car_xy(cars);
+                    var pIdx = mCars.IndexOf(cars);
+
+                    cars.rad = cars.rad0;
+                    cars.anc = cars.anc0;
+                    cars.ang = cars.ang0;
+                    mCarsToHide.Add(cars);
+                    mCars.RemoveAt(pIdx);
+                    mCarsAct = mCars.Skip(pIdx);
                 }
+                else
+                    mCarsAct = mCarsAct.Skip(1);
+                cars.anc = Math.Min(cars.anc + cars.aanc, cars.anc0);
+                calc_car_xy(cars);
             }
         }
 
