@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Dibuixos.Properties {
+namespace BuilderFortunes.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Dibuixos.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dibuixos.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BuilderFortunes.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,22 +61,20 @@ namespace Dibuixos.Properties {
         }
         
         /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Byte[].
+        ///   Busca una cadena traducida similar a &quot;... the educated person is not the person who can answer the questions, but
+        ///the person who can question the answers.&quot;
+        ///        ― Theodore Schick Jr., in The_Skeptical_Inquirer, March/April, 1997
+        ///%
+        ///&quot;A little fire, Scarecrow?&quot;
+        ///%
+        ///&quot;A programmer is a person who passes as an exacting expert on the basis of
+        ///being able to turn out, after innumerable punching, an infinite series of
+        ///incomprehensive answers calculated with micrometric precisions from vague
+        ///assumptions based on debatable figures taken from inconclusive [resto de la cadena truncado]&quot;;.
         /// </summary>
-        internal static byte[] fgFonts_xml {
+        internal static string fortunes {
             get {
-                object obj = ResourceManager.GetObject("fgFonts_xml", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Byte[].
-        /// </summary>
-        internal static byte[] fortunes_xml {
-            get {
-                object obj = ResourceManager.GetObject("fortunes_xml", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("fortunes", resourceCulture);
             }
         }
     }

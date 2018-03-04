@@ -82,6 +82,12 @@
     <Compile Include="Dibuixos\Browser\frmBrowser.Designer.cs">
       <DependentUpon>frmBrowser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dibuixos\Common\Extensions\LinqExtensions.cs" />
+    <Compile Include="Dibuixos\Common\HelperLinq.cs" />
+    <Compile Include="Dibuixos\Common\IRandomInt.cs" />
+    <Compile Include="Dibuixos\Common\RandomDefault.cs" />
+    <Compile Include="Dibuixos\Common\RandomRNG.cs" />
+    <Compile Include="Dibuixos\Core\Fortunes.cs" />
     <Compile Include="Dibuixos\Core\IUpdateFrame.cs" />
     <Compile Include="Dibuixos\Draws\Text\TextInSpiralCenterFontStroken.cs" />
     <Compile Include="Dibuixos\GameObjects\GOTextInSpiralCenterFontStroken.cs" />
@@ -112,6 +118,7 @@
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Resources\fgFonts.xml.gz" />
+    <None Include="Resources\fortunes.xml.gz" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
