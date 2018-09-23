@@ -87,6 +87,8 @@
     <Compile Include="Dibuixos\Common\IRandomInt.cs" />
     <Compile Include="Dibuixos\Common\RandomDefault.cs" />
     <Compile Include="Dibuixos\Common\RandomRNG.cs" />
+    <Compile Include="Dibuixos\Core\DibuixArgOption.cs" />
+    <Compile Include="Dibuixos\Core\DibuixArgs.cs" />
     <Compile Include="Dibuixos\Core\Fortunes.cs" />
     <Compile Include="Dibuixos\Core\IUpdateFrame.cs" />
     <Compile Include="Dibuixos\Draws\Text\TextInSpiralCenterFontStroken.cs" />
