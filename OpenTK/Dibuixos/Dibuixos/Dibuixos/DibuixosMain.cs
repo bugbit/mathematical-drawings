@@ -213,11 +213,14 @@ using System.Windows.Forms;
 
 namespace Dibuixos
 {
-        class DibuixosMain
+    class DibuixosMain
     {
         [STAThread]
         public static void Main(string[] args)
         {
+            TextInSpiralCenterFontQuickFont.Main(args);
+
+            return;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

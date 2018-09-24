@@ -222,6 +222,7 @@ using Dibuixos.Common.Extensions;
 
 namespace Dibuixos
 {
+    [Core.Dibuix("TestSpiralQuickFont", "TextInSpiralCenterFontQuickFontTtile")]
     public class TextInSpiralCenterFontQuickFont : GameWindow
     {
         private class Caracter
@@ -256,7 +257,11 @@ namespace Dibuixos
         private IEnumerator<string[]> mTextos;
         private string[][] mFortunes;
 
-        public TextInSpiralCenterFontQuickFont() : base(800, 600, GraphicsMode.Default, "Text In Spiral Center Quick Font", GameWindowFlags.Default, DisplayDevice.Default, 3, 2, GraphicsContextFlags.Default)
+        public TextInSpiralCenterFontQuickFont(Core.DibuixArgs argArgs) :
+            base(argArgs.GetWidth(800), argArgs.GetHeight(600), argArgs.GraphicsMode, null, argArgs.GameWindowFlags, DisplayDevice.Default, 3, 2, GraphicsContextFlags.Default)
+        { }
+
+        public TextInSpiralCenterFontQuickFont() : base(800, 600, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 2, GraphicsContextFlags.Default)
         { }
 
         /// <summary>
@@ -441,6 +446,8 @@ namespace Dibuixos
         }
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            base.OnUpdateFrame(e);
+
             if (Keyboard[Key.Escape])
                 Exit();
 
@@ -523,10 +530,13 @@ namespace Dibuixos
 
 
         [STAThread]
-        static void Main()
+        static internal void Main(string[] argArgs)
         {
-            using (var pDibuix = new TextInSpiralCenterFontQuickFont())
+            var pArgs = Core.DibuixArgs.Parse(argArgs);
+
+            using (var pDibuix = new TextInSpiralCenterFontQuickFont(pArgs))
             {
+                Core.Dibuix.ApplyArgsAndProperties(pDibuix, pArgs);
                 pDibuix.Run();
             }
         }

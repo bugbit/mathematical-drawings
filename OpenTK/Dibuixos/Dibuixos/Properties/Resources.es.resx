@@ -117,14 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="fgFonts_xml" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\fgFonts.xml.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="fortunes_xml" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\fortunes.xml.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="TextInSpiralCenterFontQuickFontTtile" xml:space="preserve">
-    <value>Text In Spiral Center Quick Font</value>
+    <value>Texto centrado en espiral Quick Font</value>
   </data>
 </root>

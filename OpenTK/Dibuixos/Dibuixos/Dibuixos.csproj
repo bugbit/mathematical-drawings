@@ -29,11 +29,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
@@ -41,7 +41,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,7 +49,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <Optimize>true</Optimize>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -87,8 +87,10 @@
     <Compile Include="Dibuixos\Common\IRandomInt.cs" />
     <Compile Include="Dibuixos\Common\RandomDefault.cs" />
     <Compile Include="Dibuixos\Common\RandomRNG.cs" />
+    <Compile Include="Dibuixos\Core\Dibuix.cs" />
     <Compile Include="Dibuixos\Core\DibuixArgOption.cs" />
     <Compile Include="Dibuixos\Core\DibuixArgs.cs" />
+    <Compile Include="Dibuixos\Core\DibuixAttribute.cs" />
     <Compile Include="Dibuixos\Core\Fortunes.cs" />
     <Compile Include="Dibuixos\Core\IUpdateFrame.cs" />
     <Compile Include="Dibuixos\Draws\Text\TextInSpiralCenterFontStroken.cs" />
@@ -127,6 +129,7 @@
     <EmbeddedResource Include="Dibuixos\Browser\frmBrowser.resx">
       <DependentUpon>frmBrowser.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.es.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

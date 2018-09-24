@@ -207,208 +207,25 @@ Copyright 1995-2015-2016-2017 Oscar Hernández Bañó
 */
 #endregion
 
-using OpenTK;
-using OpenTK.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Dibuixos.Core
 {
-    public class DibuixArgs
+    [AttributeUsage(AttributeTargets.Class)]
+    public class DibuixAttribute : Attribute
     {
-        private readonly static DibuixArgOption[] mDefaultOptsNumArgs = new[]
+        public string Id { get; set; }
+        public string ResTitle { get; set; }
+        public bool DefaultCycle { get; set; } = true;
+
+        public DibuixAttribute(string argId, string argResTitle)
         {
-            new DibuixArgOption("resolution|r"),
-            new DibuixArgOption("fullscreen|f",0),
-            new DibuixArgOption("screensaver",0),
-            new DibuixArgOption("cycle",1)
-        };
-
-        private Dictionary<string, string[]> mOpts = new Dictionary<string, string[]>();
-        private int[] mResolution;
-
-        public DibuixArgs(Dictionary<string, string[]> argOpts)
-        {
-            mOpts = argOpts;
-            CreateOptResolution("resolution");
-            GetOpt("fullscreen", v => FullScreen = v);
-            GetOpt("screensaver", v => IsScreenSaver = v);
-            GetOpt("cycle", v => Cycle = v);
-            if (!FullScreen && IsScreenSaver)
-                FullScreen = true;
-        }
-
-        public bool FullScreen { get; private set; }
-        public bool IsScreenSaver { get; private set; }
-        public int Cycle { get; private set; } = 20;
-
-        public GameWindowFlags GameWindowFlags => (FullScreen) ? GameWindowFlags.Fullscreen : GameWindowFlags.Default;
-
-        public GraphicsMode GraphicsMode
-        {
-            get
-            {
-                try
-                {
-                    return (FullScreen && mResolution.Length >= 3) ? new GraphicsMode(new ColorFormat(mResolution[2])) : GraphicsMode.Default;
-                }
-                catch
-                {
-                    return GraphicsMode.Default;
-                }
-            }
-        }
-
-        public bool GetOpt(string argOpt, Action<string> argLetOptValue)
-        {
-            string[] pValue;
-
-            if (!mOpts.TryGetValue(argOpt, out pValue) || pValue.Length != 1)
-                return false;
-
-            argLetOptValue.Invoke(pValue[0]);
-
-            return true;
-        }
-
-        public bool GetOpt(string argOpt, Action<bool> argLetValue)
-        {
-            var pRet = false;
-
-            GetOpt
-            (
-                argOpt, delegate (string argValueStr)
-                {
-                    bool pValue;
-
-                    pRet = bool.TryParse(argValueStr, out pValue);
-
-                    if (pRet)
-                        argLetValue.Invoke(pValue);
-                }
-            );
-
-            return pRet;
-        }
-
-        public bool GetOpt(string argOpt, Action<int> argLetValue)
-        {
-            var pRet = false;
-
-            GetOpt
-            (
-                argOpt, delegate (string argValueStr)
-                {
-                    int pValue;
-
-                    pRet = int.TryParse(argValueStr, out pValue);
-
-                    if (pRet)
-                        argLetValue.Invoke(pValue);
-                }
-            );
-
-            return pRet;
-        }
-
-        public int GetWidth(int argDefault, bool? argDefaultOnlyWindowed = true)
-        {
-            int? pWidth = mResolution?[0];
-
-            if (!pWidth.HasValue)
-            {
-                if (!argDefaultOnlyWindowed.HasValue || argDefaultOnlyWindowed.Value == !FullScreen)
-                    pWidth = argDefault;
-            }
-
-            return pWidth ?? DisplayDevice.Default.Width;
-        }
-
-        public int GetHeight(int argDefault, bool? argDefaultOnlyWindowed = true)
-        {
-            int? pHeight = mResolution?[0];
-
-            if (!pHeight.HasValue)
-            {
-                if (!argDefaultOnlyWindowed.HasValue || argDefaultOnlyWindowed.Value == !FullScreen)
-                    pHeight = argDefault;
-            }
-
-            return pHeight ?? DisplayDevice.Default.Height;
-        }
-
-        public static DibuixArgs Parse(string[] argArgs, IEnumerable<DibuixArgOption> argOptsNumArgs = null)
-        {
-            var pOpts = new Dictionary<string, string[]>();
-            var pQuery = (argOptsNumArgs == null) ? mDefaultOptsNumArgs : mDefaultOptsNumArgs.Concat(argOptsNumArgs);
-            var pDict = new Dictionary<string, DibuixArgOption>();
-
-            foreach (var q in pQuery)
-            {
-                if (!string.IsNullOrWhiteSpace(q.Option))
-                    pDict.Add(q.Option, q);
-                if (!string.IsNullOrWhiteSpace(q.OptionShort))
-                    pDict.Add(q.OptionShort, q);
-            }
-            for (var i = 0; i < argArgs.Length; i++)
-            {
-                var pOpt = argArgs[i];
-
-                if (pOpt.StartsWith("-"))
-                {
-                    var pOpt2 = pOpt.Substring(1);
-                    DibuixArgOption pDOpt;
-
-                    if (!pDict.TryGetValue(pOpt2, out pDOpt))
-                    {
-                        Trace.TraceWarning($"option {pOpt} unrecognized");
-
-                        continue;
-                    }
-
-                    if (pDOpt.NumArgs == 0)
-                        pOpts[pDOpt.Id] = new string[] { Boolean.TrueString };
-                    else
-                    {
-                        var pValue = argArgs.Skip(i + 1).Take(pDOpt.NumArgs).ToArray();
-
-                        pOpts[pDOpt.Id] = pValue;
-
-                        i += pDOpt.NumArgs;
-                    }
-                }
-            }
-
-            return new DibuixArgs(pOpts);
-        }
-
-        private bool CreateOptResolution(string argOpt)
-        {
-            string[] pValue;
-
-            if (!mOpts.TryGetValue(argOpt, out pValue) || pValue.Length > 1)
-                return false;
-
-            var pSplit = pValue[0].Split('x');
-
-            if (pSplit.Length < 2)
-                return false;
-
-            try
-            {
-                mResolution = pSplit.Select(v => int.Parse(v)).ToArray();
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            Id = argId;
+            ResTitle = argResTitle;
         }
     }
 }

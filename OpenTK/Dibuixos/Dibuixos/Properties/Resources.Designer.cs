@@ -79,5 +79,14 @@ namespace Dibuixos.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Text In Spiral Center Quick Font.
+        /// </summary>
+        internal static string TextInSpiralCenterFontQuickFontTtile {
+            get {
+                return ResourceManager.GetString("TextInSpiralCenterFontQuickFontTtile", resourceCulture);
+            }
+        }
     }
 }
