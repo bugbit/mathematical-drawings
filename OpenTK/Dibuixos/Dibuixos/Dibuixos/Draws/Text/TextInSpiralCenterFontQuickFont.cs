@@ -219,8 +219,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dibuixos.Common.Extensions;
+using System.Reflection;
+using System.IO;
 
-namespace Dibuixos
+namespace Dibuixos.Draws.Text
 {
     [Core.Dibuix("TestSpiralQuickFont", "TextInSpiralCenterFontQuickFontTtile")]
     public class TextInSpiralCenterFontQuickFont : GameWindow
@@ -282,8 +284,12 @@ namespace Dibuixos
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            var pFileAssembly = Assembly.GetExecutingAssembly().Location;
+
+
             mFortunes = Core.Fortunes.Instance.DbFortunes;
-            mFont = new QFont("Fonts/HappySans.ttf", 30, new QuickFont.Configuration.QFontBuilderConfiguration(true));
+            mFont = new QFont(Path.Combine(Path.GetDirectoryName(pFileAssembly), "Fonts/HappySans.ttf"), 30, new QuickFont.Configuration.QFontBuilderConfiguration(true));
             mDrawingFont = new QFontDrawing();
             GL.ClearColor(Color4.CornflowerBlue);
             mTextos = GetTextos().GetEnumerator();

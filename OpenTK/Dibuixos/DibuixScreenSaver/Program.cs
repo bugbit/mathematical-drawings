@@ -18,7 +18,13 @@ namespace DibuixScreenSaver
         static void Main(string[] argArgs)
         {
             if (argArgs.Length == 0 || argArgs.Contains("/s"))
-                Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().FullName), "Dibuixos.exe"), "-screensaver -cycle 1").WaitForExit();
+            {
+                var pFileAssembly = Assembly.GetExecutingAssembly().Location;
+                var pFileExe = Path.Combine(Path.GetDirectoryName(pFileAssembly), "Dibuixos.exe");
+
+                //MessageBox.Show($"{pFileAssembly}\n{pFileExe}"); 
+                Process.Start(pFileExe, "-screensaver -cycle 1").WaitForExit();
+            }
         }
     }
 }

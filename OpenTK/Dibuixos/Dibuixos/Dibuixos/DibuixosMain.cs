@@ -218,7 +218,7 @@ namespace Dibuixos
         [STAThread]
         public static void Main(string[] args)
         {
-            TextInSpiralCenterFontQuickFont.Main(args);
+            Draws.Text.TextInSpiralCenterFontQuickFont.Main(args);
 
             return;
             Application.EnableVisualStyles();
