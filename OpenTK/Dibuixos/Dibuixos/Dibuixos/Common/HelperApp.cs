@@ -207,7 +207,6 @@ Copyright 1995-2015-2016-2017 Oscar Hernández Bañó
 */
 #endregion
 
-using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -216,80 +215,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dibuixos.Core
+namespace Dibuixos.Common
 {
-    public class Dibuix
+    public static class HelperApp
     {
-        private static Dictionary<GameWindow, Double> mGamesInTime = new Dictionary<GameWindow, double>();
-
-        public static void ApplyArgsAndProperties(GameWindow argGame, DibuixArgs argArgs)
-        {
-            var pDibuixAttr = GetDibuixAttr(argGame);
-
-            if (pDibuixAttr != null)
-            {
-                argGame.Title = Properties.Resources.ResourceManager.GetString(pDibuixAttr.ResTitle);
-                if (argArgs.IsScreenSaver)
-                {
-                    argGame.UpdateFrame += (s, e) =>
-                    {
-                        var pGame = (GameWindow)s;
-
-                        //if (pGame.Keyboard.GetState().IsAnyKeyDown || pGame.Mouse.GetState().)
-                    };
-                    argGame.KeyPress += (s, e) => Cancel((GameWindow)s);
-                    argGame.MouseUp += (s, e) => Cancel((GameWindow)s);
-                    argGame.MouseMove += (s, e) => Cancel((GameWindow)s);
-                    if (pDibuixAttr.DefaultCycle)
-                    {
-                        var pCycle = argArgs.Cycle * 60;
-
-                        argGame.UpdateFrame += (s, e) =>
-                        {
-                            var pGame = (GameWindow)s;
-
-                            if (GetGameInTime(pGame, e.Time) > pCycle)
-                                pGame.Exit();
-                        };
-                    }
-                }
-            }
-        }
-
-        public static void Cancel(GameWindow argGame) => argGame.Exit();
-
-        public static DibuixAttribute GetDibuixAttr(object argDibuix)
-        {
-            return argDibuix.GetType().GetCustomAttributes(typeof(DibuixAttribute), false).Cast<DibuixAttribute>().FirstOrDefault();
-        }
-
-        public static double GetGameInTime(GameWindow argGame, double argUpdateTime = 0)
-        {
-            double pTime;
-
-            mGamesInTime.TryGetValue(argGame, out pTime);
-            if (argUpdateTime > 0)
-            {
-                pTime += argUpdateTime;
-                mGamesInTime[argGame] = pTime;
-            }
-
-            return pTime;
-        }
-
-        public static string GetDirectory()
-        {
-            var pFileAssembly = Assembly.GetExecutingAssembly().Location;
-            var pDir = Path.GetDirectoryName(pFileAssembly);
-
-            return pDir;
-        }
-
-        public static string GetPath(string argPath)
-        {
-            var pPath = Path.Combine(GetDirectory(), argPath);
-
-            return pPath;
-        }
+        public static bool IsScreenSaver => Path.GetExtension(Assembly.GetExecutingAssembly().Location).Equals(".scr", StringComparison.InvariantCultureIgnoreCase);
     }
 }

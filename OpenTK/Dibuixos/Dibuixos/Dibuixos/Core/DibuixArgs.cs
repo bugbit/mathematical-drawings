@@ -355,36 +355,90 @@ namespace Dibuixos.Core
                 if (!string.IsNullOrWhiteSpace(q.OptionShort))
                     pDict.Add(q.OptionShort, q);
             }
-            for (var i = 0; i < argArgs.Length; i++)
-            {
-                var pOpt = argArgs[i];
-
-                if (pOpt.StartsWith("-"))
+            if (argArgs != null)
+                for (var i = 0; i < argArgs.Length; i++)
                 {
-                    var pOpt2 = pOpt.Substring(1);
-                    DibuixArgOption pDOpt;
+                    var pOpt = argArgs[i];
 
-                    if (!pDict.TryGetValue(pOpt2, out pDOpt))
+                    if (pOpt.StartsWith("-"))
                     {
-                        Trace.TraceWarning($"option {pOpt} unrecognized");
+                        var pOpt2 = pOpt.Substring(1);
+                        DibuixArgOption pDOpt;
 
-                        continue;
+                        if (!pDict.TryGetValue(pOpt2, out pDOpt))
+                        {
+                            Trace.TraceWarning($"option {pOpt} unrecognized");
+
+                            continue;
+                        }
+
+                        if (pDOpt.NumArgs == 0)
+                            pOpts[pDOpt.Id] = new string[] { Boolean.TrueString };
+                        else
+                        {
+                            var pValue = argArgs.Skip(i + 1).Take(pDOpt.NumArgs).ToArray();
+
+                            pOpts[pDOpt.Id] = pValue;
+
+                            i += pDOpt.NumArgs;
+                        }
                     }
-
-                    if (pDOpt.NumArgs == 0)
-                        pOpts[pDOpt.Id] = new string[] { Boolean.TrueString };
                     else
                     {
-                        var pValue = argArgs.Skip(i + 1).Take(pDOpt.NumArgs).ToArray();
+                        if (Common.HelperApp.IsScreenSaver)
+                        {
+                            if (pOpt.Equals("/s", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                pOpts["fullscreen"] = new string[] { Boolean.TrueString };
 
-                        pOpts[pDOpt.Id] = pValue;
+                                continue;
+                            }
+                        }
 
-                        i += pDOpt.NumArgs;
+                        Trace.TraceWarning($"argument {pOpt} unrecognized");
                     }
+                }
+
+            return new DibuixArgs(pOpts);
+        }
+
+        public static string[] SplitCommandLine(string commandLine)
+        {
+            var translatedArguments = new StringBuilder(commandLine);
+            var escaped = false;
+            for (var i = 0; i < translatedArguments.Length; i++)
+            {
+                if (translatedArguments[i] == '"')
+                {
+                    escaped = !escaped;
+                }
+                if (translatedArguments[i] == ' ' && !escaped)
+                {
+                    translatedArguments[i] = '\n';
                 }
             }
 
-            return new DibuixArgs(pOpts);
+            var toReturn = translatedArguments.ToString().Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            for (var i = 0; i < toReturn.Length; i++)
+            {
+                toReturn[i] = RemoveMatchingQuotes(toReturn[i]);
+            }
+            return toReturn;
+        }
+
+        private static string RemoveMatchingQuotes(string stringToTrim)
+        {
+            var firstQuoteIndex = stringToTrim.IndexOf('"');
+            var lastQuoteIndex = stringToTrim.LastIndexOf('"');
+            while (firstQuoteIndex != lastQuoteIndex)
+            {
+                stringToTrim = stringToTrim.Remove(firstQuoteIndex, 1);
+                stringToTrim = stringToTrim.Remove(lastQuoteIndex - 1, 1); //-1 because we've shifted the indicies left by one
+                firstQuoteIndex = stringToTrim.IndexOf('"');
+                lastQuoteIndex = stringToTrim.LastIndexOf('"');
+            }
+
+            return stringToTrim;
         }
 
         private bool CreateOptResolution(string argOpt)

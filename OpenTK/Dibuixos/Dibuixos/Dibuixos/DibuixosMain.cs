@@ -213,7 +213,7 @@ using System.Windows.Forms;
 
 namespace Dibuixos
 {
-    class DibuixosMain
+    public class DibuixosMain
     {
         [STAThread]
         public static void Main(string[] args)

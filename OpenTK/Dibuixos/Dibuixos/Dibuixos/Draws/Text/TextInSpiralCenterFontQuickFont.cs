@@ -285,11 +285,8 @@ namespace Dibuixos.Draws.Text
         {
             base.OnLoad(e);
 
-            var pFileAssembly = Assembly.GetExecutingAssembly().Location;
-
-
             mFortunes = Core.Fortunes.Instance.DbFortunes;
-            mFont = new QFont(Path.Combine(Path.GetDirectoryName(pFileAssembly), "Fonts/HappySans.ttf"), 30, new QuickFont.Configuration.QFontBuilderConfiguration(true));
+            mFont = new QFont(/*"Fonts/HappySans.ttf"*/Core.Dibuix.GetPath(@"Fonts\HappySans.ttf"), 30, new QuickFont.Configuration.QFontBuilderConfiguration(true));
             mDrawingFont = new QFontDrawing();
             GL.ClearColor(Color4.CornflowerBlue);
             mTextos = GetTextos().GetEnumerator();
@@ -455,7 +452,7 @@ namespace Dibuixos.Draws.Text
             base.OnUpdateFrame(e);
 
             if (Keyboard[Key.Escape])
-                Exit();
+                Core.Dibuix.Cancel(this);
 
             mTimeText += e.Time;
             //mShowSpeed = (mTimeFinishTextAll - mTimeText) / Math.Max(mCars.Count, 1);
@@ -535,7 +532,7 @@ namespace Dibuixos.Draws.Text
         }
 
 
-        [STAThread]
+        //[STAThread]
         static internal void Main(string[] argArgs)
         {
             var pArgs = Core.DibuixArgs.Parse(argArgs);
