@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -88,10 +88,12 @@
     <Compile Include="Dibuixos\Common\IRandomInt.cs" />
     <Compile Include="Dibuixos\Common\RandomDefault.cs" />
     <Compile Include="Dibuixos\Common\RandomRNG.cs" />
+    <Compile Include="Dibuixos\Core\CounterTime.cs" />
     <Compile Include="Dibuixos\Core\Dibuix.cs" />
     <Compile Include="Dibuixos\Core\DibuixArgOption.cs" />
     <Compile Include="Dibuixos\Core\DibuixArgs.cs" />
     <Compile Include="Dibuixos\Core\DibuixAttribute.cs" />
+    <Compile Include="Dibuixos\Core\DibuixGameWindow.cs" />
     <Compile Include="Dibuixos\Core\Fortunes.cs" />
     <Compile Include="Dibuixos\Core\IUpdateFrame.cs" />
     <Compile Include="Dibuixos\Draws\Text\TextInSpiralCenterFontStroken.cs" />
@@ -147,7 +149,7 @@
     <Error Condition="!Exists('..\packages\SharpFont.4.0.1\build\SharpFont.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SharpFont.4.0.1\build\SharpFont.props'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetDir)$(ProjectName).exe" "$(TargetDir)$(ProjectName).sCr"
-copy /Y "$(TargetDir)$(ProjectName).exe.config" "$(TargetDir)$(ProjectName).sCr.config"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

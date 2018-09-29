@@ -82,4 +82,8 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetDir)$(ProjectName).exe" "$(TargetDir)$(ProjectName).sCr"
+copy /Y "$(TargetDir)$(ProjectName).exe.config" "$(TargetDir)$(ProjectName).sCr.config"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

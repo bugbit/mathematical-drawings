@@ -234,6 +234,8 @@ namespace DibuixScreenSaver
                 var pArgs = Properties.Settings.Default.DibuixosArgs;
                 var pDibArgs = Dibuixos.Core.DibuixArgs.SplitCommandLine(pArgs);
 
+                //System.Diagnostics.Trace.AutoFlush = true;
+                //System.Diagnostics.Trace.Listeners.Add(new System.Diagnostics.TextWriterTraceListener(Path.Combine(Path.GetDirectoryName(pFileAssembly), "Dibuixos.log")));
                 Dibuixos.DibuixosMain.Main(pDibArgs);
 
                 //Process.Start(pFileExe, pArgs).WaitForExit();
