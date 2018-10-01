@@ -81,6 +81,16 @@ namespace Dibuixos.Properties {
         }
         
         /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Byte[].
+        /// </summary>
+        internal static byte[] FRACTINT {
+            get {
+                object obj = ResourceManager.GetObject("FRACTINT", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Text In Spiral Center Quick Font.
         /// </summary>
         internal static string TextInSpiralCenterFontQuickFontTtile {
