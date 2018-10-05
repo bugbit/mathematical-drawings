@@ -217,6 +217,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+/*
+[HKEY_CURRENT_USER\Control Panel\Desktop]
+"ScreenSaveTimeOut"="7200"
+"SCRNSAVE.EXE"="C:\\WINDOWS\\system32\\scrnsave.scr"
+ */
+
 namespace DibuixScreenSaver
 {
     static class Program
