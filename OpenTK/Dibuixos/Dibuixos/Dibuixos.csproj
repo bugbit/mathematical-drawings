@@ -98,6 +98,7 @@
     <Compile Include="Dibuixos\Core\IUpdateFrame.cs" />
     <Compile Include="Dibuixos\Draws\Text\TextInSpiralCenterFontStroken.cs" />
     <Compile Include="Dibuixos\GameObjects\GOTextInSpiralCenterFontStroken.cs" />
+    <Compile Include="Dibuixos\Maths\IFS.cs" />
     <Compile Include="Dibuixos\Maths\MathEx.cs" />
     <Compile Include="OpenTKGLUT\GLUT.fg_font.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
