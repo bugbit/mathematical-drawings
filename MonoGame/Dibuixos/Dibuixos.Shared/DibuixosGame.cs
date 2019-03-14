@@ -12,10 +12,10 @@ namespace Dibuixos
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class DibuixosGame : Game
+    public class DibuixosGame : Game, Services.IDibuixosService
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
         public DibuixosGame()
         {
@@ -25,6 +25,8 @@ namespace Dibuixos
             graphics.IsFullScreen = true;
 #endif
         }
+
+        public Core.ContextData ContextData { get; set; }
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -36,6 +38,8 @@ namespace Dibuixos
         {
             // TODO: Add your initialization logic here
             this.Window.Title = "Dibuixos for C# MonoGame Copyright 1995-2015-2016-2018-2019 Oscar Hernández Bañó";
+            this.Services.AddService(this);
+
             base.Initialize();
         }
 

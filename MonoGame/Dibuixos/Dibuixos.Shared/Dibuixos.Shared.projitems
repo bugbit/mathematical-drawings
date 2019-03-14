@@ -9,11 +9,13 @@
     <Import_RootNamespace>Dibuixos</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ContextData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DibuixosGame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Math\NCalculatePi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\IDibuixosService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Content\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Math\" />
     <Folder Include="$(MSBuildThisFileDirectory)Scenes\" />
   </ItemGroup>
   <ItemGroup>
