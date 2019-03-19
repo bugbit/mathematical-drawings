@@ -5,7 +5,7 @@ using Android.Views;
 
 namespace Dibuixos.Droid
 {
-    [Activity(Label = "Dibuixos.Droid"
+    [Activity(Label = "Dibuixos"
         , MainLauncher = true
         , Icon = "@drawable/icon"
         , Theme = "@style/Theme.Splash"
