@@ -10,6 +10,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Core\ContextData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\CoRoutineAsyncUpdater.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ICoRoutineAsyncUpdater.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ICtrCoRoutineAsyncUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DibuixosGame.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Math\NCalculatePi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IDibuixosService.cs" />
