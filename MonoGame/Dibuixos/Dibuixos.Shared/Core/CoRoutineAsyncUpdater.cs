@@ -10,19 +10,29 @@ namespace Dibuixos.Core
     {
         private Func<ICtrCoRoutineAsyncUpdater, Task> mUpdater;
         private Task<Func<ICtrCoRoutineAsyncUpdater, Task>> mUpdaterTask;
+        private TaskCompletionSource<GameTime> mSetUpdateCompleted;
+        private TaskCompletionSource<bool> mSetFinishCompleted;
 
         public CoRoutineAsyncUpdater(Func<ICtrCoRoutineAsyncUpdater, Task> argUpdater)
         {
             mUpdater = argUpdater;
+            mSetUpdateCompleted = new TaskCompletionSource<GameTime>();
+            mSetFinishCompleted = new TaskCompletionSource<bool>();
         }
 
         public bool Finished { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public GameTime GameTime => throw new NotImplementedException();
 
-        public Task Update(GameTime gameTime)
+        public async Task Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            var pCompleted = mSetUpdateCompleted;
+
+            mSetUpdateCompleted.SetResult(gameTime);
+
+            var pFinishTask = mSetFinishCompleted?.Task;
+
+            await pFinishTask;
         }
 
         public Task Yield(bool argFinished)
