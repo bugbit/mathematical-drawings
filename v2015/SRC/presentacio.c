@@ -5,9 +5,6 @@
 #include <errno.h>
 #include <string.h>
 
-#include <GL/gl.h>
-#include <GL/glut.h>
-
 #include "dibuixos.h"
 
 #define O_OCULTO	0
@@ -100,13 +97,13 @@ static int titulo_initgl(CAR *cars)
 	char *str2;
 	
 	car_titulo=cars;
-	rad=min(width,height)/2.0d;
-	cx=width/2.0d;
-	cy=height/2.0d;
+	rad=min(width,height)/2.0;
+	cx=width/2.0;
+	cy=height/2.0;
 	arad=rad/(GLdouble)((sizeof(Titulo)/sizeof(*Titulo)));
-	arad += arad / 2.0d;
-	anc=120.0d*rad/348.0d;
-	for (;(str2=*str);str++,rad -= arad,anc /= 2.0d)
+	arad += arad / 2.0;
+	anc=120.0*rad/348.0;
+	for (;(str2=*str);str++,rad -= arad,anc /= 2.0)
 	{
 		ncars=strlen(str2);
 		divx=glexStrokeMinWidth(GLUT_STROKE_MONO_ROMAN,str2);
@@ -114,7 +111,7 @@ static int titulo_initgl(CAR *cars)
 		div=min(divx,divy);
 		alfa=atan
 			(
-				(double) (glexStrokeStrWidth(GLUT_STROKE_MONO_ROMAN,str2)/2.0d)
+				(double) (glexStrokeStrWidth(GLUT_STROKE_MONO_ROMAN,str2)/2.0)
 				/(double) (glexStrokeStrHeight(GLUT_STROKE_MONO_ROMAN,str2))
 			);
 		beta=M_PI_2-alfa;
@@ -126,7 +123,7 @@ static int titulo_initgl(CAR *cars)
 			cars->car=*str2;
 			cars->div=div;
 			cars->ang0=beta;
-			cars->ang=M_PI*2.0d;
+			cars->ang=M_PI*2.0;
 			cars->aang=alfa;
 			cars->steps=(cars->ang-cars->ang0)/cars->aang;
 			cars->rad0=rad;
@@ -135,7 +132,7 @@ static int titulo_initgl(CAR *cars)
 			cars->modo=O_OCULTO;
 			cars->anc0=anc;
 			cars->anc=1;
-			cars->aanc=anc/((GLdouble)cars->steps+1.0d);
+			cars->aanc=anc/((GLdouble)cars->steps+1.0);
 			calc_car_xy(cars);
 		}
 	}
@@ -149,7 +146,7 @@ static int espere_initgl()
 {
 	int divx=glexStrokeStrWidth(GLUT_STROKE_ROMAN,esp_texto);
 	
-	esp_scale=(divx>width) ? (GLdouble) width/(GLdouble) divx : 1.0d;
+	esp_scale=(divx>width) ? (GLdouble) width/(GLdouble) divx : 1.0;
 	
 	return 0;
 }
@@ -258,7 +255,7 @@ static void espere_render()
 	GLdouble h=(GLdouble) glexStrokeStrHeight(GLUT_STROKE_ROMAN,esp_textorender)*esp_scale;
 	
 	glPushMatrix();
-	glTranslated(((GLdouble) width-w)/2.0d,h,0);
+	glTranslated(((GLdouble) width-w)/2.0,h,0);
 	glScaled(esp_scale,esp_scale,0);
 	glutStrokeStr(GLUT_STROKE_ROMAN, esp_textorender);
 	glPopMatrix();	

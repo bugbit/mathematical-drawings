@@ -1,8 +1,5 @@
 #include "pch.h"
 
-#include <error.h>
-#include <GL/glut.h>
-
 #include "dibuixos.h"
 
 GLdouble aspectratio;

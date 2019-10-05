@@ -3,9 +3,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include <GL/gl.h>
-#include <GL/glut.h>
-
 #include "dibuixos.h"
 
 typedef struct _STACK
@@ -59,13 +56,13 @@ static void setline(GLdouble s[],int ndx)
 	s_point[0]=s[ndx0];
 	s_point[1]=s[ndx0+1];
 	s_line_len=sqrt(x*x+y*y);	
-	s_line_ang=((y!=0.0d || x>=0.0d)) ? asin(y/s_line_len) : M_PI;
+	s_line_ang=((y!=0.0 || x>=0.0)) ? asin(y/s_line_len) : M_PI;
 	s_line_rad=0;
 	if (ndx==2)
 	{
-		s_line_color[0]=1.0d-(x/width);
-		s_line_color[1]=1.0d-(y/height);
-		s_line_color[2]=1.0d-(s_line_ang/M_PI_2);	
+		s_line_color[0]=1.0-(x/width);
+		s_line_color[1]=1.0-(y/height);
+		s_line_color[2]=1.0-(s_line_ang/M_PI_2);	
 	}
 }
 
@@ -101,7 +98,7 @@ static void sierpinski_func
 static int buildtrianglesmaxinter()
 {
 	int imaxint=32*log(2)/log(3);
-	int imaxw=getmaxitern2x(sqrt(width*width+(height*height/4)-50.d));
+	int imaxw=getmaxitern2x(sqrt(width*width+(height*height/4)-50.));
 	int i=min(imaxint,imaxw);
 	unsigned int n;
 	void *ptr;
@@ -110,7 +107,8 @@ static int buildtrianglesmaxinter()
 	ptr=ptr2=NULL;
 	do
 	{
-		n=pow(3,i);
+		//n=pow(3,i);
+		n=10;
 		if ((ptr=calloc(2*3*n,sizeof(*s_triangle))) && (ptr2=calloc(2*3*n,sizeof(*s_triangle))) && (s_stack=calloc(i,sizeof(*s_stack))))
 			break;
 		FREE(ptr);
@@ -135,7 +133,7 @@ static int sierpinski_init(void *init_params)
 		
 	if (!demo)
 		waitanykey=1;
-	sierpinski_func(0,0,(GLdouble) width/2.0d,height,width,0,s_triangle_iter);
+	sierpinski_func(0,0,(GLdouble) width/2.0,height,width,0,s_triangle_iter);
 	/*s_triangle[0]=0;
 	s_triangle[1]=0;
 	s_triangle[2]=(GLdouble) width/2.0d;
@@ -168,7 +166,7 @@ static void sierpinski_update(unsigned int elapse)
 	GLdouble *s;
 	int i01,i02,i11,i12;
 	
-	s_line_rad += (GLdouble) elapse/0.5d;
+	s_line_rad += (GLdouble) elapse/0.5;
 	if (s_line_rad>s_line_len)
 	{
 		if (s_line_tri_count++<2)
@@ -218,8 +216,8 @@ static void sierpinski_update(unsigned int elapse)
 				sierpinski_func
 				(
 					s[2*stk->nlado],s[2*stk->nlado+1],
-					(s[2*i01]+s[2*i02])/2.0d,(s[2*i01+1]+s[2*i02+1])/2.0d,
-					(s[2*i11]+s[2*i12])/2.0d,(s[2*i11+1]+s[2*i12+1])/2.0d,
+					(s[2*i01]+s[2*i02])/2.0,(s[2*i01+1]+s[2*i02+1])/2.0,
+					(s[2*i11]+s[2*i12])/2.0,(s[2*i11+1]+s[2*i12+1])/2.0,
 					stk->iteracion-1
 				);
 				

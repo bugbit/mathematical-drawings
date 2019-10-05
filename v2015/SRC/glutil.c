@@ -1,8 +1,5 @@
 #include "pch.h"
 
-#include <GL/gl.h>
-#include <GL/glut.h>
-
 #include "dibuixos.h"
 
 GLint glcmaxVertices;
@@ -56,7 +53,7 @@ void glexFontEnd()
 
 GLdouble glexStrokeHeight(void *font)
 {
-	GLdouble h=(font==GLUT_STROKE_MONO_ROMAN || font==GLUT_STROKE_ROMAN) ? 119.05d+33.33d : 119.05d;
+	GLdouble h=(font==GLUT_STROKE_MONO_ROMAN || font==GLUT_STROKE_ROMAN) ? 119.05+33.33 : 119.05;
 	
 	return glexScalefact()*h*(GLdouble)height/(GLdouble)width;
 	

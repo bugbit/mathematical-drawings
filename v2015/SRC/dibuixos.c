@@ -1,13 +1,12 @@
 #include "pch.h"
 
 #include <stdio.h>
-#include <error.h>
 #include <stdarg.h>
 #include <stdlib.h>
 
 //#include <GL/gl.h>
 //#include <GL/glext.h>
-#include <GL/freeglut.h>
+// OpenGL Graphics includes
 
 #include "dibuixos.h"
 
@@ -84,9 +83,9 @@ int seterror(char *fmt,...)
 int readargs(int argc, char **argv,int *exit)
 {
     char *arg;
-    *exit=0;
     DIBUIXO **dib;
-    
+
+    *exit=0;    
     while(--argc>0)
     {
         arg=*++argv;

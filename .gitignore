@@ -1,5 +1,7 @@
 XNA40/
 
+thirdparty/
+
 # Object files
 *.o
 *.ko
