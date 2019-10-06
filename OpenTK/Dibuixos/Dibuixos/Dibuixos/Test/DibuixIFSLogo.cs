@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 /*
  # IFS code for a permuted Sierpinski triangle
@@ -42,7 +42,7 @@ namespace Dibuixos.Dibuixos.Test
     }
     class DibuixIFSLogo : GameWindow
     {
-        public IFS ifs = new IFS
+        private IFS ifs = new IFS
         {
             ps = new[]
             {
@@ -56,9 +56,72 @@ namespace Dibuixos.Dibuixos.Test
             xmax = 1
         };
 
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            GL.Viewport(0, 0, Width, Height);
+        }
+
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            base.OnRenderFrame(e);
+
+
+            //Matrix4.CreateOrthographicOffCenter(ifs.xmin,ifs.xmax,ifs.ymax,ifs.ymin,)
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Ortho(ifs.xmin, ifs.xmax, ifs.ymin, ifs.ymax, 0, 1);
+            //GL.Ortho(-1.0, 1.0, -1.0, 1.0, 0.0, 4.0);
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Begin(PrimitiveType.Triangles);
+
+            var p0 = new[] { 0.5d, 0.5d };
+            var n = 10;
+
+            renderifs(n, p0);
+            /*
+            //for (var i = 100; i-->0;)
+            {
+                //GL.Vertex2(p0);
+                foreach (var pi in ifs.ps)
+                //var pi = ifs.ps[pRandom.Next(ifs.ps.Length)];
+                {
+                    var p = new[] { pi.a * p0[0] + pi.c * p0[1] + pi.e, pi.b * p0[0] + pi.d * p0[1] + pi.f };
+
+                    GL.Vertex2(p);
+                    p0 = p;
+                }
+            }
+            */
+            //GL.Vertex2(0, 0);
+            //GL.Vertex2(0.5, 1);
+            //GL.Vertex2(1, 0);
+            GL.End();
+            SwapBuffers();
+
+            //GL.DrawElements
+        }
+
+        private void renderifs(int n, double[] p0)
+        {
+            if (n <= 0)
+                return;
+
+            var c = (1d / 4d) * n;
+
+            //GL.Color3(c, c, c);
+            foreach (var pi in ifs.ps)
+            {
+                var p = new[] { pi.a * p0[0] + pi.c * p0[1] + pi.e, pi.b * p0[0] + pi.d * p0[1] + pi.f };
+
+                if (n == 1)
+                    GL.Vertex2(p);
+                p0 = p;
+                renderifs(n - 1, p0);
+            }
         }
 
         static internal void Main(string[] argArgs)
