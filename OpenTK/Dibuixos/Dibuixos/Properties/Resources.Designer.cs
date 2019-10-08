@@ -91,6 +91,15 @@ namespace Dibuixos.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Sierpinski Infinite.
+        /// </summary>
+        internal static string SierpinskiInfiniteTitle {
+            get {
+                return ResourceManager.GetString("SierpinskiInfiniteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Text In Spiral Center Quick Font.
         /// </summary>
         internal static string TextInSpiralCenterFontQuickFontTtile {
