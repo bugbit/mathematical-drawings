@@ -37,7 +37,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Dibuixos.Dibuixos.Draws.Fractales.SierpinskiInfinite</StartupObject>
+    <StartupObject>Dibuixos.Dibuixos.Draws.Fractales.IFSInfinite</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -96,7 +96,7 @@
     <Compile Include="Dibuixos\Core\DibuixGameWindow.cs" />
     <Compile Include="Dibuixos\Core\Fortunes.cs" />
     <Compile Include="Dibuixos\Core\IUpdateFrame.cs" />
-    <Compile Include="Dibuixos\Draws\Fractales\SierpinskiInfinite.cs" />
+    <Compile Include="Dibuixos\Draws\Fractales\IFSInfinite.cs" />
     <Compile Include="Dibuixos\Draws\Text\TextInSpiralCenterFontStroken.cs" />
     <Compile Include="Dibuixos\GameObjects\GOTextInSpiralCenterFontStroken.cs" />
     <Compile Include="Dibuixos\Maths\IFS.cs" />
