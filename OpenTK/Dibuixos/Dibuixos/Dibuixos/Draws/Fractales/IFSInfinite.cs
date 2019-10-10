@@ -10,10 +10,12 @@ using System.Threading.Tasks;
 namespace Dibuixos.Dibuixos.Draws.Fractales
 {
     [Core.Dibuix("SierpinskiInfinite", "SierpinskiInfiniteTitle")]
-    class IFSInfinite : Core.DibuixGameWindow
+    unsafe class IFSInfinite : Core.DibuixGameWindow
     {
         private int gl_Tex = 0;
         private int gl_PBO = 0;
+
+        //private fixed char fixedBuffer[128];
 
         public IFSInfinite(Core.DibuixArgs argArgs) :
             base(argArgs.GetWidth(800), argArgs.GetHeight(600), argArgs.GraphicsMode, null, argArgs.GameWindowFlags, DisplayDevice.Default, 3, 2, GraphicsContextFlags.Default)
