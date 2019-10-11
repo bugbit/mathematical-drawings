@@ -4,16 +4,23 @@ using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Dibuixos.Dibuixos.Draws.Fractales
 {
     [Core.Dibuix("SierpinskiInfinite", "SierpinskiInfiniteTitle")]
-    unsafe class IFSInfinite : Core.DibuixGameWindow
+    class IFSInfinite : Core.DibuixGameWindow
     {
+        private const string shader_code =
+@"!!ARBfp1.0\n
+TEX result.color, fragment.texcoord, texture[0], 2D; \n
+END";
+        private IntPtr h_Src = IntPtr.Zero;
         private int gl_Tex = 0;
         private int gl_PBO = 0;
+        private int gl_Shader = 0;
 
         //private fixed char fixedBuffer[128];
 
@@ -42,6 +49,11 @@ namespace Dibuixos.Dibuixos.Draws.Fractales
 
         private void InitOpenGLBuffers(int w, int h)
         {
+            if (h_Src != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(h_Src);
+                h_Src = IntPtr.Zero;
+            }
             if (gl_Tex != 0)
             {
                 GL.DeleteTextures(1, ref gl_Tex);
@@ -59,6 +71,8 @@ namespace Dibuixos.Dibuixos.Draws.Fractales
                 return;
             }
 
+            h_Src = Marshal.AllocHGlobal(4 * w * h);
+
             GL.Enable(EnableCap.Texture2D);
             GL.GenTextures(1, out gl_Tex);
             GL.BindTexture(TextureTarget.Texture2D, gl_Tex);
@@ -66,6 +80,28 @@ namespace Dibuixos.Dibuixos.Draws.Fractales
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, h_Src);
+            //gl_Shader=GL.
+        }
+
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+            if (h_Src != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(h_Src);
+                h_Src = IntPtr.Zero;
+            }
+            if (gl_Tex != 0)
+            {
+                GL.DeleteTextures(1, ref gl_Tex);
+                gl_Tex = 0;
+            }
+            if (gl_PBO != 0)
+            {
+                GL.DeleteBuffers(1, ref gl_PBO);
+                gl_PBO = 0;
+            }
         }
 
         //[STAThread]

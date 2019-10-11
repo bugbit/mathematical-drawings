@@ -7,6 +7,10 @@ namespace Dibuixos.Core
 {
     public static class GLUtil
     {
+        public static int compileASMShader(int program_type,string code)
+        {
+            return 0;
+        }
         //public static void OrthoW()
         //{
         //    var pGameWindow = Dibuixos.DibuixosMain.GameWindow;
