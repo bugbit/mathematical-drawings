@@ -136,6 +136,8 @@
     <None Include="Resources\fgFonts.xml.gz" />
     <None Include="Resources\fortunes.xml.gz" />
     <None Include="Resources\FRACTINT.IFS" />
+    <None Include="Resources\Simple_FS.glsl" />
+    <None Include="Resources\Simple_VS.glsl" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

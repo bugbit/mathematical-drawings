@@ -133,4 +133,10 @@
   <data name="SierpinskiInfiniteTitle" xml:space="preserve">
     <value>Sierpinski Infinite</value>
   </data>
+  <data name="Shaders_Simple_FS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Simple_FS.glsl;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Shaders_Simple_VS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Simple_VS.glsl;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

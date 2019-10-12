@@ -91,6 +91,26 @@ namespace Dibuixos.Properties {
         }
         
         /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Byte[].
+        /// </summary>
+        internal static byte[] Shaders_Simple_FS {
+            get {
+                object obj = ResourceManager.GetObject("Shaders_Simple_FS", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Byte[].
+        /// </summary>
+        internal static byte[] Shaders_Simple_VS {
+            get {
+                object obj = ResourceManager.GetObject("Shaders_Simple_VS", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Sierpinski Infinite.
         /// </summary>
         internal static string SierpinskiInfiniteTitle {

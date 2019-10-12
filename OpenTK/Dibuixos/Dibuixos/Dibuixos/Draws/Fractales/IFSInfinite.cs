@@ -13,13 +13,13 @@ namespace Dibuixos.Dibuixos.Draws.Fractales
     [Core.Dibuix("SierpinskiInfinite", "SierpinskiInfiniteTitle")]
     class IFSInfinite : Core.DibuixGameWindow
     {
-        private const string shader_code =
-@"!!ARBfp1.0\n
-TEX result.color, fragment.texcoord, texture[0], 2D; \n
-END";
+        private int imageW = 0;
+        private int imageH = 0;
         private IntPtr h_Src = IntPtr.Zero;
         private int gl_Tex = 0;
         private int gl_PBO = 0;
+        private int gl_VS = 0;
+        private int gl_FS = 0;
         private int gl_Shader = 0;
 
         //private fixed char fixedBuffer[128];
@@ -41,14 +41,14 @@ END";
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-            GL.Ortho(0, Width, 0, Height, -1, 1);
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadIdentity();
+            GL.Ortho(-1, 1, -1, 1, -1, 1);
             InitOpenGLBuffers(Width, Height);
         }
 
         private void InitOpenGLBuffers(int w, int h)
         {
+            imageW = w;
+            imageH = h;
             if (h_Src != IntPtr.Zero)
             {
                 Marshal.FreeHGlobal(h_Src);
@@ -76,12 +76,63 @@ END";
             GL.Enable(EnableCap.Texture2D);
             GL.GenTextures(1, out gl_Tex);
             GL.BindTexture(TextureTarget.Texture2D, gl_Tex);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, h_Src);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            //GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, h_Src);
+
+            //GL.GenBuffers(1, out gl_PBO);
+            //GL.BindBuffer(BufferTarget.PixelUnpackBuffer, gl_PBO);
+            //GL.BufferData(BufferTarget.PixelUnpackBuffer, w * h * 4, h_Src, BufferUsageHint.StreamCopy);
+
+            //Core.GLUtil.CreateShaders(Properties.Resources.Shaders_Simple_VS, Properties.Resources.Shaders_Simple_FS, out gl_VS, out gl_FS, out gl_Shader);
+
+            unsafe
+            {
+                var ptr = (UInt32*)h_Src;
+
+                for (var i = w * h; i-- > 0;)
+                    *ptr++ = 0xFF00FF00; // rgra 0xAARRGGRR
+
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, h_Src);
+
+            }
             //gl_Shader=GL.
+        }
+
+        protected override void OnRenderFrame(FrameEventArgs e)
+        {
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+
+            GL.BindTexture(TextureTarget.Texture2D, gl_Tex);
+            //GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, imageW, imageH, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+            //  glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+
+            // fragment program is required to display floating point texture
+            //GL.UseProgram(gl_Shader);
+            //GL.Enable( GL_FRAGMENT_PROGRAM_ARB);
+            GL.Disable(EnableCap.DepthTest);
+
+            GL.Begin(PrimitiveType.Quads);
+            GL.TexCoord2(0.0f, 0.0f);
+            GL.Vertex2(0.0f, 0.0f);
+            GL.TexCoord2(1.0f, 0.0f);
+            GL.Vertex2(1.0f, 0.0f);
+            GL.TexCoord2(1.0f, 1.0f);
+            GL.Vertex2(1.0f, 1.0f);
+            GL.TexCoord2(0.0f, 1.0f);
+            GL.Vertex2(0.0f, 1.0f);
+            GL.End();
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+            //glDisable(GL_FRAGMENT_PROGRAM_ARB);
+            SwapBuffers();
         }
 
         protected override void OnUnload(EventArgs e)
@@ -102,6 +153,12 @@ END";
                 GL.DeleteBuffers(1, ref gl_PBO);
                 gl_PBO = 0;
             }
+            if (gl_Shader != 0)
+                GL.DeleteProgram(gl_Shader);
+            if (gl_VS != 0)
+                GL.DeleteShader(gl_VS);
+            if (gl_FS != 0)
+                GL.DeleteShader(gl_FS);
         }
 
         //[STAThread]

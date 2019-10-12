@@ -7,10 +7,46 @@ namespace Dibuixos.Core
 {
     public static class GLUtil
     {
-        public static int compileASMShader(int program_type,string code)
+        public static void CreateShaders(string argVS, string argFS, out int argGLVS, out int argGLFS, out int argProgram)
         {
-            return 0;
+            int status_code;
+            string info;
+
+            argGLVS = GL.CreateShader(ShaderType.VertexShader);
+            argGLFS = GL.CreateShader(ShaderType.FragmentShader);
+            // Compile vertex shader
+            GL.ShaderSource(argGLVS, argVS);
+            GL.CompileShader(argGLVS);
+            GL.GetShaderInfoLog(argGLVS, out info);
+            GL.GetShader(argGLVS, ShaderParameter.CompileStatus, out status_code);
+
+            if (status_code != 1)
+                throw new ApplicationException(info);
+
+            // Compile vertex shader
+            GL.ShaderSource(argGLFS, argFS);
+            GL.CompileShader(argGLFS);
+            GL.GetShaderInfoLog(argGLFS, out info);
+            GL.GetShader(argGLFS, ShaderParameter.CompileStatus, out status_code);
+
+            if (status_code != 1)
+                throw new ApplicationException(info);
+
+            argProgram = GL.CreateProgram();
+            GL.AttachShader(argProgram, argGLFS);
+            GL.AttachShader(argProgram, argGLVS);
+
+            GL.LinkProgram(argProgram);
         }
+
+        public static void CreateShaders(byte[] argVS, byte[] argFS, out int argGLVS, out int argGLFS, out int argProgram)
+        {
+            var pVS = System.Text.Encoding.Default.GetString(argVS);
+            var pFS = System.Text.Encoding.Default.GetString(argFS);
+
+            CreateShaders(pVS, pFS, out argGLVS, out argGLFS, out argProgram);
+        }
+
         //public static void OrthoW()
         //{
         //    var pGameWindow = Dibuixos.DibuixosMain.GameWindow;
