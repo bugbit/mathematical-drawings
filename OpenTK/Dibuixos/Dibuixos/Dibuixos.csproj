@@ -139,7 +139,6 @@
     <None Include="Resources\Simple_FS.glsl" />
     <None Include="Resources\Simple_VS.glsl" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Dibuixos\Browser\frmBrowser.resx">
       <DependentUpon>frmBrowser.cs</DependentUpon>

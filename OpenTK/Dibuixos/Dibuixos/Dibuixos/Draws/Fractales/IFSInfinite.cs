@@ -25,7 +25,7 @@ namespace Dibuixos.Dibuixos.Draws.Fractales
         //private fixed char fixedBuffer[128];
 
         public IFSInfinite(Core.DibuixArgs argArgs) :
-            base(argArgs.GetWidth(800), argArgs.GetHeight(600), argArgs.GraphicsMode, null, argArgs.GameWindowFlags, DisplayDevice.Default, 3, 2, GraphicsContextFlags.Default)
+            base(argArgs.GetWidth(800), argArgs.GetHeight(600), argArgs.GraphicsMode, null, argArgs.GameWindowFlags, DisplayDevice.Default, 1, 0, GraphicsContextFlags.Default)
         {
             Args = argArgs;
         }
@@ -35,15 +35,35 @@ namespace Dibuixos.Dibuixos.Draws.Fractales
 
         protected override void OnResize(EventArgs e)
         {
-            base.OnResize(e);
+            //GL.Viewport(0, 0, Width, Height);
 
-            GL.Viewport(0, 0, Width, Height);
-
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Ortho(-1, 1, -1, 1, -1, 1);
+            //GL.MatrixMode(MatrixMode.Projection);
+            //GL.LoadIdentity();
+            //GL.Ortho(-1.0, 1.0, -1.0, 1.0, 0.0, 4.0);
             InitOpenGLBuffers(Width, Height);
         }
+
+        //protected override void OnLoad(EventArgs e)
+        //{
+        //    var bitmap = Properties.Resources.logo;
+        //    GL.ClearColor(Color.MidnightBlue);
+        //    GL.Enable(EnableCap.Texture2D);
+
+        //    GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
+
+        //    GL.GenTextures(1, out gl_Tex);
+        //    GL.BindTexture(TextureTarget.Texture2D, gl_Tex);
+        //    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+        //    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+        //    BitmapData data = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
+        //        ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+        //    GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
+        //        OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+
+        //    bitmap.UnlockBits(data);
+        //}
 
         private void InitOpenGLBuffers(int w, int h)
         {
@@ -73,22 +93,29 @@ namespace Dibuixos.Dibuixos.Draws.Fractales
 
             h_Src = Marshal.AllocHGlobal(4 * w * h);
 
+            /*
             GL.Enable(EnableCap.Texture2D);
+            GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
             GL.GenTextures(1, out gl_Tex);
+            */
+            /*
             GL.BindTexture(TextureTarget.Texture2D, gl_Tex);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
-            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-            //GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, h_Src);
+            */
+            /*
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, h_Src);
 
-            //GL.GenBuffers(1, out gl_PBO);
-            //GL.BindBuffer(BufferTarget.PixelUnpackBuffer, gl_PBO);
-            //GL.BufferData(BufferTarget.PixelUnpackBuffer, w * h * 4, h_Src, BufferUsageHint.StreamCopy);
+            GL.GenBuffers(1, out gl_PBO);
+            GL.BindBuffer(BufferTarget.PixelUnpackBuffer, gl_PBO);
+            GL.BufferData(BufferTarget.PixelUnpackBuffer, w * h * 4, h_Src, BufferUsageHint.StreamCopy);
 
-            //Core.GLUtil.CreateShaders(Properties.Resources.Shaders_Simple_VS, Properties.Resources.Shaders_Simple_FS, out gl_VS, out gl_FS, out gl_Shader);
+            Core.GLUtil.CreateShaders(Properties.Resources.Shaders_Simple_VS, Properties.Resources.Shaders_Simple_FS, out gl_VS, out gl_FS, out gl_Shader);
+            */
 
             unsafe
             {
@@ -97,19 +124,59 @@ namespace Dibuixos.Dibuixos.Draws.Fractales
                 for (var i = w * h; i-- > 0;)
                     *ptr++ = 0xFF00FF00; // rgra 0xAARRGGRR
 
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, h_Src);
+                //GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, h_Src);
 
             }
+
             //gl_Shader=GL.
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+
+            unsafe
+            {
+                var ptr = (UInt32*)h_Src;
+
+                for (var i = imageW * imageH; i-- > 0;)
+                    *ptr++ += 0x01010100; // rgra 0xAARRGGRR
+
+
+            }
+
+            GL.DrawPixels(imageW, imageH, PixelFormat.Rgba, PixelType.UnsignedInt8888, h_Src);
+
+            SwapBuffers();
+
+            return;
+           
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+            GL.BindTexture(TextureTarget.Texture2D, gl_Tex);
+            GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, imageW, imageH, PixelFormat.Rgba, PixelType.UnsignedByte, new IntPtr(1));
+            GL.UseProgram(gl_Shader);
+
+            GL.Begin(BeginMode.Quads);
+
+            GL.TexCoord2(0.0f, 1.0f); GL.Vertex2(-0.6f, -0.4f);
+            GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(0.6f, -0.4f);
+            GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(0.6f, 0.4f);
+            GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(-0.6f, 0.4f);
+
+            GL.End();
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+
+            /*
+
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
 
+            //GL.Color3(255, 0, 0);
             GL.BindTexture(TextureTarget.Texture2D, gl_Tex);
             //GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, imageW, imageH, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
             //  glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
@@ -120,18 +187,15 @@ namespace Dibuixos.Dibuixos.Draws.Fractales
             GL.Disable(EnableCap.DepthTest);
 
             GL.Begin(PrimitiveType.Quads);
-            GL.TexCoord2(0.0f, 0.0f);
-            GL.Vertex2(0.0f, 0.0f);
-            GL.TexCoord2(1.0f, 0.0f);
-            GL.Vertex2(1.0f, 0.0f);
-            GL.TexCoord2(1.0f, 1.0f);
-            GL.Vertex2(1.0f, 1.0f);
-            GL.TexCoord2(0.0f, 1.0f);
-            GL.Vertex2(0.0f, 1.0f);
+            GL.TexCoord2(0.0f, 1.0f); GL.Vertex2(-0.6f, -0.4f);
+            GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(0.6f, -0.4f);
+            GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(0.6f, 0.4f);
+            GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(-0.6f, 0.4f);
             GL.End();
 
-            GL.BindTexture(TextureTarget.Texture2D, 0);
+            
             //glDisable(GL_FRAGMENT_PROGRAM_ARB);
+            */
             SwapBuffers();
         }
 
