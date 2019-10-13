@@ -215,6 +215,70 @@ using System.Threading.Tasks;
 
 namespace Dibuixos.Dibuixos.Maths
 {
+    public class IFSFunc
+    {
+        public Action<double[], double[]> CalcParam { get; set; }
+        public double PT { get; set; }
+    }
+
+    public class IFSParamsAFin : IFSFunc
+    {
+        public virtual double[,] Matrix { get; set; }
+        public virtual double[] Vector { get; set; }
+        public double p { get; set; }
+    }
+
+    public class IFSParams2D : IFSParamsAFin
+    {
+        public double a { get; set; }
+        public double b { get; set; }
+        public double c { get; set; }
+        public double d { get; set; }
+        public double e { get; set; }
+        public double f { get; set; }
+
+        public override double[,] Matrix
+        {
+            get => new double[,] { { a, b, }, { c, d } };
+            set => base.Matrix = value;
+        }
+
+        public IFSParams2D()
+        {
+            CalcParam = (p, pn) =>
+              {
+                  pn[0] = a * p[0] + b * p[1] + e;
+                  pn[1] = c * p[0] + d * p[1] + f;
+              };
+        }
+    }
+
+    public class IFSParams3D : IFSParamsAFin
+    {
+        public double a { get; set; }
+        public double b { get; set; }
+        public double c { get; set; }
+        public double d { get; set; }
+        public double e { get; set; }
+        public double f { get; set; }
+        public double g { get; set; }
+        public double h { get; set; }
+        public double i { get; set; }
+        public double j { get; set; }
+        public double k { get; set; }
+        public double l { get; set; }
+
+        public IFSParams3D()
+        {
+            CalcParam = (p, pn) =>
+            {
+                pn[0] = a * p[0] + b * p[1] + c * p[2] + j;
+                pn[1] = d * p[0] + e * p[1] + f * p[2] + k;
+                pn[2] = g * p[0] + h * p[1] + i * p[2] + l;
+            };
+        }
+    }
+
     /// <summary>
     /// ifs2d {
     /// a   b   c   d   e   f   P
@@ -239,13 +303,13 @@ namespace Dibuixos.Dibuixos.Maths
     /// y' = dx + ey + fz + k
     /// z' = gx + hy + iz + l
     /// </summary>
-    public class IFS : IEquatable<IFS>
+    public class IFS<T> : IEquatable<IFS<T>>
     {
         public string Name { get; set; }
         public bool Is3D { get; set; }
-        public double[,] Mattrix { get; set; }
+        public IFSFunc Funcs { get; set; }
 
-        public bool Equals(IFS other)
+        public bool Equals(IFS<T> other)
         {
             return string.Equals(Name, other.Name, StringComparison.InvariantCultureIgnoreCase);
         }
