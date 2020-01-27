@@ -1,0 +1,41 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-3.15/Modules/BasicConfigVersion-AnyNewerVersion.cmake.in
+C:/Program Files/CMake/share/cmake-3.15/Modules/CMakeCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CMakeCXXInformation.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CMakeGenericSystem.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CMakeInitializeConfigs.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CMakeLanguageInformation.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CMakePackageConfigHelpers.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CMakeRCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CMakeSystemSpecificInformation.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CMakeSystemSpecificInitialize.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CheckFunctionExists.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CheckIncludeFile.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CheckIncludeFileCXX.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CheckIncludeFiles.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/CheckTypeSize.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/Compiler/MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/Compiler/MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/FindOpenGL.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/GNUInstallDirs.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/Platform/Windows-MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/Platform/Windows-MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/Platform/Windows-MSVC.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/Platform/Windows.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/Platform/WindowsPaths.cmake
+C:/Program Files/CMake/share/cmake-3.15/Modules/WriteBasicConfigVersionFile.cmake
+C:/Users/oscar.INTRANET/Downloads/freeglut-3.2.1/CMakeLists.txt
+C:/Users/oscar.INTRANET/Downloads/freeglut-3.2.1/FreeGLUTConfig.cmake.in
+C:/Users/oscar.INTRANET/Downloads/freeglut-3.2.1/config.h.in
+C:/Users/oscar.INTRANET/Downloads/freeglut-3.2.1/freeglut.pc.in
+C:/Users/oscar.INTRANET/Downloads/freeglut-3.2.1/freeglut.rc.in
+C:/Users/oscar.INTRANET/Downloads/freeglut-3.2.1/src/fg_version.h.in
+C:/Users/oscar.INTRANET/Downloads/freeglut-3.2.1/src/freeglutdll.def.in
+C:/Users/oscar.INTRANET/source/repos/bugbit/SistemaSolar/3rdParty/freeglut-3.2.1/CMakeFiles/3.15.4/CMakeCCompiler.cmake
+C:/Users/oscar.INTRANET/source/repos/bugbit/SistemaSolar/3rdParty/freeglut-3.2.1/CMakeFiles/3.15.4/CMakeCXXCompiler.cmake
+C:/Users/oscar.INTRANET/source/repos/bugbit/SistemaSolar/3rdParty/freeglut-3.2.1/CMakeFiles/3.15.4/CMakeRCCompiler.cmake
+C:/Users/oscar.INTRANET/source/repos/bugbit/SistemaSolar/3rdParty/freeglut-3.2.1/CMakeFiles/3.15.4/CMakeSystem.cmake

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\oscar.INTRANET\source\repos\bugbit\SistemaSolar\3rdParty\freeglut-3.2.1\CMakeFiles\a392cb1401c129b7021a2e4da8b55d27\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{0117DD29-C7AC-3710-A920-DE8C7A45BF93}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

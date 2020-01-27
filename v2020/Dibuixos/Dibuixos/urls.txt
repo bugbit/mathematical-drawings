@@ -1,0 +1,2 @@
+https://learnopengl.com/In-Practice/Text-Rendering
+https://www.3dgep.com/texturing-and-lighting-with-opengl-and-glsl/

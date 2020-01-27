@@ -1,0 +1,4 @@
+C:/Users/oscar.INTRANET/source/repos/bugbit/SistemaSolar/3rdParty/freeglut-3.2.1/CMakeFiles/INSTALL.dir
+C:/Users/oscar.INTRANET/source/repos/bugbit/SistemaSolar/3rdParty/freeglut-3.2.1/CMakeFiles/freeglut_static.dir
+C:/Users/oscar.INTRANET/source/repos/bugbit/SistemaSolar/3rdParty/freeglut-3.2.1/CMakeFiles/ALL_BUILD.dir
+C:/Users/oscar.INTRANET/source/repos/bugbit/SistemaSolar/3rdParty/freeglut-3.2.1/CMakeFiles/ZERO_CHECK.dir
